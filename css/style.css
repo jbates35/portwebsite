@@ -1,0 +1,519 @@
+/* normal stuff */
+
+::-webkit-scrollbar {
+    height: 12px;
+	width: 5px;
+    background: #FFBB44;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #225577;
+	border-radius: 1ex;
+	-webkit-border-radius: 1ex;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+    background: #FFBB44;
+}
+
+
+body {
+	font-family: "open_sansregular", Lucida Sans Unicode, arial, sans-serif;
+	color: #114466;
+	font-size: 16px;
+	padding:0;
+	margin:0;
+	background-color: white;
+	height: 100%;
+}
+
+
+i {
+	font-family: "open_sansitalic";
+}
+
+b {
+	font-family: "open_sansbold";
+}
+
+a:link, a:visited {
+	color: #448899;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:active {
+	text-decoration: underline;
+	color: #77DDFF;
+}
+
+h1 {
+	text-align: center;
+	font-size: 30px;
+	font-weight: 1200;
+}
+
+h2 {
+	text-align: left;
+	font-size: 19px;
+	font-family: "open_sansbold";
+}
+
+table, tr, th {
+	border: 0px;
+}
+
+label { 
+	font-family: "open_sansbold";
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+/* fonts */
+
+@font-face {
+    font-family: 'red_rosebold';
+    src: 	url('fonts/redrose-bold-webfont.woff2') format('woff2'),
+         	url('fonts/redrose-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'red_roselight';
+    src: 	url('fonts/redrose-light-webfont.woff2') format('woff2'),
+         	url('fonts/redrose-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'red_roseregular';
+    src: 	url('fonts/redrose-regular-webfont.woff2') format('woff2'),
+         	url('fonts/redrose-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'bungee_shaderegular';
+    src: 	url('fonts/bungeeshade-regular-webfont.woff2') format('woff2'),
+			url('fonts/bungeeshade-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sansbold';
+    src: url('fonts/opensans-bold-webfont.woff2') format('woff2'),
+         url('fonts/opensans-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sansitalic';
+    src: url('fonts/opensans-italic-webfont.woff2') format('woff2'),
+         url('fonts/opensans-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'open_sanslight';
+    src: url('fonts/opensans-light-webfont.woff2') format('woff2'),
+         url('fonts/opensans-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sanslight_italic';
+    src: url('fonts/opensans-lightitalic-webfont.woff2') format('woff2'),
+         url('fonts/opensans-lightitalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('fonts/opensans-regular-webfont.woff2') format('woff2'),
+         url('fonts/opensans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* custom divs */
+
+.homeDirect:hover {
+	cursor: pointer;
+}
+
+div#bodysolid {
+	position:absolute;
+	background-color: #f8ffff;
+	width:100%;
+	top:0px;
+	height:80px;	
+	z-index:-5;
+}
+
+div#bodygrad {
+	position:absolute;
+	background-image: linear-gradient(to bottom, #f8ffff, #ffffff); 
+	top:80px;
+	width:100%;	
+	height:180px;
+	z-index:-5;
+}
+
+div#headerbody {
+	position:relative;
+	width: 100%;
+	top:0px;
+}
+
+div#headerborder {
+	background: #55bbdd;
+	width:100%;
+	height:100px;
+	top:21px;
+	position:absolute;
+	z-index: -3;
+}
+
+div#header {
+	background: #114466;
+	width:100%;
+	height:96px;
+	top:2px;
+	position:absolute;
+	z-index: -2;
+}
+
+div#headerimage1 {
+	display:block;
+	background:url("img/banner_wo_bg.png") center;
+	position: absolute;
+	top: 0px;
+	height: 150px;
+	left: 50%;
+	margin-left:-623px;
+	width: 1245px;
+	z-index: -1;
+}
+
+div#headertext {
+	display: flex;
+	margin: auto;
+	font-family: "bungee_shaderegular", Arial Black;
+	font-size: 46px;
+	color: #bbeeff;
+	height:75px;
+	position: relative; 
+	top: 30px;
+	align-items: center;
+	justify-content: center;
+}
+
+div#subheader {
+	margin: auto;
+	position: absolute;
+	font-family: "open_sansbold", Arial Black;
+	top: 120px;
+	left:50%;
+	margin-left: -453px;
+	width: 907px;
+	font-size: 20px;
+	text-align: center;
+}
+
+div#downimg {
+	display:inline-block;
+	width:14px;
+	height: 10px;
+	background:url("img/down.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	margin-bottom:1px;
+	vertical-align:baseline;
+}
+
+div#subheaderline {
+	position: absolute;
+	top: 150px;
+	width: 907px;
+	height: 2px;
+	left: 50%;
+	margin-left: -453px;
+	z-index: -1;
+	background: linear-gradient(to right, rgba(17, 68, 102, 0), rgba(17, 68, 102, 1), rgba(17, 68, 102, 1), rgba(17, 68, 102, 1), rgba(17, 68, 102, 1), rgba(17, 68, 102, 0));
+}
+
+div#sitelinks {
+	z-index: 9;
+	margin: auto;
+	position: absolute;
+	top: 155px;
+	left:50%;
+	margin-left:-453px;
+	width: 907px;
+	font-size: 16px;
+	text-align: center;
+}
+
+.wholeScreen {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: rgba(0,0,0,0.3);
+	z-index: 79;
+	display:none;
+}
+
+div.contactcard {
+	margin:0;
+	display:none;
+	position:absolute;
+	top:179px;
+	right:50%;
+	margin-right:-300px;
+	width:350px;
+	height:200px;
+	z-index:80;
+	background-image: url("img/bcard.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: white;
+	font-family: "red_roseregular";
+}
+
+div.contactcard a {
+	color:#447799;
+}
+
+div#contacthead {
+	position:absolute;
+	top:10px;
+	left:10px;
+}
+
+div#contactsubhead {
+	position:absolute;
+	top:32px;
+	left:10px;
+}
+
+div#contactfoot {
+	position:absolute;
+	left:10px;
+	bottom:10px;
+}
+
+div.show {
+	display:block;
+}
+
+div#contentbody {
+	position:absolute;
+	top:190px;
+	width:907px;
+	bottom:0;
+	left:50%;
+	margin-bottom: 0;
+	margin-left: -453px;	
+}
+
+div#content {
+	width:100%;
+	font-size: 0.867em;
+}
+
+.eButton {
+	background-color: rgba(40,20,0,0.4);
+	padding:1px;
+	border: solid 1px rgba(40,20,0,0.8);
+	border-radius:5px;
+	font-size:14px;
+	text-decoration:none;
+	margin:2px;
+	color:white;
+}
+
+.eButton_proj {
+	background-color: rgba(200,240,255,0.4);
+	padding:1px;
+	border: solid 1px rgba(0,30,60,1);
+	border-radius:5px;
+	font-size:14px;
+	text-decoration:none;
+	margin:2px;
+	color:rgba(0,30,60,1);
+}
+
+.eButton:hover, .eButton_proj:hover {
+	cursor:pointer;
+	text-decoration:underline;
+}
+
+.tab { margin-left: 30px; }
+
+.contact:after {
+		content:"▼";
+}
+
+/* this takes care of the banner text */
+@media only screen and (max-width:899px) {
+	div#headertext { 
+		width:100%;
+		font-size: 5.117vw;
+		left:0%;
+		margin-left:0;
+	}
+}
+
+/* this is only about the text*/
+@media only screen and (max-width:680px) {
+	div#subheader {
+		font-size: 3.101vw;
+	}
+	
+	div#sitelinks {
+		font-size: 2.251vw;
+	}
+}
+
+/* this takes care of the 907px subheaders and lines - not the text however */
+@media only screen and (max-width:925px) {
+	div#subheader {
+		width:100%;
+		left:0%;
+		margin-left:0;
+	}
+	
+	div#subheaderline{
+		display:grid;
+		left:0px;
+		margin-left:0px;
+		width:100%;
+	}
+	
+	div#sitelinks {
+		width:100%;
+		left:0%;
+		margin-left:0;	
+	}
+}
+
+/* these next two hide the doodles in the title bar */
+@media only screen and (max-width:1250px) {
+	div#headerimage1 { 
+		width:100%; 
+		left:0px;
+		margin-left:0px;
+	}
+}
+
+@media only screen and (max-width:900px) {
+	div#headerimage1 { 
+		display:none;
+	}
+}
+
+/* this shrinks the content window to size */
+@media only screen and (max-width:925px) {
+	div#contentbody {
+		width:100%;
+		left:0;
+		margin-left:0;
+	}
+}
+
+@media only screen and (max-width:615px) {
+	div.contactcard {
+		margin-right:0;
+		right:0px;
+	}
+}
+
+/* for mobile fixing */
+
+
+@media screen and (max-device-width: 580px) {
+
+	div#header {
+		top:1px;
+		height:40px;
+		width:100%;
+	}
+
+	div#headerborder {
+		top:10px;
+		height:43px;
+		width:100%;
+	}
+
+	div#headertext {
+		font-size: 17px;
+		top:-5px;
+	}
+
+	div#subheader {
+		top:55px;
+		font-size: 13px;
+	}
+
+	div#subheaderline {
+		top:75px;
+	}
+	
+	div#sitelinks {
+		top:78px;
+		position:absolute;
+		width:90%;
+		left:50%;
+		margin-left:-45%;	
+		font-size: 14px;
+	}
+
+	div.contactcard {
+		top:120px;	
+	}
+
+	div#contentbody {
+		top:122px;
+	}
+	
+	div#content {
+		font-size:0.75em;
+	} 
+}
+
+@media screen and (max-device-width: 350px) {
+	div#subheader { font-size: 10px; }
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.clearfix { display:inline-block; }
+.clearfix { display:block; }
+
+.noSelect {
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}

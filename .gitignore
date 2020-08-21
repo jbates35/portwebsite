@@ -1,0 +1,6 @@
+#This has all my info!
+config.php
+
+#ignore all texts
+*.txt
+

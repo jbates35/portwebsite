@@ -1,0 +1,67 @@
+div#selfiediv1 {
+	display:inline;
+	float: right;
+	border-bottom: 2px solid #114466;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+
+div#selfiediv2 {
+	position: relative;
+	width:506px;
+	height:577px;
+	background:url("img/jimmybates.png") 0 0;
+}
+
+div#selfiesmall {
+	display: none;
+	position: relative;
+	top:35px;
+	border-bottom: 2px solid #114466;
+}
+
+img#selfiesmallimg {
+	width:68%;
+	float:right;
+	margin-left:10px;
+	margin-bottom:45px;
+	margin-top: 10px;
+}
+
+div#bikepic2 {
+	display: none;
+}
+
+div#selfiediv2:hover {
+	background:url("img/jimmybates.png") 0 -577px;	
+}
+
+
+.bikepic {
+	width:500px;
+	float: left;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+@media only screen and (max-width:735px) {
+	div#selfiediv1 {
+		display:none;
+	}
+	
+	.bikepic {
+		width:68%;
+	}
+	
+	div#selfiesmall {
+		display:inline;
+	}
+}
+
+@media screen and (max-device-width: 580px) {
+	div#contentbody {
+		font-size:19px;
+	}
+}
