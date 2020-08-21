@@ -1,4 +1,0 @@
-<?php
-// hi jimmy
-phpinfo();
-?>
