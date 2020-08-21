@@ -1,3 +1,4 @@
 <?php
+// hi jimmy
 phpinfo();
 ?>
