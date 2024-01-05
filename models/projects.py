@@ -1,0 +1,24 @@
+from ..extensions import db
+
+
+class Project(db.Model):
+    __tablename__ = "projects"
+
+    date = db.Column(db.Date)
+    description = db.Column(db.Text)
+    title = db.Column(db.String(120), nullable=False)
+    ylink = db.Column(db.String(80))
+    creator = db.Column(db.String(120))
+    planguage = db.Column(db.String(120))
+    author = db.Column(db.Integer)
+    uploaddate = db.Column(db.DateTime)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    olink1 = db.Column(db.String(80))
+    olink2 = db.Column(db.String(80))
+    olink3 = db.Column(db.String(80))
+    olinkdesc1 = db.Column(db.String(120))
+    olinkdesc2 = db.Column(db.String(120))
+    olinkdesc3 = db.Column(db.String(120))
+    imgfilesuploaded = db.Column(db.Integer)
+    imgdesc = db.Column(db.ARRAY(db.String(200)))
+    show = db.Column(db.Boolean, nullable=False, default=True)
