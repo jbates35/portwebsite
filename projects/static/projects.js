@@ -1,28 +1,39 @@
-var jsonFile = "proj_json.php";
+import { fetchAllProjects } from './data_callbacks.js';
 
 var m = 0;
 var fileDownB = false;
 var imageDownB = false;
 var descArray = [];
 
+
 $(document).ready(function() {
 
-	$.getJSON(jsonFile, function(json) {
-		window.proj_count = json.length;
-		$('#mainListingCont_id').html(``);
-		for(m=0; m<window.proj_count; m++) {
-			listProject(m, json[m].date, json[m].title, json[m].id);
-		}
-		switch(window.proj_count%3) {
-			case 1: 
-				addEmpty(); addEmpty();
-				break;
-			case 2:
-				addEmpty();
-				break;
-			default: break;
-		}
-	});
+  fetchAllProjects().then(data => {
+    var temp = $.trim($('#project-template-id').html());
+    console.log(temp);
+    data.forEach(item => {
+      var x = temp.replace(/{{title}}/ig, item.title).replace(/{{date}}/ig, item.date).replace(/{{id}}/ig, item.id);
+      /* INSERT IMAGE STRING STUFF NOW*/
+      $('#mainListingCont_id').append(x);
+    });
+  });
+
+	// $.getJSON(jsonFile, function(json) {
+		// window.proj_count = json.length;
+		// $('#mainListingCont_id').html(``);
+		// for(m=0; m<window.proj_count; m++) {
+		// 	listProject(m, json[m].date, json[m].title, json[m].id);
+		// }
+		// switch(window.proj_count%3) {
+		// 	case 1: 
+		// 		addEmpty(); addEmpty();
+		// 		break;
+		// 	case 2:
+		// 		addEmpty();
+		// 		break;
+		// 	default: break;
+		// }
+	// });
 
 });
 
@@ -36,7 +47,7 @@ function changeProject(n) {
 //function to make the flexbox project list
 function listProject(id_i, date, title, id) {
 
-//listing made per project
+  //listing made per project
 	$('#mainListingCont_id').append(`
 	<div class="box-1">
 		<div class="img-box-1">
@@ -48,7 +59,7 @@ function listProject(id_i, date, title, id) {
 	</div>
 	`);
 
-//make sure the display pic exists
+  //make sure the display pic exists
 	var imgSrcTemp = `./uploads/project/`+id+`/displaypic.jpg`;
 	$.ajax({
 		url: imgSrcTemp,
@@ -89,7 +100,7 @@ function projectDisplay(date, description, title, ylink, creator, planguage, id,
 		window.currentId=id;
 	}, Math.max(idelay, fdelay));
 
-//Script to decide if a youtube video is needed or a title picture is needed (ytString)
+  //Script to decide if a youtube video is needed or a title picture is needed (ytString)
 	var ytString = "";
 	if(ylink=="") {
 		ytString = '<img src="uploads/project/'+id+'/headerpic.jpg" class="ytImage">';
@@ -97,7 +108,7 @@ function projectDisplay(date, description, title, ylink, creator, planguage, id,
 		ytString = '<iframe id="ytframe_id" class="ytframe" src="https://www.youtube.com/embed/'+ylink+'" allowfullscreen></iframe>';
 	}
 
-//script to see if planguage is empty
+  //script to see if planguage is empty
 	var planguageNew = "";
 	if(planguage=="") {
 		planguageNew = `<br>`;
@@ -105,14 +116,14 @@ function projectDisplay(date, description, title, ylink, creator, planguage, id,
 		planguageNew = `<label>Programming languages used:</label> ` + planguage + ` <br><br>`;
 	}
 
-//Content box description string (dString)
+  //Content box description string (dString)
 	var	dString = ``;
 	dString += `<label>Date created:</label> ` + date + `<br>`;
 	dString += `<label>Creator:</label> ` + creator + ` <br>`;
 	dString += planguageNew;
 	dString += htmlSCReplace(description);
 
-//Filebox code string (fString)
+  //Filebox code string (fString)
 	var fString = "";
 	if(filecount==0) {
 		 fString+= "<i>No files were uploaded for this project</i>";
@@ -124,7 +135,7 @@ function projectDisplay(date, description, title, ylink, creator, planguage, id,
 		fString += '</ul>';		
 	}
 
-//actual function:
+  //actual function:
 	$('#projContTitle_id').html(title+` (`+date.substring(0,4)+`)`); //Title
 	$('#projContYou_id').html(ytString); //Youtube link or picture
 
@@ -132,7 +143,7 @@ function projectDisplay(date, description, title, ylink, creator, planguage, id,
 		$('#fileContainer_id').html(fString);
 	}, fdelay); //Filebox string
 
-//Image gallery
+  //Image gallery
 	setTimeout(function() {
 
 		window.imageCount=imgfilesuploaded;
@@ -247,10 +258,10 @@ $(document).keydown(function(e) {
 					case 10:
 						imageDown();
 						break;
-					case 01:
+					case 1:
 						fileDown();
 						break;
-					case 00:
+					case 0:
 						imageDown();
 						fileDown();
 						break;
@@ -359,3 +370,4 @@ function htmlSCReplace(text) {
 
 	return text.replace(/\&[\w\d\#]{2,5}\;/g, function(m) { return map[m]; });
 };
+
