@@ -7,5 +7,4 @@ projects_bp = Blueprint(
 
 @projects_bp.route("/")
 def projects():
-    project_list = ["asdf", "asdf2"]
-    return render_template("projects.html", project_list=project_list)
+    return render_template("projects.html")
