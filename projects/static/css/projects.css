@@ -135,6 +135,9 @@ div#contentbg1 {
   color: white;
   font-family: "open_sansbold";
   width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 3px;
 }
 
 .titleyear {

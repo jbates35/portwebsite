@@ -1,57 +1,68 @@
-import { fetchAllProjects } from "./data_callbacks.js";
+import { fetch_all_projects, fetch_project } from "./data_callbacks.js";
 
 var m = 0;
 var fileDownB = false;
 var imageDownB = false;
 var descArray = [];
+var projectOpen = false;
 
 document.addEventListener("DOMContentLoaded", function () {
-  fetchAllProjects().then((data) => {
-    // Grab the divs required first
-    let proj_template_div = document.getElementById("project-template-id");
-    let main_listing_div = document.getElementById("main-listing-cont-id");
+  let main_listing_div = document.getElementById("main-listing-cont-id");
 
-    // Get the template from the html file
-    let template = proj_template_div.innerHTML.trim();
+  // Load initial project listing page
+  fetch_all_projects()
+    .then((data) => {
+      // Grab the divs required first
+      let proj_template_div = document.getElementById("project-template-id");
 
-    // Clear the template div
-    main_listing_div.innerHTML = "";
+      // Get the template from the html file
+      let template = proj_template_div.innerHTML.trim();
 
-    // Replace the template with the data
-    data.forEach((item) => {
-      let x = template
-        .replace(/%title%/g, item.title)
-        .replace(/%date%/gi, item.date)
-        .replace(/%id%/g, item.id);
+      // Clear the template div
+      main_listing_div.innerHTML = "";
 
-      // Add the template to the main listing div
-      main_listing_div.innerHTML += x;
+      // Replace the template with the data
+      data.forEach((item) => {
+        // Change date to just the year
+        let date = item.date.substring(0, 4);
+
+        let x = template
+          .replace(/%title%/g, item.title)
+          .replace(/%date%/gi, date)
+          .replace(/%id%/g, String(item.id));
+
+        // Add the box to the main listing div, but at this point incomplete
+        main_listing_div.innerHTML += x;
+
+        // Change the display pic to the correct one
+        main_listing_div.querySelector("#display-pic-" + item.id).src =
+          "../uploads/project/" + item.id + "/displaypic.jpg";
+
+        // Add an event listener to the box so it can open up a project popup with it
+        main_listing_div
+          .querySelector("#img-click-" + item.id)
+          .addEventListener("click", function () {
+            console.log("click for id");
+            // open_project_popup(item.id);
+          });
+      });
+
+      // Add empty divs to the end of the list to make it even
+      let remaining_entries = 3 - (data.length % 3);
+      if (remaining_entries !== 3) {
+        for (let i = 0; i < remaining_entries; i++)
+          main_listing_div.innerHTML += `<div class="box-1 empty"></div>`;
+      }
+    })
+    .catch((error) => {
+      console.log("Error: " + error);
+      main_listing_div.innerHTML = `Error: Please reload page`;
     });
-
-    // Add empty divs to the end of the list to make it even
-    let remaining_entries = 3 - (data.length % 3);
-    if (remaining_entries !== 3) {
-      for (let i = 0; i < remaining_entries; i++)
-        main_listing_div.innerHTML += `<div class="box-1 empty"></div>`;
-    }
-  });
 });
-// $.getJSON(jsonFile, function(json) {
-// window.proj_count = json.length;
-// $('#mainListingCont_id').html(``);
-// for(m=0; m<window.proj_count; m++) {
-// 	listProject(m, json[m].date, json[m].title, json[m].id);
-// }
-// switch(window.proj_count%3) {
-// 	case 1:
-// 		addEmpty(); addEmpty();
-// 		break;
-// 	case 2:
-// 		addEmpty();
-// 		break;
-// 	default: break;
-// }
-// });
+
+function open_project_popup(id) {
+  console.log("TEST " + String(id));
+}
 
 function changeProject(n) {
   m = n;
@@ -312,8 +323,6 @@ function prevProject() {
   }
   changeProject(m);
 }
-
-var projectOpen = false;
 
 function popupProject() {
   if (projectOpen == false) {
