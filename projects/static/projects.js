@@ -27,6 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
       // Add the template to the main listing div
       main_listing_div.innerHTML += x;
     });
+
+    // Add empty divs to the end of the list to make it even
+    let remaining_entries = 3 - (data.length % 3);
+    if (remaining_entries !== 3) {
+      for (let i = 0; i < remaining_entries; i++)
+        main_listing_div.innerHTML += `<div class="box-1 empty"></div>`;
+    }
   });
 });
 // $.getJSON(jsonFile, function(json) {
