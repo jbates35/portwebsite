@@ -22,3 +22,17 @@ class Project(db.Model):
     imgfilesuploaded = db.Column(db.Integer)
     imgdesc = db.Column(db.ARRAY(db.String(200)))
     show = db.Column(db.Boolean, nullable=False, default=True)
+
+    def serialize(self):
+        serialized_data = {}
+
+        for column in self.__table__.columns:
+            name = column.name
+            val = getattr(self, name)
+
+            if name == "date":
+                serialized_data[name] = val.strftime("%Y-%m-%d") if val else None
+            else:
+                serialized_data[name] = val
+
+        return serialized_data
