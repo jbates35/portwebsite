@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from ..sql.sql import get_projects
 
 projects_bp = Blueprint(
     "projects", __name__, template_folder="templates", static_folder="static"
@@ -7,4 +8,9 @@ projects_bp = Blueprint(
 
 @projects_bp.route("/")
 def projects():
-    return render_template("projects.html")
+    # Create list of projects
+    projects = get_projects()
+    empty_boxes = 3 - len(projects) % 3
+    if empty_boxes == 3:
+        empty_boxes = 0
+    return render_template("projects.html", projects=projects, empty_boxes=empty_boxes)

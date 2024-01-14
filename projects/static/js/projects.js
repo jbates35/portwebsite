@@ -1,4 +1,4 @@
-import { fetch_all_projects, fetch_project } from "./data_callbacks.js";
+import { fetch_project } from "./data_callbacks.js";
 
 var m = 0;
 var fileDownB = false;
@@ -7,61 +7,43 @@ var descArray = [];
 var projectOpen = false;
 
 document.addEventListener("DOMContentLoaded", function () {
-  let main_listing_div = document.getElementById("main-listing-cont-id");
+  // Load the project popup template
+  const popup_template = document
+    .getElementById("project-popup-template")
+    .innerHTML.trim();
 
-  // Load initial project listing page
-  fetch_all_projects()
-    .then((data) => {
-      // Grab the divs required first
-      let proj_template_div = document.getElementById("project-template-id");
+  // Clear the popup project container
+  const project_container = document.getElementById(
+    "project-container-overlay_id",
+  );
+  project_container.innerHTML = "";
 
-      // Get the template from the html file
-      let template = proj_template_div.innerHTML.trim();
-
-      // Clear the template div
-      main_listing_div.innerHTML = "";
-
-      // Replace the template with the data
-      data.forEach((item) => {
-        // Change date to just the year
-        let date = item.date.substring(0, 4);
-
-        let x = template
-          .replace(/%title%/g, item.title)
-          .replace(/%date%/gi, date)
-          .replace(/%id%/g, String(item.id));
-
-        // Add the box to the main listing div, but at this point incomplete
-        main_listing_div.innerHTML += x;
-
-        // Change the display pic to the correct one
-        main_listing_div.querySelector("#display-pic-" + item.id).src =
-          "../uploads/project/" + item.id + "/displaypic.jpg";
-
-        // Add an event listener to the box so it can open up a project popup with it
-        main_listing_div
-          .querySelector("#img-click-" + item.id)
-          .addEventListener("click", function () {
-            console.log("click for id");
-            // open_project_popup(item.id);
-          });
-      });
-
-      // Add empty divs to the end of the list to make it even
-      let remaining_entries = 3 - (data.length % 3);
-      if (remaining_entries !== 3) {
-        for (let i = 0; i < remaining_entries; i++)
-          main_listing_div.innerHTML += `<div class="box-1 empty"></div>`;
-      }
-    })
-    .catch((error) => {
-      console.log("Error: " + error);
-      main_listing_div.innerHTML = `Error: Please reload page`;
+  // Bind the close project page
+  const close_project_links = document.querySelectorAll(".close-project-link");
+  close_project_links.forEach((link) => {
+    link.addEventListener("click", () => {
+      close_project_popup();
     });
+  });
+
+  // Bind the open project popup to each project image
+  const img_elements = document.querySelectorAll(".img-click");
+  img_elements.forEach((element) => {
+    let id = element.id.split("-")[2];
+    element.addEventListener("click", () => {
+      open_project_popup(id, popup_template);
+    });
+  });
 });
 
-function open_project_popup(id) {
-  console.log("TEST " + String(id));
+function open_project_popup(id, template) {
+  fetch_project(id).then((project) => {
+    console.log(project.description);
+  });
+}
+
+function close_project_popup() {
+  console.log("close");
 }
 
 function changeProject(n) {
@@ -91,49 +73,6 @@ function changeProject(n) {
       json[m].filecount,
     );
   });
-}
-
-//function to make the flexbox project list
-function listProject(id_i, date, title, id) {
-  //listing made per project
-  $("#mainListingCont_id").append(
-    `
-	<div class="box-1">
-		<div class="img-box-1">
-			<div class="img-click" onclick="changeProject(` +
-      id_i +
-      `); popupProject();">
-				<img class="displaypic" id="displayPic_id` +
-      id_i +
-      `" src="">
-				<div class="title-1">` +
-      title +
-      ` <span class="titleyear">(` +
-      date.substring(0, 4) +
-      `)<span></div>
-			</div>
-		</div>
-	</div>
-	`,
-  );
-
-  //make sure the display pic exists
-  var imgSrcTemp = `./uploads/project/` + id + `/displaypic.jpg`;
-  $.ajax({
-    url: imgSrcTemp,
-    type: "HEAD",
-    error: function () {
-      $("#displayPic_id" + id_i).attr("src", "./img/blankDispPic.jpg");
-    },
-    success: function () {
-      $("#displayPic_id" + id_i).attr("src", imgSrcTemp);
-    },
-  });
-} //end of listProjects
-
-//script to even out the bottom row of the listings
-function addEmpty() {
-  $("#mainListingCont_id").append(`<div class="box-1 empty"></div>`);
 }
 
 //function to display the popup window

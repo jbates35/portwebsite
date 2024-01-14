@@ -4,7 +4,7 @@ from .extensions import db
 import json
 
 from .projects.projects import projects_bp
-from .sql.sql import sql_all_projects_bp, sql_single_project_bp
+from .sql.sql import sql_single_project_bp
 
 
 def get_sql_config(file):
@@ -36,7 +36,6 @@ def create_app():
     app.register_blueprint(projects_bp, url_prefix="/projects")
 
     # Register SQL blueprint
-    app.register_blueprint(sql_all_projects_bp)
     app.register_blueprint(sql_single_project_bp)
 
     @app.route("/")
