@@ -22,6 +22,7 @@ class Project(db.Model):
     imgfilesuploaded = db.Column(db.Integer)
     imgdesc = db.Column(db.ARRAY(db.String(200)))
     show = db.Column(db.Boolean, nullable=False, default=True)
+    files = db.Column(db.JSONB)
 
     def serialize(self):
         serialized_data = {}

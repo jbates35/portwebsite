@@ -4,7 +4,7 @@ from .extensions import db
 import json
 
 from .projects.projects import projects_bp
-from .sql.sql import sql_single_project_bp
+from .sql.sql_get import sql_single_project_bp
 
 
 def get_sql_config(file):
