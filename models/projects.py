@@ -15,16 +15,10 @@ class Project(db.Model):
     author = db.Column(db.Integer)
     uploaddate = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    olink1 = db.Column(db.String(80))
-    olink2 = db.Column(db.String(80))
-    olink3 = db.Column(db.String(80))
-    olinkdesc1 = db.Column(db.String(120))
-    olinkdesc2 = db.Column(db.String(120))
-    olinkdesc3 = db.Column(db.String(120))
     imgfilesuploaded = db.Column(db.Integer)
     imgdesc = db.Column(db.ARRAY(db.String(200)))
-    show = db.Column(db.Boolean, nullable=False, default=True)
     files = db.Column(JSONB)
+    show = db.Column(db.Boolean, nullable=False, default=True)
 
     def serialize(self):
         serialized_data = {}
