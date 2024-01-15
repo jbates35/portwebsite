@@ -38,12 +38,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function open_project_popup(id, template) {
   fetch_project(id).then((project) => {
-    console.log(project.description);
+    // Open the popup, i.e. add show class to the overlay
+    const project_containers = document.querySelectorAll(".popup_show_handle");
+    project_containers.forEach((container) => {
+      container.classList.add("show");
+      container.classList.remove("hide");
+    });
   });
 }
 
 function close_project_popup() {
-  console.log("close");
+  // Close the popup, i.e. remove show class from the overlay
+  const project_containers = document.querySelectorAll(".popup_show_handle");
+  project_containers.forEach((container) => {
+    container.classList.remove("show");
+    container.classList.add("hide");
+  });
 }
 
 function changeProject(n) {

@@ -174,11 +174,9 @@ div#contentbg1 {
   height: 100%;
 }
 
-.project-container-outer {
-  display: none;
-}
-
-.project-background-1 {
+/* transitions for project container */
+#project-container-outer {
+  display: block;
   background-color: rgba(0, 5, 10, 0.9);
   z-index: 19;
   position: absolute;
@@ -187,27 +185,53 @@ div#contentbg1 {
   width: 100%;
   height: 100%;
 
+  will-change: opacity;
+}
+
+#project-container-outer.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#project-container-outer.show {
+  visibility: visible;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+#project-container-inner {
+  display: none;
+}
+
+#project-container-inner.show {
+  display: block;
+  opacity: 1;
+}
+
+#project-background-1 {
   display: block;
 }
 
-.project-container-close {
+#project-container-close {
+  display: block;
+
   position: absolute;
-  top: 15px;
-  padding: 4px;
-  height: 22px;
-  color: white;
-  font: red_rosebold;
-  font-size: 18px;
-  width: 70px;
   z-index: 22;
-  margin-right: -530px;
+  top: 15px;
+  height: 22px;
+  width: 100px;
   right: 50%;
 
-  display: block;
-}
+  margin-right: -530px;
+  padding: 4px;
+  text-align: right;
 
-.project-container-inner {
-  display: none;
+  font-size: 1.2em;
+  color: white;
+  font: red_rosebold;
+  font-weight: bold;
+
+  display: block;
 }
 
 .project-container-overlay {
@@ -449,7 +473,7 @@ div#contentbg1 {
 }
 
 @media only screen and (max-width: 1047px) {
-  .project-container-close {
+  #project-container-close {
     margin-right: 0;
     right: 10px;
   }

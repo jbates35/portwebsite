@@ -5,12 +5,19 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Start of Project list -->
   <div id="contentbody">		
+
+    <!-- Gradient background in the project list background -->
     <div id="contentbg2">
+
+      <!-- Background of the project list itself which mostly hides the gradient (Orangeish) -->
       <div id="contentbg1">
+
+        <!-- Flex box for the project list -->
         <div class="container-1" id="main-listing-cont-id">
 
-        <!-- Start of Project list template -->
+        <!-- Start of Project box template -->
         {% for project in projects %}
           <div class="box-1">
             <div class="img-box-1">
@@ -24,57 +31,60 @@
         {% for _ in range(empty_boxes) %}
           <div class="box-1 empty"></div>
         {% endfor %}
-        <!-- End of Project list template -->
-
-          <!-- Start of Project popup -->
-          <div class="project-container-outer" id="project-container-outer_id">
-            <div class="project-background-1 close-project-link" id="project-background-1_id" onclick="popupProject()"></div>
-            <div class="project-container-close" id="project-container-close-id"><a href="#" class="close-project-link" id="close-link-id" title="Click to go back to project overlay">Close &#9746;</a></div>
-          </div>
-
-          <div class="project-container-inner" id="project-container-inner_id">
-            <div class="project-whole project-container-overlay" id="project-container-overlay_id">
-              <div id="project-popup-template">
-              <div class="project-container-title" id="projContTitle_id"></div>
-              <div class="project-container-ylink" id="projContYou_id"></div>
-              <div class="project-container-imggal">
-                <a href="#" id="filesLinkDown_id" title="Click to expand files" onclick="fileDown()"><h3 id="filesarrow">Files &#9656;</h3></a>
-                <div id="fileContainer_id" class="file-container"></div>
-                <hr class="linebreak">
-                <a href="#" title="Click to expand images" id="imgLinkDown" onclick="imageDown()"><h3 id="imagesarrow">Images &#9656;</h3></a>
-                <div class="imgPanel">
-                  <div id="imgError"></div>
-                  <div id="image-container-id" class="image-container">
-                    <div class="image-preview-bar">
-                      <div class="image-preview-div" onclick="changeImage(1)" id="img-prev-div_1"><img src="" class="image-preview-img" id="img-prev-src_1"></div>
-                      <div class="image-preview-div" onclick="changeImage(2)" id="img-prev-div_2"><img src="" class="image-preview-img" id="img-prev-src_2"></div>
-                      <div class="image-preview-div" onclick="changeImage(3)" id="img-prev-div_3"><img src="" class="image-preview-img" id="img-prev-src_3"></div>
-                      <div class="image-preview-div" onclick="changeImage(4)" id="img-prev-div_4"><img src="" class="image-preview-img" id="img-prev-src_4"></div>
-                      <div class="image-preview-div" onclick="changeImage(5)" id="img-prev-div_5"><img src="" class="image-preview-img" id="img-prev-src_5"></div>
-                      <div class="image-preview-div" onclick="changeImage(6)" id="img-prev-div_6"><img src="" class="image-preview-img" id="img-prev-src_6"></div>
-                    </div>
-                    <div class="image-holder-div" id="image-holder-div-id">
-                      <img class="image-holder-img" id="image-holder-img-id" src="">
-                    </div>
-                    <div class="image-left" onclick="prevImage()"><div class="childArrow noSelect">&#8678;</div></div>
-                    <div class="image-right" onclick="nextImage()"><div class="childArrow noSelect">&#8680;</div></div>
-                    <div class="img-desc" id="img-desc_id"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="project-container-content" id="prj-cont-desc_id"></div>
-              <div class="project-container-back" onclick="nextProject()">&#8592;Next project</div>
-              <div class="project-container-footer"></div>
-              <div class="project-container-next" onclick="prevProject()">Previous project&#8594;</div>
-              </div>
-            </div>	
-          </div>
-          <!-- End of Project popup -->
+        <!-- End of Project box template -->
 
         </div>
       </div>
     </div>
   </div>
+  <!-- End of Project list -->
+  
+  <!-- Start of Project popup -->
+  <!-- Outer frame, gray background, behind the popup which can be clicked to close -->
+  <div class="close-project-link popup_show_handle hide" id="project-container-outer">
+    <div id="project-container-close"><a href="#" class="close-project-link" id="close-link-id" title="Click to go back to project overlay">Close &#9746;</a></div>
+  </div>
+
+  <!-- Inner frame, white background, contains the popup -->
+  <div class="popup_show_handle hide" id="project-container-inner">
+    <div class="project-whole project-container-overlay" id="project-container-overlay_id">
+      <div id="project-popup-template">
+      <div class="project-container-title" id="projContTitle_id"></div>
+      <div class="project-container-ylink" id="projContYou_id"></div>
+      <div class="project-container-imggal">
+        <a href="#" id="filesLinkDown_id" title="Click to expand files" onclick="fileDown()"><h3 id="filesarrow">Files &#9656;</h3></a>
+        <div id="fileContainer_id" class="file-container"></div>
+        <hr class="linebreak">
+        <a href="#" title="Click to expand images" id="imgLinkDown" onclick="imageDown()"><h3 id="imagesarrow">Images &#9656;</h3></a>
+        <div class="imgPanel">
+          <div id="imgError"></div>
+          <div id="image-container-id" class="image-container">
+            <div class="image-preview-bar">
+              <div class="image-preview-div" onclick="changeImage(1)" id="img-prev-div_1"><img src="" class="image-preview-img" id="img-prev-src_1"></div>
+              <div class="image-preview-div" onclick="changeImage(2)" id="img-prev-div_2"><img src="" class="image-preview-img" id="img-prev-src_2"></div>
+              <div class="image-preview-div" onclick="changeImage(3)" id="img-prev-div_3"><img src="" class="image-preview-img" id="img-prev-src_3"></div>
+              <div class="image-preview-div" onclick="changeImage(4)" id="img-prev-div_4"><img src="" class="image-preview-img" id="img-prev-src_4"></div>
+              <div class="image-preview-div" onclick="changeImage(5)" id="img-prev-div_5"><img src="" class="image-preview-img" id="img-prev-src_5"></div>
+              <div class="image-preview-div" onclick="changeImage(6)" id="img-prev-div_6"><img src="" class="image-preview-img" id="img-prev-src_6"></div>
+            </div>
+            <div class="image-holder-div" id="image-holder-div-id">
+              <img class="image-holder-img" id="image-holder-img-id" src="">
+            </div>
+            <div class="image-left" onclick="prevImage()"><div class="childArrow noSelect">&#8678;</div></div>
+            <div class="image-right" onclick="nextImage()"><div class="childArrow noSelect">&#8680;</div></div>
+            <div class="img-desc" id="img-desc_id"></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-container-content" id="prj-cont-desc_id"></div>
+      <div class="project-container-back" onclick="nextProject()">&#8592;Next project</div>
+      <div class="project-container-footer"></div>
+      <div class="project-container-next" onclick="prevProject()">Previous project&#8594;</div>
+      </div>
+    </div>	
+  </div>
+  <!-- End of Project popup -->
+
   <script type="module" src="{{ url_for('projects.static', filename='js/projects.js') }}"></script>
 {% endblock %}
 
