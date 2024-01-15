@@ -52,22 +52,22 @@ function open_project_popup(id, template) {
     const year = project.date.substring(0, 4);
 
     //Youtube link should either be the preview image or the youtube link
-    let youtube_string = "";
-    const yt_image_cont = document.getElementById("project-container-yimg");
-    const yt_link_cont = document.getElementById("project-container-ylink");
+    const yt_image_cont = document.querySelector("#project-container-yimg");
+    const yt_frame_cont = document.querySelector("#project-container-ylink");
     if (project.ylink == "") {
       yt_image_cont.classList.add("show");
       yt_frame_cont.classList.remove("show");
     } else {
-      yt_image_cont.classList.add("show");
-      yt_frame_cont.classList.remove("show");
+      yt_image_cont.classList.remove("show");
+      yt_frame_cont.classList.add("show");
     }
 
     //Replace the template with the project data
     template = template
       .replace("%title%", project.title)
       .replace("%year%", year)
-      .replace("%ylink", youtube_string);
+      .replace("%ylink", youtube_string)
+      .replace("%yimg", project.id);
 
     //Place code into the popup div now
     document.getElementById(
