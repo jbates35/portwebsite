@@ -1,5 +1,7 @@
 from ..extensions import db
 
+from sqlalchemy.dialects.postgresql import JSONB
+
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -22,7 +24,7 @@ class Project(db.Model):
     imgfilesuploaded = db.Column(db.Integer)
     imgdesc = db.Column(db.ARRAY(db.String(200)))
     show = db.Column(db.Boolean, nullable=False, default=True)
-    files = db.Column(db.JSONB)
+    files = db.Column(JSONB)
 
     def serialize(self):
         serialized_data = {}

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 from ..extensions import db
 from ..models.projects import Project
@@ -29,4 +29,5 @@ def get_single_project(project_id):
     """Get single project from database""" ""
     project_data = db.session.query(Project).filter(Project.id == project_id).all()
     project = project_data[0].serialize()
+    return project
     return jsonify(project)
