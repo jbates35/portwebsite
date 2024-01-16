@@ -32,46 +32,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function open_project_popup(id, template) {
   fetch_project(id).then((project) => {
+    // Create a DOM parser of the templated code
+    let parser = new DOMParser();
+    let project_popup = parser.parseFromString(template, "text/html").body;
+
+    //Process some data early
+    const year = project.date.substring(0, 4);
+
+    //Youtube link should either be the preview image or the youtube link
+    project_popup.querySelector(".yt-div").classList.remove("show");
+    if (project.ylink == "") {
+      // Show the preview image and set its source to a holding image
+      project_popup
+        .querySelector("#project-container-ytimg")
+        .classList.add("show");
+      project_popup
+        .querySelector("#youtube-image")
+        .setAttribute(
+          "src",
+          "uploads/project/" + project.id + "/headerpic.jpg",
+        );
+    } else {
+      // Show the youtube video iframe and set its source to the youtube link
+      project_popup
+        .querySelector("#project-container-ytframe")
+        .classList.add("show");
+      project_popup
+        .querySelector("#youtube-iframe")
+        .setAttribute("src", "https://www.youtube.com/embed/" + project.ylink);
+    }
+
+    //Replace the template with the project data
+    project_popup.innerHTML = project_popup.innerHTML
+      .replace("%title%", project.title)
+      .replace("%year%", year);
+
+    //Place code into the popup div now
+    document.getElementById("project-container-body").innerHTML =
+      project_popup.outerHTML;
+
     // Open the popup, i.e. add show class to the overlay
     const project_containers = document.querySelectorAll(".popup_show_handle");
     project_containers.forEach((container) => {
       container.classList.add("show");
       container.classList.remove("hide");
     });
-
-    // Create a DOM parser of the templated code
-    let parser = new DOMParser();
-    let project_popup_parser = parser.parseFromString(template, "text/html");
-    let project_popup = project_popup_parser.body;
-
-    // Test, see what gets printed to console
-    console.log(project_popup.innerHTML);
-
-    //
-    //   //Process some data early
-    //   const year = project.date.substring(0, 4);
-    //
-    //   //Youtube link should either be the preview image or the youtube link
-    //   document.querySelector(".yt-div").classList.remove("show");
-    //   if (project.ylink == "") {
-    //     document.querySelector("#project-container-ytimg").classList.add("show");
-    //   } else {
-    //     document
-    //       .querySelector("#project-container-ytframe")
-    //       .classList.add("show");
-    //   }
-    //
-    //   //Replace the template with the project data
-    //   template = template
-    //     .replace("%title%", project.title)
-    //     .replace("%year%", year)
-    //     .replace("%ylink", youtube_string)
-    //     .replace("%yimg%", project.id);
-    //
-    //   //Place code into the popup div now
-    //   document.getElementById(
-    //     "project-container-body",
-    //   ).popup_container.innerHTML = template;
   });
 }
 
@@ -369,28 +374,44 @@ $(document).keydown(function (e) {
 // Script for opening up file area or image gallery
 
 function fileDown() {
-  if (fileDownB == false) {
-    $("#filesarrow").html(`Files &#9660;`);
-    $(".file-container").slideDown(400);
-    fileDownB = true;
+  let file_container = document.querySelector(".file-container");
+  if (file_container.classList.contains("hide")) {
+    file_container.classList.remove("hide");
+    file_container.classList.add("show");
   } else {
-    $("#filesarrow").html(`Files &#9656;`);
-    $(".file-container").slideUp(300);
-    fileDownB = false;
+    file_container.classList.remove("show");
+    file_container.classList.add("hide");
   }
+  // if (fileDownB == false) {
+  //   $("#filesarrow").html(`Files &#9660;`);
+  //   $(".file-container").slideDown(400);
+  //   fileDownB = true;
+  // } else {
+  //   $("#filesarrow").html(`Files &#9656;`);
+  //   $(".file-container").slideUp(300);
+  //   fileDownB = false;
+  // }
 }
 
 function imageDown() {
-  if (imageDownB == false) {
-    $("#imagesarrow").html(`Images &#9660;`);
-    $(".imgPanel").slideDown(700);
-    imageDownB = true;
-    changeImageDesc(window.imageSelect);
+  let image_container = document.querySelector(".image-container");
+  if (image_container.classList.contains("hide")) {
+    image_container.classList.remove("hide");
+    image_container.classList.add("show");
   } else {
-    $("#imagesarrow").html(`Images &#9656;`);
-    $(".imgPanel").slideUp(400);
-    imageDownB = false;
+    image_container.classList.remove("show");
+    image_container.classList.add("hide");
   }
+  // if (imageDownB == false) {
+  //   $("#imagesarrow").html(`Images &#9660;`);
+  //   $(".imgPanel").slideDown(700);
+  //   imageDownB = true;
+  //   changeImageDesc(window.imageSelect);
+  // } else {
+  //   $("#imagesarrow").html(`Images &#9656;`);
+  //   $(".imgPanel").slideUp(400);
+  //   imageDownB = false;
+  // }
 }
 
 // Script for image gallery functionality
@@ -443,14 +464,14 @@ function prevImage() {
   changeImage(i);
 }
 
-//disable links functions:
-$("#filesLinkDown_id").click(function (e) {
-  e.preventDefault();
-});
-$("#imgLinkDown").click(function (e) {
-  e.preventDefault();
-});
-
+// //disable links functions:
+// $("#filesLinkDown_id").click(function (e) {
+//   e.preventDefault();
+// });
+// $("#imgLinkDown").click(function (e) {
+//   e.preventDefault();
+// });
+//
 //decode html special chars
 function htmlSCReplace(text) {
   var map = {

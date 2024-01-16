@@ -1,3 +1,41 @@
+/* keyframes for animations */
+@keyframes img_slide_down {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: 700px;
+  }
+}
+
+@keyframes img_slide_up {
+  from {
+    max-height: 700px;
+  }
+  to {
+    max-height: 0;
+  }
+}
+
+@keyframes files_slide_down {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: 400px;
+  }
+}
+
+@keyframes files_slide_up {
+  from {
+    max-height: 400px;
+  }
+  to {
+    max-height: 0;
+  }
+}
+
+/* standard css for projects page */
 h3 {
   margin: 5px;
 }
@@ -303,14 +341,14 @@ div#contentbg1 {
   }
 }
 
-.project-container-imggal {
+#project-container-imggal {
   background-color: #114466;
   border: solid 2px black;
   color: white;
   grid-area: c;
 }
 
-.project-container-imggal a {
+#project-container-imggal a {
   color: white;
 }
 
@@ -337,24 +375,38 @@ div#contentbg1 {
   grid-area: f;
 }
 
-.file-container {
+#file-container {
   margin: 10px;
   color: black;
   padding: 5px;
   border: 1px solid black;
   background-color: #dddddd;
-  display: none;
 }
 
-.file-container a {
+#file-container a {
   color: #002244;
+}
+
+/* TODO: FIX THESE LATER */
+#file-container.hide {
+  height: 0;
+  /* max-height: 0; */
+  /* transition: max-height 0.5s ease; */
+  /* animation: files_slide_up 0.5s ease; */
+}
+
+#file-container.show {
+  height: 400px;
+  /* max-height: 400px; */
+  /* transition: max-height 0.5s ease; */
+  /* animation: files_slide_down 0.5s ease; */
 }
 
 .imgPanel {
   display: none;
 }
 
-.image-container {
+#image-container {
   margin: 20px;
   grid-template-areas:
     "i i i"
@@ -365,6 +417,21 @@ div#contentbg1 {
   grid-gap: 10px;
   display: grid;
   align-self: center;
+}
+
+/* TODO: FIX THESE LATER */
+#image-container.hide {
+  height: 400px;
+  /* max-height: 0; */
+  /* transition: max-height 0.5s ease; */
+  /* animation: img_slide_up 0.5s ease; */
+}
+
+#image-container.show {
+  height: 700px;
+  /* max-height: 700px; */
+  /* transition: max-height 0.5s ease; */
+  /* animation: img_slide_down 0.5s ease; */
 }
 
 .image-preview-bar {
@@ -522,7 +589,8 @@ div#contentbg1 {
     display: none;
   }
 
-  .ytframe {
+  /* TODO: Double check this is correct against github history */
+  #project-container-yt {
     width: 100%;
     height: 315px;
   }
