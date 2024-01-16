@@ -8,15 +8,9 @@ var projectOpen = false;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Load the project popup template
-  const popup_template = document
-    .getElementById("project-popup-template")
-    .innerHTML.trim();
-
-  // Clear the popup project container
-  const project_container = document.getElementById(
-    "project-container-overlay",
-  );
-  project_container.innerHTML = "";
+  const popup_container = document.getElementById("project-container-body");
+  const popup_template = popup_container.innerHTML.trim();
+  popup_container.innerHTML = "";
 
   // Bind the close project page
   const close_project_links = document.querySelectorAll(".close-project-link");
@@ -45,34 +39,39 @@ function open_project_popup(id, template) {
       container.classList.remove("hide");
     });
 
-    //Make a copy of template so it can be reserved for function arguments later
-    const template_copy = template;
+    // Create a DOM parser of the templated code
+    let parser = new DOMParser();
+    let project_popup_parser = parser.parseFromString(template, "text/html");
+    let project_popup = project_popup_parser.body;
 
-    //Process some data early
-    const year = project.date.substring(0, 4);
+    // Test, see what gets printed to console
+    console.log(project_popup.innerHTML);
 
-    //Youtube link should either be the preview image or the youtube link
-    const yt_image_cont = document.querySelector("#project-container-yimg");
-    const yt_frame_cont = document.querySelector("#project-container-ylink");
-    if (project.ylink == "") {
-      yt_image_cont.classList.add("show");
-      yt_frame_cont.classList.remove("show");
-    } else {
-      yt_image_cont.classList.remove("show");
-      yt_frame_cont.classList.add("show");
-    }
-
-    //Replace the template with the project data
-    template = template
-      .replace("%title%", project.title)
-      .replace("%year%", year)
-      .replace("%ylink", youtube_string)
-      .replace("%yimg", project.id);
-
-    //Place code into the popup div now
-    document.getElementById(
-      "project-container-overlay",
-    ).popup_container.innerHTML = template;
+    //
+    //   //Process some data early
+    //   const year = project.date.substring(0, 4);
+    //
+    //   //Youtube link should either be the preview image or the youtube link
+    //   document.querySelector(".yt-div").classList.remove("show");
+    //   if (project.ylink == "") {
+    //     document.querySelector("#project-container-ytimg").classList.add("show");
+    //   } else {
+    //     document
+    //       .querySelector("#project-container-ytframe")
+    //       .classList.add("show");
+    //   }
+    //
+    //   //Replace the template with the project data
+    //   template = template
+    //     .replace("%title%", project.title)
+    //     .replace("%year%", year)
+    //     .replace("%ylink", youtube_string)
+    //     .replace("%yimg%", project.id);
+    //
+    //   //Place code into the popup div now
+    //   document.getElementById(
+    //     "project-container-body",
+    //   ).popup_container.innerHTML = template;
   });
 }
 
