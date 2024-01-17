@@ -389,7 +389,7 @@ div#contentbg1 {
 
 /* TODO: FIX THESE LATER */
 #file-container.hide {
-  height: 0;
+  height: 0px;
   /* max-height: 0; */
   /* transition: max-height 0.5s ease; */
   /* animation: files_slide_up 0.5s ease; */

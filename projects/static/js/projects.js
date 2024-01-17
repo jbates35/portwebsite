@@ -1,4 +1,5 @@
 import { fetch_project } from "./data_callbacks.js";
+import { html_decode } from "./helper_funcs.js";
 
 var m = 0;
 var fileDownB = false;
@@ -36,8 +37,11 @@ function open_project_popup(id, template) {
     let parser = new DOMParser();
     let project_popup = parser.parseFromString(template, "text/html").body;
 
-    //Process some data early
+    //Pre-process some data early
     const year = project.date.substring(0, 4);
+    const prog_languages =
+      project.planguage == "" ? "None specified" : project.planguage;
+    const description = html_decode(project.description);
 
     //Youtube link should either be the preview image or the youtube link
     project_popup.querySelector(".yt-div").classList.remove("show");
@@ -62,10 +66,14 @@ function open_project_popup(id, template) {
         .setAttribute("src", "https://www.youtube.com/embed/" + project.ylink);
     }
 
-    //Replace the template with the project data
+    //Replace the rest of the template with the project data
     project_popup.innerHTML = project_popup.innerHTML
       .replace("%title%", project.title)
-      .replace("%year%", year);
+      .replace("%year%", year)
+      .replace("%date%", project.date)
+      .replace("%creator%", project.creator)
+      .replace("%planguage%", prog_languages)
+      .replace("%description%", description);
 
     //Place code into the popup div now
     document.getElementById("project-container-body").innerHTML =
@@ -472,7 +480,7 @@ function prevImage() {
 //   e.preventDefault();
 // });
 //
-//decode html special chars
+
 function htmlSCReplace(text) {
   var map = {
     "&amp;": "&",
