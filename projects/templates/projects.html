@@ -54,10 +54,10 @@
         <div class="yt-div" id="project-container-ytimg"><img id="youtube-image"></div>
       </div>
       <div id="project-container-imggal">
-        <a href="#" id="file-down-button" title="Click to expand files" onclick="fileDown()"><h3 id="file-arrow">Files &#9656;</h3></button>
-        <div class="hide" id="file-container"><ul><li>test1</li><li>test2</li></ul></div>
+        <a href="javascript:void(0);" id="file-down-button" title="Click to expand files"><h3>Files <span id="file-arrow">🢒</span></h3></a>
+        <div class="hide" id="file-container"></div>
         <hr class="linebreak">
-        <a href="#" title="Click to expand images" id="imgLinkDown" onclick="imageDown()"><h3 id="imagesarrow">Images &#9656;</h3></a>
+        <a href="#" title="Click to expand images" id="image-down-button"><h3>Images <span id="image-arrow">🢒</span></h3></a>
         <div class="imgPanel">
           <div id="imgError"></div>
           <div id="image-container"> 
@@ -79,17 +79,16 @@
           </div>
         </div>
       </div>
-      <div class="project-container-content" id="prj-cont-desc_id">
+      <div id="project-container-content">
         <label>Date created: </label> %date% <br>
         <label>Creator(s): </label> %creator% <br>
         <label>Programming language(s): </label> %planguage% <br><br>
         %description%
-
       </div>
 
-      <div class="project-container-back" onclick="nextProject()">&#8592;Next project</div>
-      <div class="project-container-footer"></div>
-      <div class="project-container-next" onclick="prevProject()">Previous project&#8594;</div>
+      <div id="project-container-back" onclick="nextProject()">&#8592;Next project</div>
+      <div id="project-container-footer"></div>
+      <div id="project-container-next" onclick="prevProject()">Previous project&#8594;</div>
     </div>	
   </div>
   <!-- End of Project popup -->

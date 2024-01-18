@@ -66,6 +66,27 @@ function open_project_popup(id, template) {
         .setAttribute("src", "https://www.youtube.com/embed/" + project.ylink);
     }
 
+    //Populate the file div with a list and its entries if they exist
+    let file_container = project_popup.querySelector("#file-container");
+    let file_list = document.createElement("ul");
+    file_list.classList.add("nodots");
+
+    project.files.forEach((file) => {
+      // If file description is blank, use the file name
+      let file_desc = file.desription === "" ? file.file : file.description;
+
+      //Create the list
+      let file_link = document.createElement("a");
+      file_link.setAttribute("href", file.file);
+      file_link.innerText = file_desc;
+
+      let file_node = document.createElement("li");
+      file_node.appendChild(file_link);
+      file_list.appendChild(file_node);
+    });
+
+    file_container.appendChild(file_list);
+
     //Replace the rest of the template with the project data
     project_popup.innerHTML = project_popup.innerHTML
       .replace("%title%", project.title)
@@ -79,6 +100,18 @@ function open_project_popup(id, template) {
     document.getElementById("project-container-body").innerHTML =
       project_popup.outerHTML;
 
+    //Bind any event listeners
+    //Attach file down functionality to the file down button
+    let file_down_btn = document.querySelector("#file-down-button");
+    file_down_btn.addEventListener("click", () => {
+      section_toggle("file", true);
+    });
+
+    //Attach image down functionality to the image down button
+    let image_down_btn = document.querySelector("#image-down-button");
+    image_down_btn.addEventListener("click", () => {
+      section_toggle("image", true);
+    });
     // Open the popup, i.e. add show class to the overlay
     const project_containers = document.querySelectorAll(".popup_show_handle");
     project_containers.forEach((container) => {
@@ -381,14 +414,21 @@ $(document).keydown(function (e) {
 
 // Script for opening up file area or image gallery
 
-function fileDown() {
-  let file_container = document.querySelector(".file-container");
-  if (file_container.classList.contains("hide")) {
-    file_container.classList.remove("hide");
-    file_container.classList.add("show");
+function section_toggle(section, has_arrow) {
+  let container = document.querySelector(`#${section}-container`);
+  let arrow = null;
+  if (has_arrow) {
+    arrow = document.querySelector(`#${section}-arrow`);
+  }
+
+  if (container.classList.contains("hide")) {
+    if (has_arrow) arrow.textContent = "▼";
+    container.classList.remove("hide");
+    container.classList.add("show");
   } else {
-    file_container.classList.remove("show");
-    file_container.classList.add("hide");
+    if (has_arrow) arrow.textContent = "🢒";
+    container.classList.remove("show");
+    container.classList.add("hide");
   }
   // if (fileDownB == false) {
   //   $("#filesarrow").html(`Files &#9660;`);
@@ -401,12 +441,15 @@ function fileDown() {
   // }
 }
 
-function imageDown() {
-  let image_container = document.querySelector(".image-container");
+function image_down() {
+  let image_container = document.querySelector("#image-container");
+  let image_arrow = document.querySelector("#image-arrow");
   if (image_container.classList.contains("hide")) {
+    image_arrow.textContent = "▼";
     image_container.classList.remove("hide");
     image_container.classList.add("show");
   } else {
+    image_arrow.textContent = "🢒";
     image_container.classList.remove("show");
     image_container.classList.add("hide");
   }
