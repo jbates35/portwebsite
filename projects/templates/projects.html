@@ -53,29 +53,18 @@
         <div class="yt-div show" id="project-container-ytframe"><iframe id="youtube-iframe" allowfullscreen></iframe></div>
         <div class="yt-div" id="project-container-ytimg"><img id="youtube-image"></div>
       </div>
-      <div id="project-container-imggal">
-        <a href="javascript:void(0);" id="file-down-button" title="Click to expand files"><h3>Files <span id="file-arrow">🢒</span></h3></a>
-        <div class="hide" id="file-container"></div>
+      <div id="project-container-uploads">
+        <a href="javascript:void(0);" id="file-down-button" title="Click to expand files"><h3>Files <span class="symbol" id="file-arrow">▹</span></h3></a>
+        <div id="file-container"></div>
         <hr class="linebreak">
-        <a href="#" title="Click to expand images" id="image-down-button"><h3>Images <span id="image-arrow">🢒</span></h3></a>
-        <div class="imgPanel">
-          <div id="imgError"></div>
-          <div id="image-container"> 
-            <div class="image-preview-bar" id="image-preview-bar">
-              <div class="image-preview-div" onclick="changeImage(1)" id="img-prev-div_1"><img src="" class="image-preview-img" id="img-prev-src_1"></div>
-              <div class="image-preview-div" onclick="changeImage(2)" id="img-prev-div_2"><img src="" class="image-preview-img" id="img-prev-src_2"></div>
-              <div class="image-preview-div" onclick="changeImage(3)" id="img-prev-div_3"><img src="" class="image-preview-img" id="img-prev-src_3"></div>
-              <div class="image-preview-div" onclick="changeImage(4)" id="img-prev-div_4"><img src="" class="image-preview-img" id="img-prev-src_4"></div>
-              <div class="image-preview-div" onclick="changeImage(5)" id="img-prev-div_5"><img src="" class="image-preview-img" id="img-prev-src_5"></div>
-              <div class="image-preview-div" onclick="changeImage(6)" id="img-prev-div_6"><img src="" class="image-preview-img" id="img-prev-src_6"></div>
-            </div>
-            <div class="image-holder-div" id="image-holder-div-id">
-              <img class="image-holder-img" id="image-holder-img-id" src="">
-            </div>
-            <div class="image-left" onclick="prevImage()"><div class="childArrow noSelect">&#8678;</div></div>
-            <div class="image-right" onclick="nextImage()"><div class="childArrow noSelect">&#8680;</div></div>
-            <div class="img-desc" id="img-desc_id">
-            </div>
+        <a href="#" title="Click to expand images" id="image-down-button"><h3>Images <span class="symbol" id="image-arrow">▹</span></h3></a>
+        <div class="hide" id="image-container"> 
+          <div id="image-panel">
+            <div id="image-preview-bar"></div>
+            <div id="image-holder-div"><img id="image-holder" src=""></div>
+            <div class="childArrow noSelect" id="image-left" onclick="prevImage()">&#8678;</div>
+            <div class="childArrow noSelect" id="image-right" onclick="nextImage()">&#8680;</div>
+            <div id="image-desc"></div>
           </div>
         </div>
       </div>

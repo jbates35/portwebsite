@@ -52,10 +52,7 @@ function open_project_popup(id, template) {
         .classList.add("show");
       project_popup
         .querySelector("#youtube-image")
-        .setAttribute(
-          "src",
-          "uploads/project/" + project.id + "/headerpic.jpg",
-        );
+        .setAttribute("src", `uploads/project/${project.id}/${headerpic.jpg}`);
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       project_popup
@@ -63,29 +60,81 @@ function open_project_popup(id, template) {
         .classList.add("show");
       project_popup
         .querySelector("#youtube-iframe")
-        .setAttribute("src", "https://www.youtube.com/embed/" + project.ylink);
+        .setAttribute("src", `https://www.youtube.com/embed/${project.ylink}`);
     }
 
     //Populate the file div with a list and its entries if they exist
-    let file_container = project_popup.querySelector("#file-container");
-    let file_list = document.createElement("ul");
-    file_list.classList.add("nodots");
+    const file_container = project_popup.querySelector("#file-container");
+    if (project.files.length === 0) {
+      // If no files were uploaded, display a message
+      file_container.innerText = "No files were uploaded for this project";
+      file_container.style.fontStyle = "italic";
+    } else {
+      // Create list which files will get added to
+      const file_list = document.createElement("ul");
+      file_list.classList.add("nodots");
 
-    project.files.forEach((file) => {
-      // If file description is blank, use the file name
-      let file_desc = file.desription === "" ? file.file : file.description;
+      project.files.forEach((file) => {
+        // If file description is blank, use the file name
+        const file_desc =
+          file.description === "" ? file.file : file.description;
 
-      //Create the list
-      let file_link = document.createElement("a");
-      file_link.setAttribute("href", file.file);
-      file_link.innerText = file_desc;
+        //Create the link for the file
+        const file_link = document.createElement("a");
+        file_link.setAttribute(
+          "href",
+          `../uploads/project/${project.id}/${file.file}`,
+        );
+        file_link.innerText = file_desc;
 
-      let file_node = document.createElement("li");
-      file_node.appendChild(file_link);
-      file_list.appendChild(file_node);
-    });
+        //Create list element which contains the link
+        const file_node = document.createElement("li");
+        file_node.appendChild(file_link);
+        file_list.appendChild(file_node);
+      });
+      file_container.appendChild(file_list);
+    }
 
-    file_container.appendChild(file_list);
+    // Populate the image div now with its entries, if they exist of course
+    const image_container = project_popup.querySelector("#image-container");
+    const image_preview_bar = project_popup.querySelector("#image-preview-bar");
+    const image_holder = project_popup.querySelector("#image-holder");
+    const image_desc = project_popup.querySelector("#image-desc");
+
+    if (project.imgfilesuploaded === 0) {
+      // Get rid of contents as there are no images found
+      image_container.innerHTML = "";
+
+      const image_error = document.createElement("div");
+      image_error.classList.add("image-error");
+      image_error.innerText = "No images were uploaded for this project";
+
+      image_container.appendChild(image_error);
+    } else {
+      [...Array(project.imgfilesuploaded).keys()].forEach((i) => {
+        // Create the image preview bar where people can select images
+        const image_preview = document.createElement("img");
+        image_preview.classList.add("image-preview-img");
+        image_preview.setAttribute(
+          "src",
+          `../uploads/project/${project.id}/img/small/${i + 1}.jpg`,
+        );
+
+        const image_preview_div = document.createElement("div");
+        image_preview_div.classList.add("image-preview-div");
+        image_preview_div.id = `image-preview-div-${i + 1}`;
+
+        image_preview_div.appendChild(image_preview);
+        image_preview_bar.appendChild(image_preview_div);
+      });
+
+      // Last thing is to set the default image and description
+      image_holder.setAttribute(
+        "src",
+        `../uploads/project/${project.id}/img/large/1.jpg`,
+      );
+      image_desc.innerText = project.imgdesc[0];
+    }
 
     //Replace the rest of the template with the project data
     project_popup.innerHTML = project_popup.innerHTML
@@ -108,11 +157,28 @@ function open_project_popup(id, template) {
     });
 
     //Attach image down functionality to the image down button
-    let image_down_btn = document.querySelector("#image-down-button");
+    const image_down_btn = document.querySelector("#image-down-button");
     image_down_btn.addEventListener("click", () => {
       section_toggle("image", true);
     });
-    // Open the popup, i.e. add show class to the overlay
+
+    //Assign callbacks to the image bar divs so it can change the image
+    const image_preview_divs = document.querySelectorAll(".image-preview-div");
+    image_preview_divs.forEach((preview) => {
+      const preview_id = Number(preview.id.split("-")[3]);
+      preview.addEventListener("click", () => {
+        document
+          .querySelector("#image-holder")
+          .setAttribute(
+            "src",
+            `../uploads/project/${project.id}/img/large/${preview_id}.jpg`,
+          );
+        document.querySelector("#image-desc").innerText =
+          project.imgdesc[preview_id - 1];
+      });
+    });
+
+    // Open the popup, i.e. set the display to block
     const project_containers = document.querySelectorAll(".popup_show_handle");
     project_containers.forEach((container) => {
       container.classList.add("show");
@@ -421,12 +487,12 @@ function section_toggle(section, has_arrow) {
     arrow = document.querySelector(`#${section}-arrow`);
   }
 
-  if (container.classList.contains("hide")) {
-    if (has_arrow) arrow.textContent = "▼";
+  if (!container.classList.contains("show")) {
+    if (has_arrow) arrow.textContent = "▿";
     container.classList.remove("hide");
     container.classList.add("show");
   } else {
-    if (has_arrow) arrow.textContent = "🢒";
+    if (has_arrow) arrow.textContent = "▹";
     container.classList.remove("show");
     container.classList.add("hide");
   }
