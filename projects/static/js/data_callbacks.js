@@ -11,3 +11,15 @@ export async function fetch_project(id) {
     return error;
   }
 }
+
+// Get a list of all projects
+export async function fetch_project_list() {
+  try {
+    let response = await fetch("../data/project_list").then((response) =>
+      response.json(),
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+}

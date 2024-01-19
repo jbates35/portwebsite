@@ -367,13 +367,13 @@ div#contentbg1 {
   grid-area: d;
 }
 
-#project-container-back {
-  grid-area: e;
+#project-container-prev {
+  grid-area: g;
+  text-align: right;
 }
 
 #project-container-next {
-  grid-area: g;
-  text-align: right;
+  grid-area: e;
 }
 
 #project-container-footer {
@@ -532,7 +532,7 @@ div#contentbg1 {
 
 .img-click:hover,
 .image-preview-div:hover,
-#project-container-back:hover,
+#project-container-prev:hover,
 #project-container-next:hover,
 #image-left:hover,
 #image-right:hover {

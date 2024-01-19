@@ -4,7 +4,7 @@ from .extensions import db
 import json
 
 from .projects.projects import projects_bp
-from .sql.sql_get import sql_single_project_bp
+from .sql.sql_get import sql_single_project_bp, sql_project_list_bp
 
 # from .func_test.func_test import test_func_bp
 
@@ -42,6 +42,7 @@ def create_app():
 
     # Register SQL blueprint
     app.register_blueprint(sql_single_project_bp)
+    app.register_blueprint(sql_project_list_bp)
 
     @app.route("/")
     def index():

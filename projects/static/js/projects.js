@@ -1,4 +1,4 @@
-import { fetch_project } from "./data_callbacks.js";
+import { fetch_project, fetch_project_list } from "./data_callbacks.js";
 import { html_decode } from "./helper_funcs.js";
 
 var m = 0;
@@ -7,7 +7,7 @@ var imageDownB = false;
 var descArray = [];
 var projectOpen = false;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // Load the project popup template
   const popup_container = document.getElementById("project-container-body");
   const popup_template = popup_container.innerHTML.trim();
@@ -21,17 +21,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Get all the projects
+  const project_list = await fetch_project_list();
+
   // Bind the open project popup to each project image
   const img_elements = document.querySelectorAll(".img-click");
   img_elements.forEach((element) => {
     let id = element.id.split("-")[2];
     element.addEventListener("click", () => {
-      open_project_popup(id, popup_template);
+      open_project_popup(id, popup_template, project_list);
     });
   });
 });
 
-function open_project_popup(id, template) {
+function open_project_popup(id, template, project_list) {
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
     let parser = new DOMParser();
@@ -133,6 +136,7 @@ function open_project_popup(id, template) {
         "src",
         `../uploads/project/${project.id}/img/large/1.jpg`,
       );
+      image_holder.classList.add("image-1");
       image_desc.innerText = project.imgdesc[0];
     }
 
@@ -162,20 +166,54 @@ function open_project_popup(id, template) {
       section_toggle("image", true);
     });
 
-    //Assign callbacks to the image bar divs so it can change the image
-    const image_preview_divs = document.querySelectorAll(".image-preview-div");
-    image_preview_divs.forEach((preview) => {
-      const preview_id = Number(preview.id.split("-")[3]);
-      preview.addEventListener("click", () => {
-        document
-          .querySelector("#image-holder")
-          .setAttribute(
-            "src",
-            `../uploads/project/${project.id}/img/large/${preview_id}.jpg`,
-          );
-        document.querySelector("#image-desc").innerText =
-          project.imgdesc[preview_id - 1];
+    if (project.imgfilesuploaded > 0) {
+      const image_holder = document.querySelector("#image-holder");
+
+      //Assign callbacks to the image bar divs so it can change the main image
+      const image_preview_divs =
+        document.querySelectorAll(".image-preview-div");
+      image_preview_divs.forEach((preview) => {
+        const preview_id = Number(preview.id.split("-")[3]);
+        preview.addEventListener("click", () => {
+          change_image(preview_id, project);
+        });
       });
+
+      // Assign callbacks to the image arrows
+      const image_left = document.querySelector("#image-left");
+      const image_right = document.querySelector("#image-right");
+
+      // Find the current image in the image holder
+      image_left.addEventListener("click", () => {
+        const current_image = Number(image_holder.className.split("-")[1]);
+        const new_image =
+          ((current_image - 1 + project.imgfilesuploaded) %
+            project.imgfilesuploaded) +
+          1;
+        change_image(new_image, project);
+      });
+
+      image_right.addEventListener("click", () => {
+        const current_image = Number(image_holder.className.split("-")[1]);
+        const new_image = ((current_image + 1) % project.imgfilesuploaded) + 1;
+        change_image(new_image, project);
+      });
+    }
+
+    // Tell the next and prev projects to refresh the popup with a new project
+    const project_len = project_list.length;
+    const current_i = project_list.indexOf(project.id);
+    const next = project_list[(current_i - 1 + project_len) % project_len];
+    const prev = project_list[(current_i + 1) % project_len];
+
+    const next_project_btn = document.querySelector("#project-container-next");
+    next_project_btn.addEventListener("click", () => {
+      open_project_popup(next, template, project_list);
+    });
+
+    const prev_project_btn = document.querySelector("#project-container-prev");
+    prev_project_btn.addEventListener("click", () => {
+      open_project_popup(prev, template, project_list);
     });
 
     // Open the popup, i.e. set the display to block
@@ -194,6 +232,18 @@ function close_project_popup() {
     container.classList.remove("show");
     container.classList.add("hide");
   });
+}
+
+function change_image(n, project) {
+  const image_holder = document.querySelector("#image-holder");
+  const image_desc = document.querySelector("#image-desc");
+
+  image_holder.setAttribute(
+    "src",
+    `../uploads/project/${project.id}/img/large/${n}.jpg`,
+  );
+  image_holder.className = `image-${n}`;
+  image_desc.innerText = project.imgdesc[n - 1];
 }
 
 function changeProject(n) {
