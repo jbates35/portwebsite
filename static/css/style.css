@@ -79,10 +79,10 @@ label {
   margin-bottom: 5px;
 }
 
-/* fonts */
+/* ../fonts */
 @font-face {
   font-family: "noto-symbols";
-  src: url("fonts/NotoSansSymbols2-Regular.woff2") format("woff2");
+  src: url("../fonts/NotoSansSymbols2-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
@@ -90,8 +90,8 @@ label {
 @font-face {
   font-family: "red_rosebold";
   src:
-    url("fonts/redrose-bold-webfont.woff2") format("woff2"),
-    url("fonts/redrose-bold-webfont.woff") format("woff");
+    url("../fonts/redrose-bold-webfont.woff2") format("woff2"),
+    url("../fonts/redrose-bold-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -99,8 +99,8 @@ label {
 @font-face {
   font-family: "red_roselight";
   src:
-    url("fonts/redrose-light-webfont.woff2") format("woff2"),
-    url("fonts/redrose-light-webfont.woff") format("woff");
+    url("../fonts/redrose-light-webfont.woff2") format("woff2"),
+    url("../fonts/redrose-light-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -108,8 +108,8 @@ label {
 @font-face {
   font-family: "red_roseregular";
   src:
-    url("fonts/redrose-regular-webfont.woff2") format("woff2"),
-    url("fonts/redrose-regular-webfont.woff") format("woff");
+    url("../fonts/redrose-regular-webfont.woff2") format("woff2"),
+    url("../fonts/redrose-regular-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -117,8 +117,8 @@ label {
 @font-face {
   font-family: "bungee_shaderegular";
   src:
-    url("fonts/bungeeshade-regular-webfont.woff2") format("woff2"),
-    url("fonts/bungeeshade-regular-webfont.woff") format("woff");
+    url("../fonts/bungeeshade-regular-webfont.woff2") format("woff2"),
+    url("../fonts/bungeeshade-regular-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -126,8 +126,8 @@ label {
 @font-face {
   font-family: "open_sansbold";
   src:
-    url("fonts/opensans-bold-webfont.woff2") format("woff2"),
-    url("fonts/opensans-bold-webfont.woff") format("woff");
+    url("../fonts/opensans-bold-webfont.woff2") format("woff2"),
+    url("../fonts/opensans-bold-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -135,8 +135,8 @@ label {
 @font-face {
   font-family: "open_sansitalic";
   src:
-    url("fonts/opensans-italic-webfont.woff2") format("woff2"),
-    url("fonts/opensans-italic-webfont.woff") format("woff");
+    url("../fonts/opensans-italic-webfont.woff2") format("woff2"),
+    url("../fonts/opensans-italic-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -144,8 +144,8 @@ label {
 @font-face {
   font-family: "open_sanslight";
   src:
-    url("fonts/opensans-light-webfont.woff2") format("woff2"),
-    url("fonts/opensans-light-webfont.woff") format("woff");
+    url("../fonts/opensans-light-webfont.woff2") format("woff2"),
+    url("../fonts/opensans-light-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -153,8 +153,8 @@ label {
 @font-face {
   font-family: "open_sanslight_italic";
   src:
-    url("fonts/opensans-lightitalic-webfont.woff2") format("woff2"),
-    url("fonts/opensans-lightitalic-webfont.woff") format("woff");
+    url("../fonts/opensans-lightitalic-webfont.woff2") format("woff2"),
+    url("../fonts/opensans-lightitalic-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -162,15 +162,15 @@ label {
 @font-face {
   font-family: "open_sansregular";
   src:
-    url("fonts/opensans-regular-webfont.woff2") format("woff2"),
-    url("fonts/opensans-regular-webfont.woff") format("woff");
+    url("../fonts/opensans-regular-webfont.woff2") format("woff2"),
+    url("../fonts/opensans-regular-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 /* custom divs */
 
-.homeDirect:hover {
+.home-direct:hover {
   cursor: pointer;
 }
 
@@ -218,7 +218,7 @@ div#header {
 
 div#headerimage1 {
   display: block;
-  background: url("img/banner_wo_bg.png") center;
+  background: url("../img/banner_wo_bg.png") center;
   position: absolute;
   top: 0px;
   height: 150px;
@@ -261,7 +261,7 @@ div#downimg {
   display: inline-block;
   width: 14px;
   height: 10px;
-  background: url("img/down.png");
+  background: url("../img/down.png");
   background-repeat: no-repeat;
   background-size: contain;
   margin-bottom: 1px;
@@ -299,7 +299,7 @@ div#sitelinks {
   text-align: center;
 }
 
-.wholeScreen {
+#whole-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -310,7 +310,11 @@ div#sitelinks {
   display: none;
 }
 
-div.contactcard {
+#whole-screen.show {
+  display: block;
+}
+
+#contact-card {
   margin: 0;
   display: none;
   position: absolute;
@@ -320,15 +324,19 @@ div.contactcard {
   width: 350px;
   height: 200px;
   z-index: 80;
-  background-image: url("img/bcard.png");
+  background-image: url("../img/bcard.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-color: white;
   font-family: "red_roseregular";
 }
 
-div.contactcard a {
+#contact-card a {
   color: #447799;
+}
+
+#contact-card.show {
+  display: block;
 }
 
 div#contacthead {
@@ -347,10 +355,6 @@ div#contactfoot {
   position: absolute;
   left: 10px;
   bottom: 10px;
-}
-
-div.show {
-  display: block;
 }
 
 div#contentbody {
@@ -553,7 +557,7 @@ div#content {
   display: block;
 }
 
-.noSelect {
+.no-select {
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */

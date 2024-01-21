@@ -238,7 +238,7 @@ function change_image(n, id, desc) {
   image_holder.className = `image-${n}`;
   image_desc.innerText = desc;
 }
-
+/*
 $(document).keydown(function (e) {
   if (projectOpen == true) {
     switch (e.keyCode) {
@@ -279,7 +279,7 @@ $(document).keydown(function (e) {
     }
   }
 });
-
+*/
 function section_toggle(section, has_arrow) {
   let container = document.querySelector(`#${section}-container`);
   let arrow = null;
