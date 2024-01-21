@@ -26,6 +26,33 @@ document.addEventListener("DOMContentLoaded", async function () {
       open_project_popup(id, popup_template, project_list);
     });
   });
+
+  // Attach keydown listeners
+  document.addEventListener("keydown", (e) => {
+    //Catch escape key
+    if (e.keyCode === 27) close_project_popup();
+
+    //Catch spacebar
+    if (e.keyCode === 32) {
+      e.preventDefault();
+      let image_container = document.querySelector(`#image-container`);
+      let file_container = document.querySelector(`#file-container`);
+      if (
+        file_container.classList.contains("show") ||
+        image_container.classList.contains("show")
+      ) {
+        if (file_container.classList.contains("show"))
+          section_toggle("file", true);
+        if (image_container.classList.contains("show"))
+          section_toggle("image", true);
+      } else {
+        if (file_container.classList.contains("hide"))
+          section_toggle("file", true);
+        if (image_container.classList.contains("hide"))
+          section_toggle("image", true);
+      }
+    }
+  });
 });
 
 function open_project_popup(id, template, project_list) {
@@ -149,7 +176,7 @@ function open_project_popup(id, template, project_list) {
 
     //Bind any event listeners
     //Attach file down functionality to the file down button
-    let file_down_btn = document.querySelector("#file-down-button");
+    const file_down_btn = document.querySelector("#file-down-button");
     file_down_btn.addEventListener("click", () => {
       section_toggle("file", true);
     });
@@ -238,48 +265,7 @@ function change_image(n, id, desc) {
   image_holder.className = `image-${n}`;
   image_desc.innerText = desc;
 }
-/*
-$(document).keydown(function (e) {
-  if (projectOpen == true) {
-    switch (e.keyCode) {
-      case 27: // esc
-        popupProject();
-        projectOpen = false;
-        break;
 
-      case 37: //left
-        prevProject();
-        break;
-
-      case 39: //right
-        nextProject();
-        break;
-
-      case 32: //spacebar:
-        e.preventDefault();
-        var truthTable = 10 * fileDownB + imageDownB;
-        switch (truthTable) {
-          case 11:
-            imageDown();
-            fileDown();
-            break;
-          case 10:
-            imageDown();
-            break;
-          case 1:
-            fileDown();
-            break;
-          case 0:
-            imageDown();
-            fileDown();
-            break;
-          default:
-            break;
-        }
-    }
-  }
-});
-*/
 function section_toggle(section, has_arrow) {
   let container = document.querySelector(`#${section}-container`);
   let arrow = null;
