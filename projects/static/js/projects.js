@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Bind the open project popup to each project image
   const img_elements = document.querySelectorAll(".img-click");
   img_elements.forEach((element) => {
-    let id = element.id.split("-")[2];
+    const id = element.id.split("-")[2];
     element.addEventListener("click", () => {
       open_project_popup(id, popup_template, project_list);
     });
@@ -35,21 +35,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     //Catch spacebar
     if (e.keyCode === 32) {
       e.preventDefault();
-      let image_container = document.querySelector(`#image-container`);
-      let file_container = document.querySelector(`#file-container`);
       if (
-        file_container.classList.contains("show") ||
-        image_container.classList.contains("show")
+        document.querySelector(`#image-container`).classList.contains("show") ||
+        document.querySelector(`#file-container`).classList.contains("show")
       ) {
-        if (file_container.classList.contains("show"))
-          section_toggle("file", true);
-        if (image_container.classList.contains("show"))
-          section_toggle("image", true);
+        section_close("file");
+        section_close("image");
       } else {
-        if (file_container.classList.contains("hide"))
-          section_toggle("file", true);
-        if (image_container.classList.contains("hide"))
-          section_toggle("image", true);
+        section_open("file");
+        section_open("image");
       }
     }
   });
@@ -58,8 +52,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 function open_project_popup(id, template, project_list) {
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
-    let parser = new DOMParser();
-    let project_popup = parser.parseFromString(template, "text/html").body;
+    const parser = new DOMParser();
+    const project_popup = parser.parseFromString(template, "text/html").body;
 
     //Pre-process some data early
     const year = project.date.substring(0, 4);
@@ -135,6 +129,7 @@ function open_project_popup(id, template, project_list) {
 
       image_container.appendChild(image_error);
     } else {
+      // Note for self for later, the following is a range based loop
       [...Array(project.imgfilesuploaded).keys()].forEach((i) => {
         // Create the image preview bar where people can select images
         const image_preview = document.createElement("img");
@@ -178,7 +173,7 @@ function open_project_popup(id, template, project_list) {
     //Attach file down functionality to the file down button
     const file_down_btn = document.querySelector("#file-down-button");
     file_down_btn.addEventListener("click", () => {
-      section_toggle("file", true);
+      section_toggle("file");
     });
 
     //Attach image down functionality to the image down button
@@ -266,20 +261,29 @@ function change_image(n, id, desc) {
   image_desc.innerText = desc;
 }
 
-function section_toggle(section, has_arrow) {
-  let container = document.querySelector(`#${section}-container`);
-  let arrow = null;
-  if (has_arrow) {
-    arrow = document.querySelector(`#${section}-arrow`);
-  }
+function section_toggle(section) {
+  const container = document.querySelector(`#${section}-container`);
+  const arrow = document.querySelector(`#${section}-arrow`);
 
   if (!container.classList.contains("show")) {
-    if (has_arrow) arrow.textContent = "▿";
+    arrow.textContent = "▿";
     container.classList.remove("hide");
     container.classList.add("show");
   } else {
-    if (has_arrow) arrow.textContent = "▹";
+    arrow.textContent = "▹";
     container.classList.remove("show");
     container.classList.add("hide");
   }
+}
+
+function section_open(section) {
+  document.querySelector(`#${section}-arrow`).textContent = "▿";
+  document.querySelector(`#${section}-container`).classList.remove("hide");
+  document.querySelector(`#${section}-container`).classList.add("show");
+}
+
+function section_close(section) {
+  document.querySelector(`#${section}-arrow`).textContent = "▹";
+  document.querySelector(`#${section}-container`).classList.remove("show");
+  document.querySelector(`#${section}-container`).classList.add("hide");
 }
