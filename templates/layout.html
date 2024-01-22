@@ -31,9 +31,9 @@
 		<div id="subheaderline">
 		</div>
 		<div id="sitelinks">
-			<a href="about.php">About Me</a> |
-			<a href="projects">Projects & Plans</a> |
-			<a href="resume.php" class="droplink">R&eacute;sum&eacute;</a> |
+			<a href="/about">About Me</a> |
+			<a href="/projects">Projects & Plans</a> |
+			<a href="/resume" class="droplink">R&eacute;sum&eacute;</a> |
 			<a href="javascript:void(0);" class="contactwhole contact" title="Click for contact info" id="contact-card-link">Contact</a>
 		</div>	
 	</div>
@@ -50,9 +50,12 @@
 	</div>
 	
   <!-- content section -->
+  <div id="content-body">		
+
   {% block content %}{% endblock content %}
 
-	<script type="module" src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
+  </div>
+	<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
 </body>
 
 </html>

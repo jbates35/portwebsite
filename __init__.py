@@ -4,6 +4,8 @@ from .extensions import db
 import json
 
 from .projects.projects import projects_bp
+from .resume.resume import resume_bp
+from .about.about import about_bp
 from .sql.sql_get import sql_single_project_bp, sql_project_list_bp
 
 # from .func_test.func_test import test_func_bp
@@ -39,6 +41,8 @@ def create_app():
 
     # Register pages - blueprints
     app.register_blueprint(projects_bp, url_prefix="/projects")
+    app.register_blueprint(resume_bp, url_prefix="/resume")
+    app.register_blueprint(about_bp, url_prefix="/about")
 
     # Register SQL blueprint
     app.register_blueprint(sql_single_project_bp)

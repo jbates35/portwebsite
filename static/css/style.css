@@ -357,7 +357,7 @@ div#contactfoot {
   bottom: 10px;
 }
 
-div#contentbody {
+#content-body {
   position: absolute;
   top: 190px;
   width: 907px;
@@ -365,11 +365,6 @@ div#contentbody {
   left: 50%;
   margin-bottom: 0;
   margin-left: -453px;
-}
-
-div#content {
-  width: 100%;
-  font-size: 0.867em;
 }
 
 .eButton {
@@ -472,7 +467,7 @@ div#content {
 
 /* this shrinks the content window to size */
 @media only screen and (max-width: 925px) {
-  div#contentbody {
+  #content-body {
     width: 100%;
     left: 0;
     margin-left: 0;
@@ -528,12 +523,8 @@ div#content {
     top: 120px;
   }
 
-  div#contentbody {
+  #content-body {
     top: 122px;
-  }
-
-  div#content {
-    font-size: 0.75em;
   }
 }
 

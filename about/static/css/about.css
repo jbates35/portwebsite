@@ -1,0 +1,10 @@
+#content {
+  width: 100%;
+  font-size: 0.867em;
+}
+
+@media screen and (max-device-width: 580px) {
+  #content {
+    font-size: 0.75em;
+  }
+}
