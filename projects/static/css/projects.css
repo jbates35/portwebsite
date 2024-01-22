@@ -325,8 +325,6 @@ div#contentbg1 {
 
 @media only screen and (max-width: 720px) {
   #youtube-iframe {
-    z-index: 99;
-    border: dotted 3px green;
     max-width: 96%;
     max-height: 76%;
   }
