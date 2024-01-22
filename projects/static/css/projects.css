@@ -8,30 +8,12 @@
   }
 }
 
-@keyframes img_slide_up {
-  from {
-    max-height: 700px;
-  }
-  to {
-    max-height: 0;
-  }
-}
-
 @keyframes files_slide_down {
   from {
     max-height: 0;
   }
   to {
     max-height: 400px;
-  }
-}
-
-@keyframes files_slide_up {
-  from {
-    max-height: 400px;
-  }
-  to {
-    max-height: 0;
   }
 }
 
@@ -335,6 +317,7 @@ div#contentbg1 {
   height: auto;
   border: solid 1px black;
 }
+
 #youtube-iframe {
   width: 720px;
   height: 405px;
@@ -342,7 +325,10 @@ div#contentbg1 {
 
 @media only screen and (max-width: 720px) {
   #youtube-iframe {
-    width: 96%;
+    z-index: 99;
+    border: dotted 3px green;
+    max-width: 96%;
+    max-height: 76%;
   }
 }
 
@@ -358,11 +344,13 @@ div#contentbg1 {
 }
 
 #project-container-content {
+  display: inline-block;
   border: solid 2px black;
   background-color: white;
   border-radius: 0 0 15px 15px;
   padding: 3px;
   padding-bottom: 12px;
+  word-break: break-word;
   color: black;
   grid-area: d;
 }
@@ -408,7 +396,6 @@ div#contentbg1 {
   overflow: hidden;
 }
 
-/* TODO: FIX THESE LATER */
 #image-container.hide {
   max-height: 0px;
 }
@@ -484,15 +471,18 @@ div#contentbg1 {
 
 #image-holder-div {
   grid-area: k;
-  align-self: center;
-  border: 1px black solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #image-holder {
-  width: 100%;
+  max-width: 100%;
+  max-height: 500px;
+  border: 1px black solid;
 }
 
-#img-desc {
+#image-desc {
   border-radius: 0 0 10px 10px;
   padding: 3px;
   background-color: #002244;
@@ -558,6 +548,8 @@ div#contentbg1 {
     right: 10px;
   }
 
+  /* TODO: Delete grid gap and stuff */
+
   #project-container-body {
     width: 95%;
     margin-left: 0;
@@ -578,7 +570,7 @@ div#contentbg1 {
 }
 
 @media screen and (max-device-width: 580px) {
-  .image-container {
+  #image-container {
     grid-template-areas:
       "i i"
       "k k"
@@ -592,13 +584,17 @@ div#contentbg1 {
     display: none;
   }
 
-  /* TODO: Double check this is correct against github history */
-  #project-container-yt {
-    width: 100%;
+  #project-container-ytframe {
     height: 315px;
   }
 
-  .image-preview-div {
+  /* TODO: Double check this is correct against github history */
+  #project-container-yt {
+    width: 100%;
+    /* max-height: 315px; */
+  }
+
+  #image-preview-div {
     flex-basis: 12%;
   }
 }
