@@ -1,0 +1,39 @@
+- section_title: Summary
+  type: text
+  image_source: abbyjimmy.png
+  text: >
+    I'm Jimmy. I grew up in the Okanagan, moving to Vancouver in my early 20's. After an 8 year career in audio-visual, I decided to to pursue an Electrical Engineering degree at BCIT. As a kid I loved to program and design websites, which gave me some programming fundamentals and allowed me to excel at embedded and robotics the most during my degree. Below is a short set of lists that describe what I like to do and what is important to me.
+
+- section_title: Highlights
+  type: list
+  image_source: wecteam400x400.png
+  text:
+    - Works at Apex Motion Control as an EIT, specializing robotics, and software development.
+    - Personal hobby projects include microcontroller projects on STM32, TI, and Raspberry Pis.
+    - Graduated from BCIT Electrical Engineering in May 2023.
+    - Competed in the WEC and CEC competitions in 2023.
+    - Has a well-loved aussie-doodle named Abby.
+
+- section_title: "Key Project: Fish-CenS"
+  type: project
+  youtube_link: vefywJThwUM
+  project_link: projects/18
+  text: >
+    Capstone project which uses CV and ML to detect salmon. Project uses a Rev-Pi with a Pi 3 camera, with a Pi Coral TPU to provide processing power for the ML. Object tracking used to track identified fish to see whether they crossed the vertical center line, at which point it either increments or decrements the fish count. Other sensor data taken, with a video stream captured and presented with a front-end designed with Python Flask.
+
+- section_title: "Key Project: PotBot"
+  type: project
+  youtube_link: uYmMaIRG5Y8
+  project_link: projects/15
+  text: >
+    RTOS based project for my embedded class where we designed a SCARA robot.. Two TI C2000 microcontrollers designed for DSP (though without any FPUs) were combined to be able to take <X,Y> coordinate positions taken from a camera, and convert them to joint angles. SPI was used to connect the two microcontrollers, and UART was used to connect to a Raspberry Pi responsible for the camera.
+
+- section_title: Electronic Interests
+  type: list
+  image_source: helmet400x400.png
+  text:
+    - C, Python, C++, JavaScript
+    - STM32, Raspberry Pi, ESP32
+    - FreeRTOS
+    - DSP, analog filters
+    - Arch linux (btw)
