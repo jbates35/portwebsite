@@ -1,13 +1,38 @@
 {% extends "layout.html" %} {% block head %}
 <link
-  rel="stylesheet"
-  href="{{ url_for('about.static', filename='css/about.css') }}"
-/>
+    rel="stylesheet"
+    href="{{ url_for('about.static', filename='css/about.css') }}"
+    />
 
-  {% endblock %} {% block content %} 
-  <div id="content">
-    Under construction...
-  </div>
+{% endblock %} {% block content %} 
+<div id="content"
+     Under construction...
+
+     <div id="section-container-div">
+
+       {% for i, entry in entries %}
+       <!-- TODO: Let's actually put the pictures and the youtube videos outside the section-div, and make them alternate left,right,left,right... -->
+       <div class="section-div">
+         <div class="section-title-div a"> {{ entry.section_title }} </div>
+         <div class="section-line-div b"><div class="section-line"></div></div>
+         <div class="section-content-div c">       
+           {% if entry.type == "text" %}
+            {{ entry.text }}
+           {% elif entry.type == "list" %}
+            <ul>
+              {% for item in entry.text %}
+              <li class="nodot">{{ item }}</li>{% endfor %}
+            </ul>
+           {% elif entry.type == "project" %}
+            {{ entry.text }}
+           {% endif %}
+         </div>
+       </div>
+       {% endfor %}
+
+     </div>
+
+</div>
 
 <!-- <script type="module" src="{{ url_for('about.static', filename='js/about.js') }}"></script> -->
 {% endblock %}

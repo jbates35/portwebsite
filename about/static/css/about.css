@@ -8,3 +8,59 @@
     font-size: 0.75em;
   }
 }
+
+/* Overall area which the section boxes are contained in  */
+#section-container-div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Start of about section template */
+.section-div {
+  display: grid;
+  width: 100%;
+  grid-template-areas:
+    "a b"
+    "c c";
+  grid-template-columns: max-content 1fr;
+  gap: 5px;
+}
+
+.section-title-div {
+  display: inline;
+  font-family: "red_rosebold";
+  font-size: 1.2em;
+  color: 013;
+  grid-area: a;
+}
+
+.section-line-div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  grid-area: b;
+}
+
+.section-line {
+  display: inline-block;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, rgba(0, 10, 30, 1), rgba(0, 10, 30, 0));
+}
+
+.section-content-div {
+  display: block;
+  grid-area: c;
+  margin-bottom: 30px;
+}
+
+/* End of about section template */
+
+/* list styling  */
+.nodot {
+  list-style-type: circle;
+  margin: 0;
+  margin-bottom: 3px;
+}
