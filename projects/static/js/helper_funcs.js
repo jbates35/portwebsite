@@ -4,7 +4,7 @@ export function html_decode(input) {
   return doc.documentElement.textContent;
 }
 
-function change_image(n, id, desc) {
+export function change_image(n, id, desc) {
   const image_holder = document.querySelector("#image-holder");
   const image_desc = document.querySelector("#image-desc");
 
