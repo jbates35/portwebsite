@@ -5,33 +5,25 @@
     />
 
 {% endblock %} {% block content %} 
-<div id="content"
-     Under construction...
-
-     <div id="section-container-div">
-
-       {% for i, entry in entries %}
-       <!-- TODO: Let's actually put the pictures and the youtube videos outside the section-div, and make them alternate left,right,left,right... -->
-       <div class="section-div">
-         <div class="section-title-div a"> {{ entry.section_title }} </div>
-         <div class="section-line-div b"><div class="section-line"></div></div>
-         <div class="section-content-div c">       
-           {% if entry.type == "text" %}
-            {{ entry.text }}
-           {% elif entry.type == "list" %}
-            <ul>
-              {% for item in entry.text %}
-              <li class="nodot">{{ item }}</li>{% endfor %}
-            </ul>
-           {% elif entry.type == "project" %}
-            {{ entry.text }}
-           {% endif %}
-         </div>
+<div id="content">
+   <div id="section-container-div">{% for i, entry in entries %}
+     <div class="section-div {% if i%2 %}left{% else %}right{% endif %}">
+       <div class="section-image-div">
+         {% if entry.type == "project" %}<iframe class="entry-frame" src="http://www.youtube.com/embed/{{ entry.youtube_link }}" frameborder="0" allowfullscreen></iframe>
+         {% else %}<img class="entry-image" src="{{ url_for('about.static', filename='img/' + entry.image_source) }}" alt="image" class="section-image">{% endif %}
        </div>
-       {% endfor %}
-
-     </div>
-
+       <div class="section-title-div"> {{ entry.section_title }} </div>
+       <div class="section-line-div"><div class="section-line"></div></div>
+       <div class="section-content-div">       
+          {% if entry.type == "text" %}{{ entry.text }}
+          {% elif entry.type == "list" %}<ul>
+          {% for item in entry.text %}<li class="nodot">{{ item }}</li>{% endfor %}
+          </ul>
+          {% elif entry.type == "project" %}{{ entry.text }}
+          {% endif %}
+       </div>
+     </div>{% endfor %}
+   </div>
 </div>
 
 <!-- <script type="module" src="{{ url_for('about.static', filename='js/about.js') }}"></script> -->
