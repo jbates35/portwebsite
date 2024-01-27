@@ -13,7 +13,7 @@
 #section-container-div {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 45px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -24,19 +24,18 @@
   width: 100%;
   grid-template-rows: min-content 1fr;
   gap: 5px;
-  gap-bottom: 30px;
 }
 
 .section-div.left {
   grid-template-areas:
-    "a b c"
-    "a d d";
-  grid-template-columns: 1fr min-content max-content;
+    "b c c"
+    "a a d";
+  grid-template-columns: min-content max-content 1fr;
 }
 
 .section-div.right {
   grid-template-areas:
-    "b c a"
+    "b c c"
     "d d a";
   grid-template-columns: min-content 1fr max-content;
 }
