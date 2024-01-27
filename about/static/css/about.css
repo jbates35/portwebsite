@@ -45,8 +45,6 @@
   justify-content: center;
   align-items: center;
   grid-area: a;
-  max-width: 300px;
-  max-height: 300px;
 }
 
 .section-div.left .section-image-div {
@@ -84,6 +82,14 @@
   grid-area: d;
 }
 
+.section-div.left .section-content-div {
+  padding-left: 25px;
+}
+
+.section-div.right .section-content-div {
+  padding-right: 25px;
+}
+
 /* End of about section template */
 
 /* list styling  */
@@ -92,13 +98,14 @@
   margin: 0;
   margin-bottom: 3px;
 }
-/**/
-/* .entry-frame { */
-/*   max-width: 100%; */
-/*   max-height: 100%; */
-/* } */
-/**/
+
+/* youtube video and image styling */
+.entry-frame {
+  width: 540px;
+  height: 304px;
+}
+
 .entry-image {
-  max-width: 300px;
-  max-height: 300px;
+  max-width: 400px;
+  max-height: 400px;
 }

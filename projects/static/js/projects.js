@@ -1,5 +1,10 @@
 import { fetch_project, fetch_project_list } from "./data_callbacks.js";
-import { html_decode } from "./helper_funcs.js";
+import { html_decode, change_image } from "./helper_funcs.js";
+import {
+  section_open,
+  section_close,
+  section_toggle,
+} from "./section_transitions.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Load the project popup template
@@ -53,7 +58,7 @@ function open_project_popup(id, template, project_list) {
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
     const parser = new DOMParser();
-    const project_popup = parser.parseFromString(template, "text/html").body;
+    const popup = parser.parseFromString(template, "text/html").body;
 
     //Pre-process some data early
     const year = project.date.substring(0, 4);
@@ -62,31 +67,27 @@ function open_project_popup(id, template, project_list) {
     const description = html_decode(project.description);
 
     //Youtube link should either be the preview image or the youtube link
-    project_popup.querySelector(".yt-div").classList.remove("show");
+    popup.querySelector(".yt-div").classList.remove("show");
     if (project.ylink == "") {
       // Show the preview image and set its source to a holding image
-      project_popup
-        .querySelector("#project-container-ytimg")
-        .classList.add("show");
-      project_popup
+      popup.querySelector("#project-container-ytimg").classList.add("show");
+      popup
         .querySelector("#youtube-image")
         .setAttribute("src", `uploads/project/${project.id}/${headerpic.jpg}`);
     } else {
       // Show the youtube video iframe and set its source to the youtube link
-      project_popup
-        .querySelector("#project-container-ytframe")
-        .classList.add("show");
-      project_popup
+      popup.querySelector("#project-container-ytframe").classList.add("show");
+      popup
         .querySelector("#youtube-iframe")
         .setAttribute("src", `https://www.youtube.com/embed/${project.ylink}`);
     }
 
     //Populate the file div with a list and its entries if they exist
-    const file_container = project_popup.querySelector("#file-container");
+    const fcontainer = popup.querySelector("#file-container");
     if (project.files.length === 0) {
       // If no files were uploaded, display a message
-      file_container.innerText = "No files were uploaded for this project";
-      file_container.style.fontStyle = "italic";
+      fcontainer.innerText = "No files were uploaded for this project";
+      fcontainer.style.fontStyle = "italic";
     } else {
       // Create list which files will get added to
       const file_list = document.createElement("ul");
@@ -110,24 +111,24 @@ function open_project_popup(id, template, project_list) {
         file_node.appendChild(file_link);
         file_list.appendChild(file_node);
       });
-      file_container.appendChild(file_list);
+      fcontainer.appendChild(file_list);
     }
 
     // Populate the image div now with its entries, if they exist of course
-    const image_container = project_popup.querySelector("#image-container");
-    const image_preview_bar = project_popup.querySelector("#image-preview-bar");
-    const image_holder = project_popup.querySelector("#image-holder");
-    const image_desc = project_popup.querySelector("#image-desc");
+    const icontainer = popup.querySelector("#image-container");
+    const image_bar = popup.querySelector("#image-preview-bar");
+    const image_holder = popup.querySelector("#image-holder");
+    const image_desc = popup.querySelector("#image-desc");
 
     if (project.imgfilesuploaded === 0) {
       // Get rid of contents as there are no images found
-      image_container.innerHTML = "";
+      icontainer.innerHTML = "";
 
       const image_error = document.createElement("div");
       image_error.classList.add("image-error");
       image_error.innerText = "No images were uploaded for this project";
 
-      image_container.appendChild(image_error);
+      icontainer.appendChild(image_error);
     } else {
       // Note for self for later, the following is a range based loop
       [...Array(project.imgfilesuploaded).keys()].forEach((i) => {
@@ -144,7 +145,7 @@ function open_project_popup(id, template, project_list) {
         image_preview_div.id = `image-preview-div-${i + 1}`;
 
         image_preview_div.appendChild(image_preview);
-        image_preview_bar.appendChild(image_preview_div);
+        image_bar.appendChild(image_preview_div);
       });
 
       // Last thing is to set the default image and description
@@ -157,7 +158,7 @@ function open_project_popup(id, template, project_list) {
     }
 
     //Replace the rest of the template with the project data
-    project_popup.innerHTML = project_popup.innerHTML
+    popup.innerHTML = popup.innerHTML
       .replace("%title%", project.title)
       .replace("%year%", year)
       .replace("%date%", project.date)
@@ -167,7 +168,7 @@ function open_project_popup(id, template, project_list) {
 
     //Place code into the popup div now
     document.getElementById("project-container-body").innerHTML =
-      project_popup.outerHTML;
+      popup.outerHTML;
 
     //Bind any event listeners
     //Attach file down functionality to the file down button
@@ -232,8 +233,8 @@ function open_project_popup(id, template, project_list) {
     });
 
     // Open the popup, i.e. set the display to block
-    const project_containers = document.querySelectorAll(".popup_show_handle");
-    project_containers.forEach((container) => {
+    const pcontainer = document.querySelectorAll(".popup_show_handle");
+    pcontainer.forEach((container) => {
       container.classList.add("show");
       container.classList.remove("hide");
     });
@@ -247,43 +248,4 @@ function close_project_popup() {
     container.classList.remove("show");
     container.classList.add("hide");
   });
-}
-
-function change_image(n, id, desc) {
-  const image_holder = document.querySelector("#image-holder");
-  const image_desc = document.querySelector("#image-desc");
-
-  image_holder.setAttribute(
-    "src",
-    `../uploads/project/${id}/img/large/${n}.jpg`,
-  );
-  image_holder.className = `image-${n}`;
-  image_desc.innerText = desc;
-}
-
-function section_toggle(section) {
-  const container = document.querySelector(`#${section}-container`);
-  const arrow = document.querySelector(`#${section}-arrow`);
-
-  if (!container.classList.contains("show")) {
-    arrow.textContent = "▿";
-    container.classList.remove("hide");
-    container.classList.add("show");
-  } else {
-    arrow.textContent = "▹";
-    container.classList.remove("show");
-    container.classList.add("hide");
-  }
-}
-
-function section_open(section) {
-  document.querySelector(`#${section}-arrow`).textContent = "▿";
-  document.querySelector(`#${section}-container`).classList.remove("hide");
-  document.querySelector(`#${section}-container`).classList.add("show");
-}
-
-function section_close(section) {
-  document.querySelector(`#${section}-arrow`).textContent = "▹";
-  document.querySelector(`#${section}-container`).classList.remove("show");
-  document.querySelector(`#${section}-container`).classList.add("hide");
 }
