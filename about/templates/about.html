@@ -9,7 +9,7 @@
    <div id="section-container-div">{% for i, entry in entries %}
      <div class="section-div {% if i%2 %}left{% else %}right{% endif %}">
        <div class="section-image-div">
-         {% if entry.type == "project" %}<iframe class="entry-frame" src="http://www.youtube.com/embed/{{ entry.youtube_link }}" frameborder="0" allowfullscreen></iframe>
+         {% if entry.type == "project" %}<iframe class="entry-frame" src="https://www.youtube.com/embed/{{ entry.youtube_link }}" frameborder="0" allowfullscreen></iframe>
          {% else %}<img class="entry-image" src="{{ url_for('about.static', filename='img/' + entry.image_source) }}" alt="image" class="section-image">{% endif %}
        </div>
        <div class="section-title-div"> {{ entry.section_title }} </div>
