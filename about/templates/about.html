@@ -12,6 +12,11 @@
                     right
                 {% endif %}
                 ">
+                <div class="section-title-div">{{ entry.section_title }}</div>
+                <div class="section-line-div">
+                    <div class="section-line"></div>
+                </div>
+                <div class="section-content-div">{{ entry.text | safe }}</div>
                 <div class="section-image-div">
                     {% if entry.type == "project" %}
                         <div class="entry-frame-container">
@@ -29,11 +34,6 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="section-title-div">{{ entry.section_title }}</div>
-                <div class="section-line-div">
-                    <div class="section-line"></div>
-                </div>
-                <div class="section-content-div">{{ entry.text | safe }}</div>
             </div>
         {% endfor %}
     </div>
