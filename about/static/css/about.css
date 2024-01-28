@@ -3,12 +3,6 @@
   font-size: 0.867em;
 }
 
-@media screen and (max-device-width: 580px) {
-  #content {
-    font-size: 0.75em;
-  }
-}
-
 /* Overall area which the section boxes are contained in  */
 #section-container-div {
   display: flex;
@@ -175,5 +169,18 @@
 
   .section-div.right .section-image-div {
     justify-content: center;
+  }
+
+  .section-div.left .section-content-div {
+    padding-left: 0px;
+  }
+
+  .section-div.right .section-content-div {
+    padding-right: 0px;
+  }
+
+  #content {
+    width: 95%;
+    font-size: 0.75em;
   }
 }

@@ -365,6 +365,9 @@ div#contactfoot {
   left: 50%;
   margin-bottom: 0;
   margin-left: -453px;
+
+  display: flex;
+  justify-content: center;
 }
 
 .eButton {
