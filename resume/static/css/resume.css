@@ -1,5 +1,5 @@
 #content {
-  width: 100%;
+  width: 95%;
   height: 100%;
   font-size: 0.867em;
 }
@@ -12,13 +12,11 @@
 
 #resume-content-wrapper {
   display: grid;
-  padding: 10px;
   grid-gap: 10px;
   height: 100%;
   grid-template-areas:
     "a b"
     "c c";
-  grid-template-columns: 70% 30%;
   grid-template-rows: min-content auto;
 }
 

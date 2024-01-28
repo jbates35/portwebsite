@@ -1,12 +1,6 @@
 #content {
-  width: 100%;
+  width: 95%;
   font-size: 0.867em;
-}
-
-@media screen and (max-device-width: 580px) {
-  #content {
-    font-size: 0.75em;
-  }
 }
 
 /* Overall area which the section boxes are contained in  */
@@ -17,6 +11,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .section-div {
@@ -74,7 +69,12 @@
   display: inline-block;
   width: 100%;
   height: 2px;
-  background: linear-gradient(to right, rgba(0, 10, 30, 1), rgba(0, 10, 30, 0));
+  background: linear-gradient(
+    to right,
+    rgba(0, 45, 110, 1) 0%,
+    rgba(0, 45, 110, 1) 66%,
+    rgba(0, 45, 110, 0) 100%
+  );
 }
 
 .section-content-div {
@@ -169,5 +169,17 @@
 
   .section-div.right .section-image-div {
     justify-content: center;
+  }
+
+  .section-div.left .section-content-div {
+    padding-left: 0px;
+  }
+
+  .section-div.right .section-content-div {
+    padding-right: 0px;
+  }
+
+  #content {
+    font-size: 0.75em;
   }
 }
