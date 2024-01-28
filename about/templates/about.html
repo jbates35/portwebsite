@@ -21,10 +21,12 @@
                                     allowfullscreen></iframe>
                         </div>
                     {% else %}
-                        <img class="entry-image"
-                             src="{{ url_for('about.static', filename='img/' + entry.image_source) }}"
-                             alt="image"
-                             class="section-image" />
+                        <div class="entry-image-container">
+                            <img class="entry-image"
+                                 src="{{ url_for('about.static', filename='img/' + entry.image_source) }}"
+                                 alt="image"
+                                 class="section-image" />
+                        </div>
                     {% endif %}
                 </div>
                 <div class="section-title-div">{{ entry.section_title }}</div>
