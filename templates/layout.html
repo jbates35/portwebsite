@@ -1,61 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta content="width=device-width, initial-scale=1" name="viewport" />
-
-	<title>Jimmy Bates' Hobbies</title>
-  <link rel="short icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-  {% block head %}{% endblock head %}
-
-</head>
-
-<body>
-	<div id="bodysolid"></div>
-	<div id="bodygrad"></div>
-	
-	<div id="headerbody">
-		<div id="headerborder">
-			<div id="header">
-			</div>
-		</div>
-		<div class="no-select home-direct" id="headertext">
-      Jimmy Bates' Portfolio
-		</div>
-		<div class="home-direct" id="headerimage1">
-		</div>
-		<div class="no-select" id="subheader">
-      Embedded, robotics, and software projects
-		</div>
-		<div id="subheaderline">
-		</div>
-		<div id="sitelinks">
-			<a href="/about">About Me</a> |
-			<a href="/projects">Projects & Plans</a> |
-			<a href="/resume" class="droplink">R&eacute;sum&eacute;</a> |
-			<a href="javascript:void(0);" class="contactwhole contact" title="Click for contact info" id="contact-card-link">Contact</a>
-		</div>	
-	</div>
-
-	<div class="contact-show-state" id="whole-screen"></div>
-
-	<div id="contact-card" class="contact-show-state">
-		<div id="contacthead" class="no-select">Jimmy Bates</div>
-		<div id="contactsubhead" class="no-select">EIT</div>
-		<div id="contactfoot">
-			<a href="tel:17789264285">+1 (778) 926-4285</a><br>
-			<a href="mailto:jbates.productions@gmail.com">jbates.productions@gmail.com</a>
-		</div>
-	</div>
-	
-  <!-- content section -->
-  <div id="content-body">		
-
-  {% block content %}{% endblock content %}
-
-  </div>
-	<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
-</body>
-
+    <head>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <title>Jimmy Bates' Hobbies</title>
+        <link rel="short icon"
+              href="{{ url_for('static', filename='img/favicon.ico') }}" />
+        <link rel="stylesheet"
+              href="{{ url_for('static', filename='css/style.css') }}">
+        {% block head %}
+        {% endblock head %}
+    </head>
+    <body>
+        <div id="bodysolid"></div>
+        <div id="bodygrad"></div>
+        <div id="headerbody">
+            <div id="headerborder">
+                <div id="header"></div>
+            </div>
+            <div class="no-select home-direct" id="headertext">Jimmy Bates' Portfolio</div>
+            <div class="home-direct" id="headerimage1"></div>
+            <div class="no-select" id="subheader">Embedded, robotics, and software projects</div>
+            <div id="subheaderline"></div>
+            <div id="sitelinks">
+                <a href="/about">About Me</a> |
+                <a href="/projects">Projects & Plans</a> |
+                <a href="/resume" class="droplink">R&eacute;sum&eacute;</a> |
+                <a href="javascript:void(0);"
+                   class="contactwhole contact"
+                   title="Click for contact info"
+                   id="contact-card-link">Contact</a>
+            </div>
+        </div>
+        <div class="contact-show-state" id="whole-screen"></div>
+        <div id="contact-card" class="contact-show-state">
+            <div id="contacthead" class="no-select">Jimmy Bates</div>
+            <div id="contactsubhead" class="no-select">EIT</div>
+            <div id="contactfoot">
+                <a href="tel:17789264285">+1 (778) 926-4285</a>
+                <br>
+                <a href="mailto:jbates.productions@gmail.com">jbates.productions@gmail.com</a>
+            </div>
+        </div>
+        <!-- content section -->
+        <div id="content-body">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <script src="{{ url_for('static', filename='js/main.js') }}"
+                type="text/javascript"></script>
+    </body>
 </html>

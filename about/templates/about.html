@@ -1,25 +1,39 @@
-{% extends "layout.html" %} {% block head %}
-<link
-    rel="stylesheet"
-    href="{{ url_for('about.static', filename='css/about.css') }}"
-    />
-
-{% endblock %} {% block content %} 
-<div id="content">
-   <div id="section-container-div">{% for i, entry in entries %}
-     <div class="section-div {% if i%2 %}left{% else %}right{% endif %}">
-       <div class="section-image-div">
-         {% if entry.type == "project" %}<iframe class="entry-frame" src="https://www.youtube.com/embed/{{ entry.youtube_link }}" frameborder="0" allowfullscreen></iframe>
-         {% else %}<img class="entry-image" src="{{ url_for('about.static', filename='img/' + entry.image_source) }}" alt="image" class="section-image">{% endif %}
-       </div>
-       <div class="section-title-div"> {{ entry.section_title }} </div>
-       <div class="section-line-div"><div class="section-line"></div></div>
-       <div class="section-content-div">       
-          {{ entry.text | safe }}
-       </div>
-     </div>{% endfor %}
-   </div>
+{% extends "layout.html" %}
+{% block head %}
+    <link rel="stylesheet"
+          href="{{ url_for('about.static', filename='css/about.css') }}" />
+{% endblock %}
+{% block content %}
+    <div id="content">
+        <div id="section-container-div">
+            {% for i, entry in entries %}
+                <div class="section-div {% if i%2 %}left
+                {% else %}
+                    right
+                {% endif %}
+                ">
+                <div class="section-image-div">
+                    {% if entry.type == "project" %}
+                        <div class="entry-frame-container">
+                            <iframe class="entry-frame"
+                                    src="https://www.youtube.com/embed/{{ entry.youtube_link }}"
+                                    frameborder="0"
+                                    allowfullscreen></iframe>
+                        </div>
+                    {% else %}
+                        <img class="entry-image"
+                             src="{{ url_for('about.static', filename='img/' + entry.image_source) }}"
+                             alt="image"
+                             class="section-image" />
+                    {% endif %}
+                </div>
+                <div class="section-title-div">{{ entry.section_title }}</div>
+                <div class="section-line-div">
+                    <div class="section-line"></div>
+                </div>
+                <div class="section-content-div">{{ entry.text | safe }}</div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
-
-<!-- <script type="module" src="{{ url_for('about.static', filename='js/about.js') }}"></script> -->
 {% endblock %}
