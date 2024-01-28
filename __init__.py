@@ -18,11 +18,11 @@ def get_sql_config(file):
     :param file: The JSON file to read from.
     """
     with open(file) as f:
-        data = json.load(f)
-    user = data["user"]
-    pw = data["password"]
-    host = data["host"]
-    db = data["db"]
+        config = json.load(f)["sql_config"]
+    user = config["user"]
+    pw = config["password"]
+    host = config["host"]
+    db = config["db"]
 
     return f"postgresql://{user}:{pw}@{host}/{db}"
 
@@ -30,9 +30,15 @@ def get_sql_config(file):
 def create_app():
     app = Flask(__name__)
 
+    file = "web_config.json"
+
+    with open(file) as f:
+        config = json.load(f)["web_config"]
+
     # Instantiate SQL and link it to app
-    app.config["SQLALCHEMY_DATABASE_URI"] = get_sql_config("sql_config.json")
+    app.config["SQLALCHEMY_DATABASE_URI"] = get_sql_config(file)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SECRET_KEY"] = config["SECRET_KEY"]
 
     db.init_app(app)
 
