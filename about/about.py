@@ -17,5 +17,4 @@ def about():
     for entry in entries:
         if "text" in entry:
             entry["text"] = markdown(entry["text"])
-
     return render_template("about.html", entries=enumerate(entries))

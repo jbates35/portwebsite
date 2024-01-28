@@ -20,7 +20,7 @@
             <div class="img-box-1">
               <div class="img-click" id="img-click-{{ project.id }}">
                 <img class="displaypic" id="display-pic-{{ project.id }}" src="../uploads/project/{{ project.id }}/displaypic.jpg">
-                <div class="title-1">{{ project.title }} <span class="titleyear"> ({{ project.date[0:4] }})</span></div>
+                <div class="title-1">{{ project.title | safe }} <span class="titleyear"> ({{ project.date[0:4] }})</span></div>
               </div>
             </div>
           </div>
@@ -39,22 +39,26 @@
   <!-- Start of Project popup -->
   <!-- Outer frame, gray background, behind the popup which can be clicked to close -->
   <div class="close-project-link popup_show_handle hide" id="project-container-outer">
-    <div id="project-container-close"><a href="#" class="close-project-link" id="close-link-id" title="Click to go back to project overlay">Close &#9746;</a></div>
+    <div id="project-container-close"><a href="javascript:void(0);" class="close-project-link" id="close-link-id" title="Click to go back to project overlay">Close &#9746;</a></div>
   </div>
 
   <!-- Inner frame, white background, contains the popup -->
   <div class="popup_show_handle hide" id="project-container-inner">
     <div id="project-container-body">
+
+      <!-- Title and year -->
       <div id="project-container-title"><b>%title%</b> (%year%)</div>
       <div id="project-container-yt">
         <div class="yt-div show" id="project-container-ytframe"><iframe id="youtube-iframe" allowfullscreen></iframe></div>
         <div class="yt-div" id="project-container-ytimg"><img id="youtube-image"></div>
       </div>
+
+      <!-- File and image containers -->
       <div id="project-container-uploads">
         <a href="javascript:void(0);" id="file-down-button" title="Click to expand files"><h3>Files <span class="symbol" id="file-arrow">▹</span></h3></a>
         <div id="file-container"></div>
         <hr class="linebreak">
-        <a href="#" title="Click to expand images" id="image-down-button"><h3>Images <span class="symbol" id="image-arrow">▹</span></h3></a>
+        <a href="javascript:void(0);" title="Click to expand images" id="image-down-button"><h3>Images <span class="symbol" id="image-arrow">▹</span></h3></a>
         <div class="hide" id="image-container"> 
           <div id="image-panel">
             <div id="image-preview-bar"></div>
@@ -65,6 +69,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Project description and info -->
       <div id="project-container-content">
         <label>Date created: </label> %date% <br>
         <label>Creator(s): </label> %creator% <br>
@@ -72,12 +78,12 @@
         %description%
       </div>
 
+      <!-- Navigation buttons -->
       <div id="project-container-next"><span class="symbol">←</span>Next project</div>
       <div id="project-container-footer"></div>
       <div id="project-container-prev">Previous project<span class="symbol">→</span></div>
     </div>	
   </div>
-  
   <!-- End of Project popup -->
 
   <script type="module" src="{{ url_for('projects.static', filename='js/projects.js') }}"></script>
