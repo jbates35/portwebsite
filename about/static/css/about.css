@@ -131,7 +131,7 @@
     grid-template-areas:
       "b c c"
       "a a d";
-    grid-template-columns: min-content 1fr 1fr;
+    grid-template-columns: min-content 1fr 40%;
   }
 
   .section-div.right {
