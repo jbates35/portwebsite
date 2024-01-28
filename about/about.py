@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from markdown import markdown
 import yaml
 import os
 
@@ -13,4 +14,8 @@ def about():
     entries = None
     with open(file_path, "r") as file:
         entries = yaml.safe_load(file)
+    for entry in entries:
+        if "text" in entry:
+            entry["text"] = markdown(entry["text"])
+
     return render_template("about.html", entries=enumerate(entries))

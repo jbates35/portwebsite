@@ -2,17 +2,17 @@
   type: text
   image_source: abbyjimmy400x400.png
   text: >
-    I'm Jimmy. I grew up in the Okanagan, moving to Vancouver in my early 20's. After an 8 year career in audio-visual, I decided to to pursue an Electrical Engineering degree at BCIT. As a kid I loved to program and design websites, which gave me some programming fundamentals and allowed me to excel at embedded and robotics the most during my degree. Below is a short set of lists that describe what I like to do and what is important to me.
+    I'm Jimmy. I grew up in the Okanagan, moving to Vancouver in my early 20's. After an 8 year career in the audio-visual industry, I decided to to pursue an Electrical Engineering degree at BCIT. As a kid I loved to program and design websites, which gave me some programming fundamentals and allowed me to excel at embedded and robotics during my degree. Since then, embedded systems and robotics has become a passion I have dedicated much of my free time to. Below are a couple key projects in my life, some highlights, and some interests of mine.
 
 - section_title: Highlights
   type: list
   image_source: wecteam400x400.png
-  text:
-    - Works at Apex Motion Control as an EIT, specializing robotics, and software development.
-    - Personal hobby projects include microcontroller projects on STM32, TI, and Raspberry Pis.
-    - Graduated from BCIT Electrical Engineering in May 2023, winning BCIT's Dean's award in the bachelor's degree upon graduating.
-    - Competed in the WEC and CEC competitions in 2023.
-    - Has a well-loved aussie-doodle named Abby.
+  text: |
+    * Works at Apex Motion Control as an EIT, specializing in robotics and software development.
+    * Personal hobby projects include microcontroller projects on STM32, TI, and Raspberry Pis.
+    * Graduated from BCIT Electrical Engineering in May 2023, winning BCIT's Dean's award in the bachelor's degree upon graduating.
+    * Competed in the WEC and CEC competitions in 2023.
+    * Has a well-loved aussie-doodle named Abby.
 
 - section_title: "Key Project: Fish-CenS"
   type: project
@@ -31,7 +31,7 @@
 - section_title: Electronic Interests
   type: list
   image_source: helmet400x400.png
-  text:
+  text: |
     - C, Python, C++, JavaScript
     - STM32, Raspberry Pi, ESP32
     - FreeRTOS
