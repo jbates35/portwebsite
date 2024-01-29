@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+
+from .forms import LoginForm, RegisterForm
 
 from ..sql.sql_get import get_user
 
@@ -19,7 +19,8 @@ register_bp = Blueprint(
 
 @login_bp.route("/")
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    return render_template("login.html", form=form)
 
 
 @logout_bp.route("/")
@@ -29,4 +30,5 @@ def logout():
 
 @register_bp.route("/")
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+    return render_template("register.html", form=form)

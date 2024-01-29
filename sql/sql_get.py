@@ -54,4 +54,17 @@ def get_project_list():
 
 
 @sql_user_bp.route("/data/user/<int:user_id>")
-def get_user(user_id): ...
+def get_user(user_id):
+    ...
+
+
+def get_user_by_username(username):
+    """Get user by username"""
+    user = db.session.query(User).filter(User.username == username).first()
+    return user.serialize() if user else None
+
+
+def get_user_by_email(email):
+    """Get user by email"""
+    user = db.session.query(User).filter(User.email == email).first()
+    return user.serialize() if user else None
