@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block head %}
+    <link rel="stylesheet"
+          href="{{ url_for('register.static', filename='css/session.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('register.static', filename='css/register.css') }}" />
+{% endblock %}
+{% block content %}
+    <div id="content">Hello</div>
+    <script type="module"
+            src="{{ url_for('register.static', filename='js/session.js') }}"></script>
+{% endblock %}

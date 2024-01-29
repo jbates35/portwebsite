@@ -2,9 +2,12 @@ from flask import Blueprint, jsonify, request
 
 from ..extensions import db
 from ..models.projects import Project
+from ..models.users import User
 
 sql_single_project_bp = Blueprint("sql_single_project", __name__)
 sql_project_list_bp = Blueprint("sql_project_list", __name__)
+sql_user_bp = Blueprint("sql_user", __name__)
+
 
 def get_projects():
     """Get all projects from database. Only return id, title, date"""
@@ -36,16 +39,19 @@ def get_single_project(project_id):
 def get_project_list():
     """Just get a simple array of project titles and ids"""
     project_list = []
-    
+
     project_data = (
         db.session.query(Project)
         .filter(Project.show == True)
         .order_by(Project.id.desc())
         .all()
     )
-    
+
     for project in project_data:
         project_list.append(project.id)
-    
+
     return jsonify(project_list)
-    
+
+
+@sql_user_bp.route("/data/user/<int:user_id>")
+def get_user(user_id): ...

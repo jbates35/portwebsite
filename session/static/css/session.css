@@ -1,0 +1,8 @@
+#content {
+  width: 95%;
+  font-size: 0.867em;
+
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
