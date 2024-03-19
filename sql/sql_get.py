@@ -1,3 +1,4 @@
+from os import walk
 from flask import Blueprint, jsonify, request
 
 from ..extensions import db
@@ -30,7 +31,8 @@ def get_projects():
 @sql_single_project_bp.route("/data/project/<int:project_id>")
 def get_single_project(project_id):
     """Get single project from database""" ""
-    project_data = db.session.query(Project).filter(Project.id == project_id).all()
+    project_data = db.session.query(Project).filter(
+        Project.id == project_id).all()
     project = project_data[0].serialize()
     return jsonify(project)
 
@@ -53,9 +55,10 @@ def get_project_list():
     return jsonify(project_list)
 
 
-@sql_user_bp.route("/data/user/<int:user_id>")
 def get_user(user_id):
-    ...
+    """Get user by id"""
+    user = User.query.filter_by(id=user_id).first()
+    return user
 
 
 def get_user_by_username(username):

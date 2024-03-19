@@ -15,7 +15,10 @@ class LoginForm(FlaskForm):
         description="Password must be between 6 and 25 characters long",
         render_kw={"placeholder": "Password"},
     )
-    submit = SubmitField("Login")
+    submit = SubmitField(
+        "Login",
+        render_kw={"id": "form-submit"}
+    )
 
 
 class RegisterForm(LoginForm):

@@ -1,13 +1,15 @@
 from flask import Flask, url_for, redirect
 
-from .extensions import db
 import json
+
+from .extensions import db, bcrypt, session, login_manager
 
 from .projects.projects import projects_bp
 from .resume.resume import resume_bp
 from .about.about import about_bp
 from .session.session import login_bp, logout_bp, register_bp
-from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, sql_user_bp
+from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, sql_user_bp, get_user
+
 
 # from .func_test.func_test import test_func_bp
 
@@ -41,7 +43,14 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = config["SECRET_KEY"]
 
+    # Initialize the extensions
     db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return get_user(user_id)
 
     # TEST DELETE LATER
     # app.register_blueprint(test_func_bp)
