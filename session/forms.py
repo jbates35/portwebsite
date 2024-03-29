@@ -1,4 +1,4 @@
-from ..sql.sql_get import get_user_by_email, get_user_by_username
+from ..sql.sql_get import get_user  # get_user_by_email, get_user_by_username
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email, ValidationError
@@ -30,11 +30,11 @@ class RegisterForm(LoginForm):
     submit = SubmitField("Register")
 
     def validate_user(self, username):
-        existing_username = get_user_by_username(username.data)
+        existing_username = get_user(username=str(username.data))
         if existing_username:
             raise ValidationError("Username already exists")
 
     def validate_email(self, email):
-        existing_email = get_user_by_email(email.data)
+        existing_email = get_user(email=str(email.data))
         if existing_email:
             raise ValidationError("Email already exists")

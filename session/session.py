@@ -1,11 +1,10 @@
-from os import walk
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_user
 
 
 from .forms import LoginForm, RegisterForm
 
-from ..sql.sql_get import get_user, get_user_by_username
+from ..sql.sql_get import get_user, user_dict
 from ..extensions import bcrypt
 
 login_bp = Blueprint(
@@ -28,12 +27,13 @@ def login():
 
     if form.validate_on_submit():
         try:
-            user_from_db = get_user_by_username(form.username.data) or {}
-            password = user_from_db.get("password", None)
-            result = bcrypt.check_password_hash(password, form.password.data)
+            user = get_user(username=str(form.username.data)) or {}
+            password = user_dict(user).get("password", None)
+            result = bcrypt.check_password_hash(
+                password, str(form.password.data))
             if result:
-                login_user(, remember=False)
-                redirect(url_for("projects"))
+                login_user(user, remember=False)
+                return redirect(url_for("projects.projects"))
         except Exception as e:
             msg = e
         else:

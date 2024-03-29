@@ -43,8 +43,8 @@ def get_project_list():
     project_list = []
 
     project_data = (
-        db.session.query(Project)
-        .filter(Project.show == True)
+        Project.query
+        .filter(Project.show)
         .order_by(Project.id.desc())
         .all()
     )
@@ -55,19 +55,27 @@ def get_project_list():
     return jsonify(project_list)
 
 
-def get_user(user_id):
-    """Get user by id"""
-    user = User.query.filter_by(id=user_id).first()
+def get_user(id: int = None, username: str = None, email: str = None) -> User:
+    """Get user from the sql database by any set parameter
+    Args:
+        id (int): User id
+        username (str): Username
+        email (str): Email
+    """
+    params = {
+        "id": id,
+        "username": username,
+        "email": email,
+    }
+    params = {k: v for k, v in params.items() if v is not None}
+    user = User.query.filter_by(**params).first()
     return user
 
 
-def get_user_by_username(username):
-    """Get user by username"""
-    user = db.session.query(User).filter(User.username == username).first()
-    return user.serialize() if user else None
-
-
-def get_user_by_email(email):
-    """Get user by email"""
-    user = db.session.query(User).filter(User.email == email).first()
-    return user.serialize() if user else None
+def user_dict(user: User) -> dict:
+    """
+    Convert user object to dictionary
+    Args:
+        user (User): User object
+    """
+    return user.serialize()

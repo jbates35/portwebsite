@@ -1,4 +1,5 @@
 from flask import Flask, url_for, redirect
+from flask_session import Session
 
 import json
 
@@ -42,6 +43,8 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = get_sql_config(file)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = config["SECRET_KEY"]
+    app.config["SESSION_TYPE"] = "filesystem"
+    Session(app)
 
     # Initialize the extensions
     db.init_app(app)

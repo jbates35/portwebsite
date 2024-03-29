@@ -1,12 +1,9 @@
-Flask==3.0.1
+Flask==3.0.2
+Flask_Bcrypt==1.0.1
 Flask_Login==0.6.3
+flask_session==0.8.0
 flask_sqlalchemy==3.1.1
 flask_wtf==1.2.1
-LEDControl==0.2.0
-machine==0.0.1
-Markdown==3.5.1
 Markdown==3.5.2
-pigpio==1.78
-pvrecorder==1.2.1
-pvrhino==3.0.1
+SQLAlchemy==2.0.25
 WTForms==3.1.2
