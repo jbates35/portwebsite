@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for
-from flask_login import login_user
+from flask import Blueprint, render_template, redirect, url_for, jsonify
+from flask_login import login_user, login_required, logout_user, current_user
 
 
 from .forms import LoginForm, RegisterForm
@@ -18,6 +18,8 @@ logout_bp = Blueprint(
 register_bp = Blueprint(
     "register", __name__, template_folder="templates", static_folder="static"
 )
+
+check_user_bp = Blueprint("check_user", __name__)
 
 
 @login_bp.route("/", methods=["GET", "POST"])
@@ -43,7 +45,9 @@ def login():
 
 
 @ logout_bp.route("/")
+@ login_required
 def logout():
+    logout_user()
     return render_template("logout.html")
 
 
@@ -51,3 +55,19 @@ def logout():
 def register():
     form = RegisterForm()
     return render_template("register.html", form=form)
+
+
+def check_user():
+    try:
+        return current_user.id == 1
+    except Exception:
+        return False
+
+
+@ check_user_bp.route("/")
+def check_user_bp_func():
+    try:
+        logged_in = check_user()
+        return jsonify({"success": True, "logged_in": logged_in})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})

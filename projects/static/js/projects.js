@@ -5,6 +5,7 @@ import {
   section_close,
   section_toggle,
 } from "./section_transitions.js";
+import { check_user } from "/static/js/session.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Load the project popup template
@@ -102,7 +103,7 @@ function open_project_popup(id, template, project_list) {
         const file_link = document.createElement("a");
         file_link.setAttribute(
           "href",
-          `../uploads/project/${project.id}/${file.file}`,
+          `../uploads/project/${project.id}/${file.file}`
         );
         file_link.innerText = file_desc;
 
@@ -137,7 +138,7 @@ function open_project_popup(id, template, project_list) {
         image_preview.classList.add("image-preview-img");
         image_preview.setAttribute(
           "src",
-          `../uploads/project/${project.id}/img/small/${i + 1}.jpg`,
+          `../uploads/project/${project.id}/img/small/${i + 1}.jpg`
         );
 
         const image_preview_div = document.createElement("div");
@@ -151,7 +152,7 @@ function open_project_popup(id, template, project_list) {
       // Last thing is to set the default image and description
       image_holder.setAttribute(
         "src",
-        `../uploads/project/${project.id}/img/large/1.jpg`,
+        `../uploads/project/${project.id}/img/large/1.jpg`
       );
       image_holder.classList.add("image-1");
       image_desc.innerText = project.imgdesc[0];

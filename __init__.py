@@ -3,12 +3,12 @@ from flask_session import Session
 
 import json
 
-from .extensions import db, bcrypt, session, login_manager
+from .extensions import db, bcrypt, login_manager
 
 from .projects.projects import projects_bp
 from .resume.resume import resume_bp
 from .about.about import about_bp
-from .session.session import login_bp, logout_bp, register_bp
+from .session.session import login_bp, logout_bp, check_user_bp  # , register_bp
 from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, sql_user_bp, get_user
 
 
@@ -64,7 +64,10 @@ def create_app():
     app.register_blueprint(about_bp, url_prefix="/about")
     app.register_blueprint(login_bp, url_prefix="/login")
     app.register_blueprint(logout_bp, url_prefix="/logout")
-    app.register_blueprint(register_bp, url_prefix="/register")
+    app.register_blueprint(check_user_bp, url_prefix="/session/check_user")
+
+    # Don't use - most likely
+    # app.register_blueprint(register_bp, url_prefix="/register")
 
     # Register SQL blueprint
     app.register_blueprint(sql_single_project_bp)

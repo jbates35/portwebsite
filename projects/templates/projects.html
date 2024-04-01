@@ -2,6 +2,10 @@
 {% block head %}
     <link rel="stylesheet"
           href="{{ url_for('projects.static', filename='css/projects.css') }}">
+    {% if current_user.id == 1 %}
+        <link rel="stylesheet"
+              href="{{ url_for('projects.static', filename='css/projects-admin.css') }}">
+    {% endif %}
 {% endblock %}
 {% block content %}
     <!-- Gradient background in the project list background -->
@@ -116,4 +120,7 @@
     <!-- End of Project popup -->
     <script type="module"
             src="{{ url_for('projects.static', filename='js/projects.js') }}"></script>
+    {% if current_user.id == 1 %}
+        <script type="module" src={{ url_for('projects.static', filename='js/projects-admin.js') }}></script>
+    {% endif %}
 {% endblock %}
