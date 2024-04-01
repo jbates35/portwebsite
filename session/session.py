@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 
-
 from .forms import LoginForm, RegisterForm
 
 from ..sql.sql_get import get_user, user_dict

@@ -1,5 +1,5 @@
-from os import walk
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
+from flask_login import current_user
 
 from ..extensions import db
 from ..models.projects import Project
@@ -12,12 +12,10 @@ sql_user_bp = Blueprint("sql_user", __name__)
 
 def get_projects():
     """Get all projects from database. Only return id, title, date"""
-    project_data = (
-        db.session.query(Project)
-        .filter(Project.show == True)
-        .order_by(Project.id.desc())
-        .all()
-    )
+    query = Project.query.order_by(Project.id.desc())
+    if not admin_user():
+        query = query.filter(Project.show)
+    project_data = query.all()
 
     project_keys = ["id", "date", "title"]
     projects = [
@@ -40,22 +38,24 @@ def get_single_project(project_id):
 @sql_project_list_bp.route("/data/project_list/")
 def get_project_list():
     """Just get a simple array of project titles and ids"""
+
+    # Return list
     project_list = []
 
-    project_data = (
-        Project.query
-        .filter(Project.show)
-        .order_by(Project.id.desc())
-        .all()
-    )
+    # Get all projects, show all if admin, otherwise hide some
+    query = Project.query.order_by(Project.id.desc())
+    if not admin_user():
+        query = query.filter(Project.show)
+    project_data = query.all()
 
+    # Create list of IDs
     for project in project_data:
         project_list.append(project.id)
 
     return jsonify(project_list)
 
 
-def get_user(id: int = None, username: str = None, email: str = None) -> User:
+def get_user(id: int = None, username: str = None, email: str = None) -> User | None:  # type: ignore
     """Get user from the sql database by any set parameter
     Args:
         id (int): User id
@@ -79,3 +79,12 @@ def user_dict(user: User) -> dict:
         user (User): User object
     """
     return user.serialize()
+
+
+def admin_user():
+    # See if user is me
+    try:
+        admin_user = (current_user.id == 1)
+    except AttributeError:
+        admin_user = False
+    return admin_user
