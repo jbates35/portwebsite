@@ -59,7 +59,7 @@ def register():
 def check_user():
     try:
         return current_user.id == 1
-    except Exception:
+    except AttributeError:
         return False
 
 

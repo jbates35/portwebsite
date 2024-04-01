@@ -120,7 +120,4 @@
     <!-- End of Project popup -->
     <script type="module"
             src="{{ url_for('projects.static', filename='js/projects.js') }}"></script>
-    {% if current_user.id == 1 %}
-        <script type="module" src={{ url_for('projects.static', filename='js/projects-admin.js') }}></script>
-    {% endif %}
 {% endblock %}

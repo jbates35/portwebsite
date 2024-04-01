@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 
+  // Check to see if admin privileges are present
+
   // Attach keydown listeners
   document.addEventListener("keydown", (e) => {
     //Catch escape key
