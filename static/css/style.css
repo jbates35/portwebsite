@@ -370,34 +370,6 @@ div#contactfoot {
   justify-content: center;
 }
 
-.eButton {
-  background-color: rgba(40, 20, 0, 0.4);
-  padding: 1px;
-  border: solid 1px rgba(40, 20, 0, 0.8);
-  border-radius: 5px;
-  font-size: 14px;
-  text-decoration: none;
-  margin: 2px;
-  color: white;
-}
-
-.eButton_proj {
-  background-color: rgba(200, 240, 255, 0.4);
-  padding: 1px;
-  border: solid 1px rgba(0, 30, 60, 1);
-  border-radius: 5px;
-  font-size: 14px;
-  text-decoration: none;
-  margin: 2px;
-  color: rgba(0, 30, 60, 1);
-}
-
-.eButton:hover,
-.eButton_proj:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
 .tab {
   margin-left: 30px;
 }
