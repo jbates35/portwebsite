@@ -140,28 +140,30 @@
     </div>
     <!-- End of Project popup -->
     <!-- start of "confirmation" popup -->
-    <div class="close-delete-popup delete-popup"
-         id="confirmation-popup-background"></div>
-    <div class="delete-popup" id="confirmation-popup">
-        <div id="confirmation-question">
-            <b>NOTICE:</b>
-            <br>
-            <br>
-            Change visibility, delete this action for project:
-            <br>
-            &nbsp&nbsp&nbsp&nbsp
-            <div id='confirmation-project-label'></div>
-        </div>
-        <div id="confirmation-buttons">
-            <div id="left-side-buttons">
-                <button class="confirm-button" id="change-visi-confirm-button">Hide</button>
-                <button class="confirm-button" id="delete-confirm-button">Delete</button>
+    {% if current_user.id == 1 %}
+        <div class="close-delete-popup delete-popup"
+             id="confirmation-popup-background"></div>
+        <div class="delete-popup" id="confirmation-popup">
+            <div id="confirmation-question">
+                <b>NOTICE:</b>
+                <br>
+                <br>
+                Change visibility, delete this action for project:
+                <br>
+                &nbsp&nbsp&nbsp&nbsp
+                <div id='confirmation-project-label'></div>
             </div>
-            <div id="right-side-buttons">
-                <button class="close-delete-popup confirm-button" id="cancel-button">Cancel</button>
+            <div id="confirmation-buttons">
+                <div id="left-side-buttons">
+                    <button class="confirm-button" id="change-visi-confirm-button">Hide</button>
+                    <button class="confirm-button" id="delete-confirm-button">Delete</button>
+                </div>
+                <div id="right-side-buttons">
+                    <button class="close-delete-popup confirm-button" id="cancel-button">Cancel</button>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
     <!-- End of "confirmation" popup -->
     <script type="module"
             src="{{ url_for('projects.static', filename='js/projects.js') }}"></script>
