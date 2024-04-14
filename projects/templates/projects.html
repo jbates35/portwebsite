@@ -27,10 +27,10 @@
                                 </div>
                                 {% if current_user.id == 1 %}
                                     <div class="edit-box">
-                                        <button class="e-button">Edit</button>
+                                        <button id="edit-button" class="e-button">Edit</button>
                                         <!-- TODO: add edit function -->
                                         |
-                                        <button class="e-button">Delete</button>
+                                        <button id="delete-button" class="e-button">Delete</button>
                                         <!-- Need to add delete function -->
                                     </div>
                                 {% endif %}
@@ -68,7 +68,6 @@
                 <!-- TODO: add edit function -->
                 <!-- TODO: add delete function -->
                 <button class="e-button-proj">Delete</button>
-                `);
             </div>
             <div id="project-container-yt">
                 <div class="yt-div show" id="project-container-ytframe">
@@ -134,22 +133,22 @@
     </div>
     <!-- End of Project popup -->
     <!-- start of "confirmation" popup -->
-    <div id="confirmation-popup-background">
-        <div id="confirmation-popup">
-            <div id="confirmation-question">
-                <b>NOTICE:</b>
-                <br>
-                <br>
-                Hide, delete or cancel this action for project <span id="confirmation-project-label"></span>?
+    <div class="close-delete-popup delete-popup"
+         id="confirmation-popup-background"></div>
+    <div class="delete-popup" id="confirmation-popup">
+        <div id="confirmation-question">
+            <b>NOTICE:</b>
+            <br>
+            <br>
+            Hide, delete or cancel this action for project <span id="confirmation-project-label"></span>?
+        </div>
+        <div id="confirmation-buttons">
+            <div id="left-side-buttons">
+                <button class="confirm-button" id="hide-button">Hide</button>
+                <button class="confirm-button" id="delete-button">Delete</button>
             </div>
-            <div id="confirmation-buttons">
-                <div id="left-side-buttons">
-                    <button class="confirm-button" id="hide-button">Hide</button>
-                    <button class="confirm-button" id="delete-button">Delete</button>
-                </div>
-                <div id="right-side-buttons">
-                    <button class="confirm-button" id="cancel-button">Cancel</button>
-                </div>
+            <div id="right-side-buttons">
+                <button class="close-delete-popup confirm-button" id="cancel-button">Cancel</button>
             </div>
         </div>
     </div>

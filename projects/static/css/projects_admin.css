@@ -42,6 +42,16 @@
   color: white;
 }
 
+.delete-popup {
+  display: none;
+}
+
+#confirmation-question {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 #confirmation-popup-background {
   position: absolute;
   top: 0;
@@ -54,7 +64,6 @@
 }
 
 #confirmation-popup {
-  /* display: none; */
   position: absolute;
   top: 50%;
   right: 50%;
@@ -67,7 +76,6 @@
   background-color: #dddddd;
   font-family: "red_roseregular";
   padding: 10px;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
 }

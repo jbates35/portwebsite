@@ -9,12 +9,12 @@ import { check_user } from "/static/js/session.js";
 
 document.addEventListener("DOMContentLoaded", async function() {
   // Load the project popup template
-  const popup_container = document.getElementById("project-container-body");
+  const popup_container = document.getElementById(`project-container-body`);
   const popup_template = popup_container.innerHTML.trim();
   popup_container.innerHTML = "";
 
   // Bind the close project page
-  const close_project_links = document.querySelectorAll(".close-project-link");
+  const close_project_links = document.querySelectorAll(`.close-project-link`);
   close_project_links.forEach((link) => {
     link.addEventListener("click", () => {
       close_project_popup();
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   const project_list = await fetch_project_list();
 
   // Bind the open project popup to each project image
-  const img_elements = document.querySelectorAll(".img-click");
+  const img_elements = document.querySelectorAll(`.img-click`);
   img_elements.forEach((element) => {
     const id = element.id.split("-")[2];
     element.addEventListener("click", () => {
@@ -33,34 +33,45 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
   });
 
-  // Check to see if admin privileges are present
-  const admin = await check_user().then(
-    if (admin) {
-    console.log("Admin privileges detected");
-  } else {
-    console.log("No admin privileges detected");
-  }
-  );
-// Attach keydown listeners
-document.addEventListener("keydown", (e) => {
-  //Catch escape key
-  if (e.keyCode === 27) close_project_popup();
+  const close_delete_popup = document.querySelectorAll(`.close-delete-popup`);
+  close_delete_popup.forEach((popup) => {
+    popup.addEventListener("click", () => {
+      change_delete_popup_visibility(false);
+    });
+  });
 
-  //Catch spacebar
-  if (e.keyCode === 32) {
-    e.preventDefault();
-    if (
-      document.querySelector(`#image-container`).classList.contains("show") ||
-      document.querySelector(`#file-container`).classList.contains("show")
-    ) {
-      section_close("file");
-      section_close("image");
-    } else {
-      section_open("file");
-      section_open("image");
+  const open_delete_popup = document.querySelector(`#delete-button`);
+  open_delete_popup.addEventListener("click", () => {
+    change_delete_popup_visibility(true);
+  });
+
+  // Check to see if admin privileges are present
+  // const admin = await check_user().then((admin) => (
+  //
+  // )
+  //
+  // Attach keydown listeners
+  document.addEventListener("keydown", (e) => {
+    //Catch escape key
+    if (e.keyCode === 27) close_project_popup();
+
+    //Catch spacebar
+    if (e.keyCode === 32) {
+      e.preventDefault();
+      if (
+        document
+          .querySelector(`#image - container`)
+          .classList.contains(`show`) ||
+        document.querySelector(`#file - container`).classList.contains(`show`)
+      ) {
+        section_close("file");
+        section_close("image");
+      } else {
+        section_open("file");
+        section_open("image");
+      }
     }
-  }
-});
+  });
 });
 
 function open_project_popup(id, template, project_list) {
@@ -82,7 +93,10 @@ function open_project_popup(id, template, project_list) {
       popup.querySelector("#project-container-ytimg").classList.add("show");
       popup
         .querySelector("#youtube-image")
-        .setAttribute("src", `uploads/project/${project.id}/${headerpic.jpg}`);
+        .setAttribute(
+          "src",
+          `uploads / project / ${project.id} / ${headerpic.jpg}`,
+        );
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       popup.querySelector("#project-container-ytframe").classList.add("show");
@@ -258,3 +272,14 @@ function close_project_popup() {
     container.classList.add("hide");
   });
 }
+
+function change_delete_popup_visibility(can_show) {
+  const popup_containers = document.querySelectorAll(".delete-popup");
+  popup_containers.forEach((container) => {
+    container.style.display = can_show ? "flex" : "none";
+  });
+}
+
+function delete_project() { }
+
+function hide_project() { }
