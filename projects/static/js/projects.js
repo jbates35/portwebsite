@@ -40,11 +40,22 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
   });
 
-  const open_delete_popup = document.querySelector(`#delete-button`);
-  open_delete_popup.addEventListener("click", () => {
-    change_delete_popup_visibility(true);
-  });
+  const open_delete_popup = document.querySelectorAll(`.delete-button`);
+  open_delete_popup.forEach(async (button) => {
+    button.addEventListener("click", () => {
+      const id_split = button.id.split("-");
+      const deleted_project_id = Number(id_split[id_split.length - 1]);
 
+      fetch_project(deleted_project_id).then((project) => {
+        document.querySelector("#confirmation-project-label").innerText =
+          html_decode(project.title);
+        document.querySelector("#change-visi-confirm-button").innerText =
+          project.show ? "Hide" : "Show";
+      });
+
+      change_delete_popup_visibility(true);
+    });
+  });
   // Check to see if admin privileges are present
   // const admin = await check_user().then((admin) => (
   //

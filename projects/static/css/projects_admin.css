@@ -109,13 +109,13 @@
   font-family: "red_roseregular";
 }
 
-#hide-button {
+#change-visi-confirm-button {
   background-color: #fcb;
   border: 2px solid #420;
   color: #420;
 }
 
-#delete-button {
+#delete-confirm-button {
   background-color: #a11;
   border: 2px solid #400;
   color: #fff;
@@ -131,4 +131,22 @@
   background-color: #eee;
   border: 2px solid #333;
   color: #333;
+}
+
+#confirmation-project-label {
+  display: inline-block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: black;
+  font-weight: bold;
+}
+
+.img-hidden {
+  opacity: 0.3;
+}
+
+.div-hidden {
+  background-color: #999;
 }

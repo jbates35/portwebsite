@@ -18,22 +18,29 @@
                 {% for project in projects %}
                     <div class="box-1">
                         <div class="img-box-1">
-                            <div class="img-click" id="img-click-{{ project.id }}">
-                                <img class="displaypic"
+                            {% if current_user.id == 1 %}
+                                <div class="edit-box">
+                                    <button id="" class="e-button edit-button">Edit</button>
+                                    <!-- TODO: add edit function -->
+                                    |
+                                    <button id="delete-button-{{ project.id }}" class="e-button delete-button">
+                                        {% if project.show %}
+                                            Delete
+                                        {% else %}
+                                            Unhide
+                                        {% endif %}
+                                    </button>
+                                    <!-- Need to add delete function -->
+                                </div>
+                            {% endif %}
+                            <div class="img-click {% if not project.show %}div-hidden{% endif %}"
+                                 id="img-click-{{ project.id }}">
+                                <img class="displaypic {% if not project.show %}img-hidden{% endif %}"
                                      id="display-pic-{{ project.id }}"
                                      src="../uploads/project/{{ project.id }}/displaypic.jpg">
                                 <div class="title-1">
                                     {{ project.title | safe }} <span class="titleyear">({{ project.date[0:4] }})</span>
                                 </div>
-                                {% if current_user.id == 1 %}
-                                    <div class="edit-box">
-                                        <button id="edit-button" class="e-button">Edit</button>
-                                        <!-- TODO: add edit function -->
-                                        |
-                                        <button id="delete-button" class="e-button">Delete</button>
-                                        <!-- Need to add delete function -->
-                                    </div>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -140,12 +147,15 @@
             <b>NOTICE:</b>
             <br>
             <br>
-            Hide, delete or cancel this action for project <span id="confirmation-project-label"></span>?
+            Change visibility, delete this action for project:
+            <br>
+            &nbsp&nbsp&nbsp&nbsp
+            <div id='confirmation-project-label'></div>
         </div>
         <div id="confirmation-buttons">
             <div id="left-side-buttons">
-                <button class="confirm-button" id="hide-button">Hide</button>
-                <button class="confirm-button" id="delete-button">Delete</button>
+                <button class="confirm-button" id="change-visi-confirm-button">Hide</button>
+                <button class="confirm-button" id="delete-confirm-button">Delete</button>
             </div>
             <div id="right-side-buttons">
                 <button class="close-delete-popup confirm-button" id="cancel-button">Cancel</button>

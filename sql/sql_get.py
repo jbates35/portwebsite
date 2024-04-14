@@ -17,7 +17,8 @@ def get_projects():
         query = query.filter(Project.show)
     project_data = query.all()
 
-    project_keys = ["id", "date", "title"]
+    project_keys = ["id", "date", "title", "show"]
+
     projects = [
         {key: project.serialize()[key] for key in project_keys}
         for project in project_data
