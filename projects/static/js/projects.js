@@ -1,4 +1,8 @@
-import { fetch_project, fetch_project_list } from "./data_callbacks.js";
+import {
+  fetch_project,
+  fetch_project_list,
+  update_project_param,
+} from "./data_callbacks.js";
 import { html_decode, change_image } from "./helper_funcs.js";
 import {
   section_open,
@@ -33,34 +37,43 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
   });
 
-  const close_delete_popup = document.querySelectorAll(`.close-delete-popup`);
-  close_delete_popup.forEach((popup) => {
-    popup.addEventListener("click", () => {
-      change_delete_popup_visibility(false);
-    });
-  });
-
-  const open_delete_popup = document.querySelectorAll(`.delete-button`);
-  open_delete_popup.forEach(async (button) => {
-    button.addEventListener("click", () => {
-      const id_split = button.id.split("-");
-      const deleted_project_id = Number(id_split[id_split.length - 1]);
-
-      fetch_project(deleted_project_id).then((project) => {
-        document.querySelector("#confirmation-project-label").innerText =
-          html_decode(project.title);
-        document.querySelector("#change-visi-confirm-button").innerText =
-          project.show ? "Hide" : "Show";
+  //Check to see if admin privileges are present
+  await check_user().then((admin) => {
+    if (admin.logged_in) {
+      // IF so, then bind the delete popups for closing and opening
+      const close_delete_popup =
+        document.querySelectorAll(`.close-delete-popup`);
+      close_delete_popup.forEach((popup) => {
+        popup.addEventListener("click", () => {
+          change_delete_popup_visibility(false);
+        });
       });
 
-      change_delete_popup_visibility(true);
-    });
+      const open_delete_popup = document.querySelectorAll(`.delete-button`);
+      open_delete_popup.forEach(async (button) => {
+        button.addEventListener("click", () => {
+          const id_split = button.id.split("-");
+          const deleted_project_id = Number(id_split[id_split.length - 1]);
+
+          fetch_project(deleted_project_id).then((project) => {
+            document.querySelector("#confirmation-project-label").innerText =
+              html_decode(project.title);
+
+            const change_visi_button = document.querySelector(
+              "#change-visi-confirm-button",
+            );
+            change_visi_button.innerText = project.show ? "Hide" : "Show";
+            change_visi_button.addEventListener("click", () => {
+              change_project_visibility(deleted_project_id, !project.show);
+            });
+          });
+
+          change_delete_popup_visibility(true);
+        });
+      });
+    }
   });
-  // Check to see if admin privileges are present
-  // const admin = await check_user().then((admin) => (
-  //
-  // )
-  //
+
   // Attach keydown listeners
   document.addEventListener("keydown", (e) => {
     //Catch escape key
@@ -85,7 +98,11 @@ document.addEventListener("DOMContentLoaded", async function() {
   });
 });
 
-function open_project_popup(id, template, project_list) {
+async function open_project_popup(id, template, project_list) {
+  //Check to see if admin privileges are present
+  const user = await check_user();
+  const admin = user.logged_in;
+
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
     const parser = new DOMParser();
@@ -293,4 +310,30 @@ function change_delete_popup_visibility(can_show) {
 
 function delete_project() { }
 
-function hide_project() { }
+function change_project_visibility(id, show) {
+  update_project_param(id, "show", show)
+    .then((response) => {
+      if (response.success) {
+        const div_click = document.querySelector(`#img-click-${id}`);
+        const image_click = document.querySelector(`#display-pic-${id}`);
+        const delete_text = document.querySelector(`#delete-button-${id}`);
+
+        if (show) {
+          div_click.classList.remove("div-hidden");
+          image_click.classList.remove("img-hidden");
+          delete_text.innerText = "Delete";
+        } else {
+          div_click.classList.add("div-hidden");
+          image_click.classList.add("img-hidden");
+          delete_text.innerText = "Unhide";
+        }
+
+        change_delete_popup_visibility(false);
+      } else {
+        console.log("ERROR: Could not hide project");
+      }
+    })
+    .catch((error) => {
+      console.log(`ERROR: ${error}`);
+    });
+}
