@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       });
 
       const open_delete_popup = document.querySelectorAll(`.delete-button`);
-      open_delete_popup.forEach(async (button) => {
+      open_delete_popup.forEach((button) => {
         button.addEventListener("click", () => {
           const id_split = button.id.split("-");
           const deleted_project_id = Number(id_split[id_split.length - 1]);
@@ -75,6 +75,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             change_visi_button.addEventListener("click", () => {
               change_project_visibility(deleted_project_id, !project.show);
             });
+          });
+
+          const delete_button = document.querySelector(
+            "#delete-confirm-button",
+          );
+          delete_button.addEventListener("click", () => {
+            delete_project(deleted_project_id);
           });
 
           change_delete_popup_visibility(true);
@@ -317,7 +324,17 @@ function change_delete_popup_visibility(can_show) {
   });
 }
 
-function delete_project() { }
+function delete_project(id) {
+  let success = false; // Placeholder for success which will be in arrow function later
+
+  // Use flask endpoint to delete the project from filesystem
+  console.log("NOT IMPLEMENTED: Deleting project");
+
+  // Use flask endpoint to delete the project from SQL database
+
+  // Refresh page
+  if (success) location.reload();
+}
 
 function change_project_visibility(id, show) {
   update_project_param(id, "show", show)
