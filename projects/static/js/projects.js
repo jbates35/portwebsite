@@ -49,6 +49,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
       });
 
+      const edit_buttons = document.querySelectorAll(`.edit-button`);
+      edit_buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const id_array = button.id.split("-");
+          const id = id_array[id_array.length - 1];
+          window.location.href = `/edit_project/${id}`;
+        });
+      });
+
       const open_delete_popup = document.querySelectorAll(`.delete-button`);
       open_delete_popup.forEach(async (button) => {
         button.addEventListener("click", () => {
