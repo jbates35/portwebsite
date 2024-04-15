@@ -23,16 +23,21 @@ def get_projects():
         {key: project.serialize()[key] for key in project_keys}
         for project in project_data
     ]
-
     return projects
 
 
-@sql_single_project_bp.route("/data/project/<int:project_id>")
 def get_single_project(project_id):
     """Get single project from database""" ""
     project_data = db.session.query(Project).filter(
         Project.id == project_id).all()
     project = project_data[0].serialize()
+    return project
+
+
+@sql_single_project_bp.route("/data/project/<int:project_id>")
+def _get_single_project_bp(project_id):
+    """Get single project from database""" ""
+    project = get_single_project(project_id)
     return jsonify(project)
 
 
