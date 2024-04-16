@@ -10,7 +10,7 @@ test_func_bp = Blueprint("test_func", __name__)
 
 @test_func_bp.route("/func_test")
 def test_func():
-    files = ""
+    files = None
 
     projects = get_projects()
     for project in projects:
@@ -19,11 +19,14 @@ def test_func():
         files = []
 
         if data["olink1"] is not None:
-            files.append({"file": data["olink1"], "description": data["olinkdesc1"]})
+            files.append(
+                {"file": data["olink1"], "description": data["olinkdesc1"]})
         if data["olink2"] is not None:
-            files.append({"file": data["olink2"], "description": data["olinkdesc2"]})
+            files.append(
+                {"file": data["olink2"], "description": data["olinkdesc2"]})
         if data["olink3"] is not None:
-            files.append({"file": data["olink3"], "description": data["olinkdesc3"]})
+            files.append(
+                {"file": data["olink3"], "description": data["olinkdesc3"]})
 
         print(f"Updating project {data['id']} with files: {files}")
 
