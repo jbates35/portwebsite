@@ -78,9 +78,20 @@ if(isset($_SESSION['user_id'])) {
                 if($type=="project") {
 
                         //file upload part
-                    if(strlen($oLink1)>30) $oLinkRn1 = substr($oLink1, 0, 20)."...".substr($oLink1, (strlen($oLink1)-5), 5); else $oLinkRn1 = $oLink1;
-                    if(strlen($oLink2)>30) $oLinkRn2 = substr($oLink2, 0, 20)."...".substr($oLink2, (strlen($oLink2)-5), 5); else $oLinkRn2 = $oLink2;
-                    if(strlen($oLink3)>30) $oLinkRn3 = substr($oLink3, 0, 20)."...".substr($oLink3, (strlen($oLink3)-5), 5); else $oLinkRn3 = $oLink3;
+                  if(strlen($oLink1)>30) 
+                      $oLinkRn1 = substr($oLink1, 0, 20)."...".substr($oLink1, (strlen($oLink1)-5), 5); 
+                  else 
+                      $oLinkRn1 = $oLink1;
+
+                  if(strlen($oLink2)>30) 
+                      $oLinkRn2 = substr($oLink2, 0, 20)."...".substr($oLink2, (strlen($oLink2)-5), 5); 
+                  else 
+                      $oLinkRn2 = $oLink2;
+
+                  if(strlen($oLink3)>30) 
+                      $oLinkRn3 = substr($oLink3, 0, 20)."...".substr($oLink3, (strlen($oLink3)-5), 5); 
+                  else 
+                      $oLinkRn3 = $oLink3;
 
                         echo '	
                         <div class="form-element projectc" id="fileupdiv">
