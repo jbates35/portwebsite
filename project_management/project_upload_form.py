@@ -2,20 +2,33 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 from flask_uploads import UploadSet, IMAGES
 
-from wtforms import DateField, StringField, SubmitField, TextAreaField, SelectField, validators
+from wtforms import DateField, StringField, SubmitField, TextAreaField, SelectField, validators, FieldList, FormField
 from werkzeug.utils import secure_filename
 
 
-class ProjectForm(FlaskForm):
-    file_fields = [
-        (StringField(f"File {i} Name", [validators.Length(max=25)]),
-         FileField(f"File {i} Upload")
-         ) for i in range(3)
-    ]
+class FileField(FlaskForm):
+    file_name = StringField()
+    file_field = FileField()
 
-    def __init__(self, project_id=None):
-        if project_id is not None:
-            raise NotImplementedError
+
+class ProjectForm(FlaskForm):
+    # file_fields = [(
+    #     StringField(f"File {i} Name", [validators.Length(max=25)]),
+    #     FileField(f"File {i} Upload")
+    # ) for i in range(3)]
+
+    file_fields = FieldList(FormField(FileField), min_entries=3, max_entries=3)
+
+    title_field = StringField("Project Title", [validators.Length(max=25)])
+    date_field = DateField("Project Date")
+
+    image_fields = []
+
+    # def __init__(self, project_id=None):
+    #     if project_id is not None:
+    #         raise NotImplementedError
+    #
+    #     super().__init__()
 
     # date = db.Column(db.Date)
     # description = db.Column(db.Text)

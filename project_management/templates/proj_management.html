@@ -1,17 +1,12 @@
 {% extends "layout.html" %}
 {% block head %}
     <link rel="stylesheet"
-          href="{{ url_for('proj_management.static', filename='css/proj_management.css') }}" />
+          href="{{ url_for('upload_project.static', filename='css/proj_management.css') }}" />
 {% endblock %}
 {% block content %}
     <div id="content">
         {{ form.csrf_token }}
-        {% for i, file_field in enumerate(form.file_fields) %}
-            <div class="file-div" id="file-div-{{ i }}">
-                {{ file_field[0].label }}: {{ file_field[0] }}
-                {{ file_field[1].label }}: {{ file_field[1] }}
-            </div>
-        {% endfor %}
+        {{ form.file_fields() }}
     </div>
-    <script src="{{ url_for('proj_management.static', filename='js/proj_management.js') }}"></script>
+    <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>
 {% endblock %}

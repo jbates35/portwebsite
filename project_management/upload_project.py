@@ -7,11 +7,11 @@ upload_project_bp = Blueprint(
 )
 
 
-@upload_project_bp.route("/<int:project_id>")
-def upload_project(project_id: int):
+@upload_project_bp.route("/")
+def upload_project():
     project_form = ProjectForm()
 
     return render_template(
-        "upload_project.html",
+        "proj_management.html",
         form=project_form
     )
