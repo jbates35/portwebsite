@@ -2,6 +2,10 @@
 {% block head %}
     <link rel="stylesheet"
           href="{{ url_for('projects.static', filename='css/projects.css') }}">
+    {% if current_user.id == 1 %}
+        <link rel="stylesheet"
+              href="{{ url_for('projects.static', filename='css/projects_admin.css') }}">
+    {% endif %}
 {% endblock %}
 {% block content %}
     <!-- Gradient background in the project list background -->
@@ -14,8 +18,24 @@
                 {% for project in projects %}
                     <div class="box-1">
                         <div class="img-box-1">
-                            <div class="img-click" id="img-click-{{ project.id }}">
-                                <img class="displaypic"
+                            {% if current_user.id == 1 %}
+                                <div class="edit-box">
+                                    <button id="edit-button-{{ project.id }}" class="e-button edit-button">Edit</button>
+                                    <!-- TODO: add edit function -->
+                                    |
+                                    <button id="delete-button-{{ project.id }}" class="e-button delete-button">
+                                        {% if project.show %}
+                                            Delete
+                                        {% else %}
+                                            Unhide
+                                        {% endif %}
+                                    </button>
+                                    <!-- Need to add delete function -->
+                                </div>
+                            {% endif %}
+                            <div class="img-click {% if not project.show %}div-hidden{% endif %}"
+                                 id="img-click-{{ project.id }}">
+                                <img class="displaypic {% if not project.show %}img-hidden{% endif %}"
                                      id="display-pic-{{ project.id }}"
                                      src="../uploads/project/{{ project.id }}/displaypic.jpg">
                                 <div class="title-1">
@@ -50,6 +70,11 @@
             <!-- Title and year -->
             <div id="project-container-title">
                 <b>%title%</b> (%year%)
+                <button class="e-button-proj">Edit</button>
+                |
+                <!-- TODO: add edit function -->
+                <!-- TODO: add delete function -->
+                <button class="e-button-proj">Delete</button>
             </div>
             <div id="project-container-yt">
                 <div class="yt-div show" id="project-container-ytframe">
@@ -114,6 +139,32 @@
         </div>
     </div>
     <!-- End of Project popup -->
+    <!-- start of "confirmation" popup -->
+    {% if current_user.id == 1 %}
+        <div class="close-delete-popup delete-popup"
+             id="confirmation-popup-background"></div>
+        <div class="delete-popup" id="confirmation-popup">
+            <div id="confirmation-question">
+                <b>NOTICE:</b>
+                <br>
+                <br>
+                Change visibility, delete this action for project:
+                <br>
+                &nbsp&nbsp&nbsp&nbsp
+                <div id='confirmation-project-label'></div>
+            </div>
+            <div id="confirmation-buttons">
+                <div id="left-side-buttons">
+                    <button class="confirm-button" id="change-visi-confirm-button">Hide</button>
+                    <button class="confirm-button" id="delete-confirm-button">Delete</button>
+                </div>
+                <div id="right-side-buttons">
+                    <button class="close-delete-popup confirm-button" id="cancel-button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <!-- End of "confirmation" popup -->
     <script type="module"
             src="{{ url_for('projects.static', filename='js/projects.js') }}"></script>
 {% endblock %}

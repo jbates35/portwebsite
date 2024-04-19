@@ -1,19 +1,24 @@
-import { fetch_project, fetch_project_list } from "./data_callbacks.js";
+import {
+  fetch_project,
+  fetch_project_list,
+  update_project_param,
+} from "./data_callbacks.js";
 import { html_decode, change_image } from "./helper_funcs.js";
 import {
   section_open,
   section_close,
   section_toggle,
 } from "./section_transitions.js";
+import { check_user } from "/static/js/session.js";
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function() {
   // Load the project popup template
-  const popup_container = document.getElementById("project-container-body");
+  const popup_container = document.getElementById(`project-container-body`);
   const popup_template = popup_container.innerHTML.trim();
   popup_container.innerHTML = "";
 
   // Bind the close project page
-  const close_project_links = document.querySelectorAll(".close-project-link");
+  const close_project_links = document.querySelectorAll(`.close-project-link`);
   close_project_links.forEach((link) => {
     link.addEventListener("click", () => {
       close_project_popup();
@@ -24,12 +29,65 @@ document.addEventListener("DOMContentLoaded", async function () {
   const project_list = await fetch_project_list();
 
   // Bind the open project popup to each project image
-  const img_elements = document.querySelectorAll(".img-click");
+  const img_elements = document.querySelectorAll(`.img-click`);
   img_elements.forEach((element) => {
     const id = element.id.split("-")[2];
     element.addEventListener("click", () => {
       open_project_popup(id, popup_template, project_list);
     });
+  });
+
+  //Check to see if admin privileges are present
+  await check_user().then((admin) => {
+    if (admin.logged_in) {
+      // IF so, then bind the delete popups for closing and opening
+      const close_delete_popup =
+        document.querySelectorAll(`.close-delete-popup`);
+      close_delete_popup.forEach((popup) => {
+        popup.addEventListener("click", () => {
+          change_delete_popup_visibility(false);
+        });
+      });
+
+      const edit_buttons = document.querySelectorAll(`.edit-button`);
+      edit_buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const id_array = button.id.split("-");
+          const id = id_array[id_array.length - 1];
+          window.location.href = `/edit_project/${id}`;
+        });
+      });
+
+      const open_delete_popup = document.querySelectorAll(`.delete-button`);
+      open_delete_popup.forEach((button) => {
+        button.addEventListener("click", () => {
+          const id_split = button.id.split("-");
+          const deleted_project_id = Number(id_split[id_split.length - 1]);
+
+          fetch_project(deleted_project_id).then((project) => {
+            document.querySelector("#confirmation-project-label").innerText =
+              html_decode(project.title);
+
+            const change_visi_button = document.querySelector(
+              "#change-visi-confirm-button",
+            );
+            change_visi_button.innerText = project.show ? "Hide" : "Show";
+            change_visi_button.addEventListener("click", () => {
+              change_project_visibility(deleted_project_id, !project.show);
+            });
+          });
+
+          const delete_button = document.querySelector(
+            "#delete-confirm-button",
+          );
+          delete_button.addEventListener("click", () => {
+            delete_project(deleted_project_id);
+          });
+
+          change_delete_popup_visibility(true);
+        });
+      });
+    }
   });
 
   // Attach keydown listeners
@@ -41,8 +99,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (e.keyCode === 32) {
       e.preventDefault();
       if (
-        document.querySelector(`#image-container`).classList.contains("show") ||
-        document.querySelector(`#file-container`).classList.contains("show")
+        document
+          .querySelector(`#image - container`)
+          .classList.contains(`show`) ||
+        document.querySelector(`#file - container`).classList.contains(`show`)
       ) {
         section_close("file");
         section_close("image");
@@ -54,7 +114,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 });
 
-function open_project_popup(id, template, project_list) {
+async function open_project_popup(id, template, project_list) {
+  //Check to see if admin privileges are present
+  const user = await check_user();
+  const admin = user.logged_in;
+
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
     const parser = new DOMParser();
@@ -73,7 +137,10 @@ function open_project_popup(id, template, project_list) {
       popup.querySelector("#project-container-ytimg").classList.add("show");
       popup
         .querySelector("#youtube-image")
-        .setAttribute("src", `uploads/project/${project.id}/${headerpic.jpg}`);
+        .setAttribute(
+          "src",
+          `uploads / project / ${project.id} / ${headerpic.jpg}`,
+        );
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       popup.querySelector("#project-container-ytframe").classList.add("show");
@@ -248,4 +315,51 @@ function close_project_popup() {
     container.classList.remove("show");
     container.classList.add("hide");
   });
+}
+
+function change_delete_popup_visibility(can_show) {
+  const popup_containers = document.querySelectorAll(".delete-popup");
+  popup_containers.forEach((container) => {
+    container.style.display = can_show ? "flex" : "none";
+  });
+}
+
+function delete_project(id) {
+  let success = false; // Placeholder for success which will be in arrow function later
+
+  // Use flask endpoint to delete the project from filesystem
+  console.log("NOT IMPLEMENTED: Deleting project");
+
+  // Use flask endpoint to delete the project from SQL database
+
+  // Refresh page
+  if (success) location.reload();
+}
+
+function change_project_visibility(id, show) {
+  update_project_param(id, "show", show)
+    .then((response) => {
+      if (response.success) {
+        const div_click = document.querySelector(`#img-click-${id}`);
+        const image_click = document.querySelector(`#display-pic-${id}`);
+        const delete_text = document.querySelector(`#delete-button-${id}`);
+
+        if (show) {
+          div_click.classList.remove("div-hidden");
+          image_click.classList.remove("img-hidden");
+          delete_text.innerText = "Delete";
+        } else {
+          div_click.classList.add("div-hidden");
+          image_click.classList.add("img-hidden");
+          delete_text.innerText = "Unhide";
+        }
+
+        change_delete_popup_visibility(false);
+      } else {
+        console.log("ERROR: Could not hide project");
+      }
+    })
+    .catch((error) => {
+      console.log(`ERROR: ${error}`);
+    });
 }

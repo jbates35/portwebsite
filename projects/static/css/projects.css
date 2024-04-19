@@ -164,22 +164,6 @@ div#contentbg1 {
   font-family: "open_sanslight";
 }
 
-.edit-box {
-  position: absolute;
-  color: #bbbbbb;
-  font-family: "open_sansbold";
-  top: 0;
-  left: 0;
-  text-align: center;
-  width: 100%;
-  background-color: rgba(255, 100, 100, 0.9);
-  z-index: 15;
-}
-
-.edit-box a {
-  color: white;
-}
-
 .link-div-1 {
   position: absolute;
   top: 0;

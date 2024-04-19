@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block head %}
+    <link rel="stylesheet"
+          href="{{ url_for('register.static', filename='css/session.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('register.static', filename='css/register.css') }}" />
+{% endblock %}
+{% block content %}
+    <div id="content">
+        <div id="form-title">Register user:</div>
+        <div id="form-content">
+            <form method="POST", action="">
+                {{ form.hidden_tag() }}
+                {{ form.username.label }} {{ form.username }}
+                <br>
+                {{ form.password.label }} {{ form.password }}
+                <br>
+                {{ form.email.label }} {{ form.email }}
+                <br>
+                <br>
+                {{ form.submit() }}
+            </form>
+        </div>
+    </div>
+    <script type="module"
+            src="{{ url_for('register.static', filename='js/session.js') }}"></script>
+{% endblock %}

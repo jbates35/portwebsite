@@ -142,7 +142,7 @@
 }
 
 /* Adjustments for when screen is small (likely phones) */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   .section-div.left {
     grid-template-areas:
       "b c"
@@ -163,19 +163,12 @@
     display: none;
   }
 
-  .section-div.left .section-image-div {
+  .section-div .section-image-div {
     justify-content: center;
   }
 
-  .section-div.right .section-image-div {
-    justify-content: center;
-  }
-
-  .section-div.left .section-content-div {
+  .section-div .section-content-div {
     padding-left: 0px;
-  }
-
-  .section-div.right .section-content-div {
     padding-right: 0px;
   }
 

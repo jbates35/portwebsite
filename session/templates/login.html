@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block head %}
+    <link rel="stylesheet"
+          href="{{ url_for('login.static', filename='css/session.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('login.static', filename='css/login.css') }}" />
+{% endblock %}
+{% block content %}
+    <div id="content">
+        <div id="subcontent">
+            <form method="POST", action="">
+                {{ form.hidden_tag() }}
+                <div class="form-subtitle">User:</div>
+                {{ form.username }}
+                <br>
+                <div class="form-subtitle">Pass:</div>
+                {{ form.password }}
+                <br>
+                <br>
+                <div id="form-submit-div">{{ form.submit() }}</div>
+            </form>
+            {{ msg }}
+        </div>
+    </div>
+{% endblock %}
