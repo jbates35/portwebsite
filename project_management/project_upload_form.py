@@ -1,46 +1,44 @@
-from flask_wtf import FlaskForm
+from wtforms import (
+    DateField,
+    FieldList,
+    Form,
+    FormField,
+    StringField,
+    TextAreaField,
+    validators,
+    SubmitField
+)
+from flask import current_app
 from flask_wtf.file import FileField
-from flask_uploads import UploadSet, IMAGES
+from flask_wtf import FlaskForm
+from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 
-from wtforms import DateField, StringField, SubmitField, TextAreaField, SelectField, validators, FieldList, FormField
-from werkzeug.utils import secure_filename
+# TAken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
+photos = UploadSet('photos', IMAGES)
+configure_uploads(current_app, photos)
+patch_request_class(current_app)  # Set maximum file size, default is 16MB
 
 
-class FileField(FlaskForm):
+class FileUpload(Form):
     file_name = StringField()
     file_field = FileField()
 
 
-class ProjectForm(FlaskForm):
-    # file_fields = [(
-    #     StringField(f"File {i} Name", [validators.Length(max=25)]),
-    #     FileField(f"File {i} Upload")
-    # ) for i in range(3)]
+class ImageForm(Form):
+    image_file = FileField()
+    image_description = TextAreaField()
 
-    file_fields = FieldList(FormField(FileField), min_entries=3, max_entries=3)
+
+class ProjectForm(FlaskForm):
+    file_fields = FieldList(FormField(FileUpload),
+                            min_entries=3, max_entries=3)
+    image_fields = FieldList(FormField(ImageForm),
+                             min_entries=6, max_entries=6)
 
     title_field = StringField("Project Title", [validators.Length(max=25)])
     date_field = DateField("Project Date")
-
-    image_fields = []
-
-    # def __init__(self, project_id=None):
-    #     if project_id is not None:
-    #         raise NotImplementedError
-    #
-    #     super().__init__()
-
-    # date = db.Column(db.Date)
-    # description = db.Column(db.Text)
-    # title = db.Column(db.String(120), nullable=False)
-    # ylink = db.Column(db.String(80))
-    # creator = db.Column(db.String(120))
-    # planguage = db.Column(db.String(120))
-    # author = db.Column(db.Integer)
-    # uploaddate = db.Column(db.DateTime)
-    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # imgfilesuploaded = db.Column(db.Integer)
-    # imgdesc = db.Column(db.ARRAY(db.String(200)))
-    # files = db.Column(JSONB)
-    # show = db.Column(db.Boolean, nullable=False, default=True)
-    #
+    description_field = TextAreaField("Project Description")
+    youtube_link_field = StringField("Youtube link")
+    creator_field = StringField("Creator(s)")
+    programming_language_field = StringField("Programming Lanuage(s)")
+    submit = SubmitField("Submit")
