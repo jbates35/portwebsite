@@ -6,7 +6,26 @@
 {% block content %}
     <div id="content">
         {{ form.csrf_token }}
-        {{ form.file_fields() }}
+
+        <div class="form-element">
+            <label>{{form.title.label}}</label>
+            {{ form.title }}
+        </div>
+        <div class="form-element">
+            <label>{{form.date.label}}</label>
+            {{ form.date }}
+        </div>
+        <div class="form-element">
+            <label>{{form.creator.label}}</label>
+            {{ form.creator }}
+        </div>
+        <div class="form-element">
+            <label>{{form.youtube_link.label}}</label>
+            {{ form.youtube_link }}
+            <br>
+            <span class="tab"><i>{{ form.siphon_youtube_link.label }}</i></span>
+            {{ form.siphon_youtube_link }}
+        </div>
     </div>
     <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>
 {% endblock %}

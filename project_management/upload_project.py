@@ -9,9 +9,12 @@ upload_project_bp = Blueprint(
 
 @upload_project_bp.route("/")
 def upload_project():
-    project_form = ProjectForm()
+    form = ProjectForm()
+
+    if form.validate_on_submit():
+        pass
 
     return render_template(
         "proj_management.html",
-        form=project_form
+        form=form
     )
