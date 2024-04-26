@@ -6,25 +6,43 @@
 {% block content %}
     <div id="content">
         {{ form.csrf_token }}
-
         <div class="form-element">
-            <label>{{form.title.label}}</label>
+            <label>{{ form.title.label }}</label>
             {{ form.title }}
         </div>
         <div class="form-element">
-            <label>{{form.date.label}}</label>
+            <label>{{ form.date.label }}</label>
             {{ form.date }}
         </div>
         <div class="form-element">
-            <label>{{form.creator.label}}</label>
+            <label>{{ form.creator.label }}</label>
             {{ form.creator }}
         </div>
         <div class="form-element">
-            <label>{{form.youtube_link.label}}</label>
+            <label>{{ form.youtube_link.label }}</label>
             {{ form.youtube_link }}
             <br>
             <span class="tab"><i>{{ form.siphon_youtube_link.label }}</i></span>
             {{ form.siphon_youtube_link }}
+        </div>
+        <div class="form-element">
+            <br />
+            <label>{{ form.display_image.label }}</label>
+            <span class="tab">
+                {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
+                <button id="empty-disp-img" class="emptyform">☒</button>
+            </span>
+            <br />
+            <div id="preview">
+                <span class="tab">
+                    <img id="preview-img"
+                         alt="placeholder"
+                         src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                         class="preview-img" />
+                </span>
+            </div>
+            <div class="form-element projectc" id="file-up-div"></div>
+            <!-- NOTE: ID changed from fileupdiv -->
         </div>
     </div>
     <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>

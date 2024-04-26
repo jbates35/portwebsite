@@ -38,6 +38,8 @@ class ProjectForm(FlaskForm):
 
     title = StringField("Project Title", [validators.Length(max=25)])
     date = DateField("Project Date")
+    display_image = FileField("Display Image", render_kw={
+                              'class': 'filec', 'id': 'img-file-id'})
     description = TextAreaField("Project Description")
     youtube_link = StringField("Youtube Link")
     siphon_youtube_link = BooleanField("Siphon Youtube Link")
