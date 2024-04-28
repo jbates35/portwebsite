@@ -20,7 +20,8 @@ photos = UploadSet('photos', IMAGES)
 
 
 class FileUpload(Form):
-    file_name = StringField()
+    description = StringField()
+    name = StringField()
     file = FileField()
 
 

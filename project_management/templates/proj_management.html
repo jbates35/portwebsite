@@ -41,7 +41,21 @@
                          class="preview-img" />
                 </span>
             </div>
-            <div class="form-element projectc" id="file-up-div"></div>
+            <div class="form-element projectc" id="file-up-div">
+                <label>Project files to upload</label>
+                <div class="file-flex">
+                    {% for file in form.files %}
+                        <div class="file-child" id="file-child-div-{{ loop.index-1 }}">
+                            <button class="file-delete-button" id="file-delete-button-{{ loop.index-1 }}">☒</button>
+                            <!-- <label>File 1 uploaded</label>
+                            <button class="fileUndoButton noShow" id="fileUndoButton1_id">Undo</button> -->
+                            <label>{{ file.description.label }}</label>
+                            {{ file.description }}
+                            {{ file.file }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <!-- NOTE: ID changed from fileupdiv -->
         </div>
     </div>
