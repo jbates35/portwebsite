@@ -45,5 +45,5 @@ class ProjectForm(FlaskForm):
     youtube_link = StringField("Youtube Link")
     siphon_youtube_link = BooleanField("Siphon Youtube Link")
     creator = StringField("Creator(s)")
-    programming_language = StringField("Programming Lanuage(s)")
+    programming_language = StringField("Programming Language(s)")
     submit = SubmitField("Submit")
