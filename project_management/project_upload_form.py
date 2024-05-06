@@ -21,13 +21,12 @@ photos = UploadSet('photos', IMAGES)
 
 class FileUpload(Form):
     description = StringField()
-    name = StringField()
     file = FileField()
 
 
 class ImageForm(Form):
-    image_file = FileField()
-    image_description = TextAreaField()
+    description = TextAreaField(render_kw={'class': 'img-file-desc'})
+    file = FileField(render_kw={'class': 'iup file-c'})
 
 
 class ProjectForm(FlaskForm):
@@ -41,7 +40,8 @@ class ProjectForm(FlaskForm):
     date = DateField("Project Date")
     display_image = FileField("Display Image", render_kw={
                               'class': 'filec', 'id': 'img-file-id'})
-    description = TextAreaField("Project Description")
+    description = TextAreaField("Project Description", render_kw={
+                                'id': 'proj-description'})
     youtube_link = StringField("Youtube Link")
     siphon_youtube_link = BooleanField("Siphon Youtube Link")
     creator = StringField("Creator(s)")

@@ -25,39 +25,80 @@
             <span class="tab"><i>{{ form.siphon_youtube_link.label }}</i></span>
             {{ form.siphon_youtube_link }}
         </div>
-        <div class="form-element">
-            <br />
-            <label>{{ form.display_image.label }}</label>
-            <span class="tab">
-                {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
-                <button id="empty-disp-img" class="emptyform">☒</button>
+
+        <!-- Start of display image content -->
+        <br />
+        <label>{{ form.display_image.label }}</label>
+        <span class="tab" id="profile-img-span">
+            {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
+            <button id="empty-disp-img" class="emptyform">☒</button>
+        </span>
+        <div id="disp-preview-img">
+            <span class="disp-preview-img tab">
+                <img id="preview-img"
+                     alt="placeholder"
+                     src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                />
             </span>
-            <br />
-            <div id="preview">
-                <span class="tab">
-                    <img id="preview-img"
-                         alt="placeholder"
-                         src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
-                         class="preview-img" />
-                </span>
-            </div>
-            <div class="form-element projectc" id="file-up-div">
-                <label>Project files to upload</label>
-                <div class="file-flex">
-                    {% for file in form.files %}
-                        <div class="file-child" id="file-child-div-{{ loop.index-1 }}">
-                            <button class="file-delete-button" id="file-delete-button-{{ loop.index-1 }}">☒</button>
-                            <!-- <label>File 1 uploaded</label>
-                            <button class="fileUndoButton noShow" id="fileUndoButton1_id">Undo</button> -->
-                            <label>{{ file.description.label }}</label>
-                            {{ file.description }}
-                            {{ file.file }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <!-- NOTE: ID changed from fileupdiv -->
         </div>
+        <!-- end of display image content" -->
+
+        <!-- Start of file upload content -->
+        <br />
+        <label>Project files to upload</label>
+        <div class="file-flex">
+            {% for file in form.files %}
+                <div class="file-child" id="file-child-div-{{ loop.index-1 }}">
+                    <button class="file-delete-button" id="file-delete-button-{{ loop.index-1 }}">☒</button>
+                    <label>{{ file.description.label }}</label>
+                    {{ file.form.description }}
+                    {{ file.file }}
+                </div>
+            {% endfor %}
+        </div>
+        <!-- end of file upload content -->
+
+        <!-- Start of image upload content -->
+        <br />
+        <label>Image files to upload</label>
+        <div class="img-parent-1">
+            {% for image in form.images %}
+                <div class="child-box-1" id="child-img-box-{{ loop.index-1 }}">
+                    <div class="inner-child-box-1">
+                        {{ loop.index }}:
+                        {{ image.form.file }}
+                    </div>
+                    <div class="inner-child-box-1">
+                        <img id="preview-{{ loop.index-1 }}"
+                             alt="placeholder"
+                             src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                             class="preview-f-img" />
+                        <span style="line-height: 50px; vertical-align:top">
+                            <button id="empty-image_id_{{ loop.index-1 }}" class="emptyForm">☒</button>
+                        </span>
+                    </div>
+                    {{ image.form.description }}
+                </div>
+            {% endfor %}
+        </div>
+        <!-- end of image upload content -->
+
+        <!-- Miscellaneous rest-of-the-stuff -->
+        <div class="form-element">
+            <label>{{ form.programming_language.label }}</label>
+            {{ form.programming_language }}
+        </div>
+
+        <div class="form-element">
+            <label>{{ form.description.label }}</label>
+            <div class="tab">{{form.description}}</div>
+        </div>
+        <!-- end of miscellaneous rest-of-the-stuff -->
+
+        <div class="form-element" id="submit-div">
+            {{form.submit}}
+        </div>
+
     </div>
     <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>
 {% endblock %}
