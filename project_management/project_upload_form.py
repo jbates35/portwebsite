@@ -47,3 +47,6 @@ class ProjectForm(FlaskForm):
     creator = StringField("Creator(s)")
     programming_language = StringField("Programming Language(s)")
     submit = SubmitField("Submit")
+
+    def set_default_values(self, project_info):
+        pass

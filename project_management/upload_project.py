@@ -6,6 +6,10 @@ upload_project_bp = Blueprint(
     "upload_project", __name__, template_folder="templates", static_folder="static"
 )
 
+edit_project_bp = Blueprint(
+    "edit_project", __name__, template_folder="templates", static_folder="static"
+)
+
 
 @upload_project_bp.route("/")
 def upload_project():
@@ -16,5 +20,23 @@ def upload_project():
 
     return render_template(
         "proj_management.html",
-        form=form
+        form=form,
+        edit=False
+    )
+
+
+@edit_project_bp.route("/")
+def edit_project(project_id):
+    form = ProjectForm()
+
+    form.set_default_values()
+
+    if form.validate_on_submit():
+        pass
+
+    return render_template(
+        "proj_management.html",
+        form=form,
+        edit=True,
+        project_id=project_id
     )
