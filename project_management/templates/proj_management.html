@@ -5,101 +5,109 @@
 {% endblock %}
 {% block content %}
     <div id="content">
-        {{ form.csrf_token }}
-        <div class="form-element">
-            <label>{{ form.title.label }}</label>
-            {{ form.title }}
-        </div>
-        <div class="form-element">
-            <label>{{ form.date.label }}</label>
-            {{ form.date }}
-        </div>
-        <div class="form-element">
-            <label>{{ form.creator.label }}</label>
-            {{ form.creator }}
-        </div>
-        <div class="form-element">
-            <label>{{ form.youtube_link.label }}</label>
-            {{ form.youtube_link }}
-            <br>
-            <span class="tab"><i>{{ form.siphon_youtube_link.label }}</i></span>
-            {{ form.siphon_youtube_link }}
-        </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.csrf_token }}
 
-        <!-- Start of display image content -->
-        <br />
-        <label>{{ form.display_image.label }}</label>
-        <span class="tab" id="profile-img-span">
-            {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
-            <button id="empty-disp-img" class="emptyform">☒</button>
-        </span>
-        <div id="disp-preview-img">
-            <span class="disp-preview-img tab">
-                <img id="preview-img"
-                     alt="placeholder"
-                     src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
-                />
+            <!-- Titles and other header data -->
+            <div class="form-element">
+                <label>{{ form.title.label }}</label>
+                {{ form.title }}
+            </div>
+            <div class="form-element">
+                <label>{{ form.date.label }}</label>
+                {{ form.date }}
+            </div>
+            <div class="form-element">
+                <label>{{ form.creator.label }}</label>
+                {{ form.creator }}
+            </div>
+            <div class="form-element">
+                <label>{{ form.youtube_link.label }}</label>
+                {{ form.youtube_link }}
+                <br>
+                <span class="tab"><i>{{ form.siphon_youtube_link.label }}</i></span>
+                {{ form.siphon_youtube_link }}
+            </div>
+            <!-- end of titles and other header data -->
+
+            <!-- Start of display image content -->
+            <br />
+            <label>{{ form.display_image.label }}</label>
+            <span class="tab" id="profile-img-span">
+                {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
+                <button id="empty-disp-img" class="emptyform">☒</button>
             </span>
-        </div>
-        <!-- end of display image content" -->
+            <div id="disp-preview-img">
+                <span class="disp-preview-img tab">
+                    <img id="preview-img"
+                         alt="placeholder"
+                         src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                    />
+                </span>
+            </div>
+            <!-- end of display image content" -->
 
-        <!-- Start of file upload content -->
-        <br />
-        <label>Project files to upload</label>
-        <div class="file-flex">
-            {% for file in form.files %}
-                <div class="file-child" id="file-child-div-{{ loop.index-1 }}">
-                    <button class="file-delete-button" id="file-delete-button-{{ loop.index-1 }}">☒</button>
-                    <label>{{ file.description.label }}</label>
-                    {{ file.form.description }}
-                    {{ file.file }}
-                </div>
-            {% endfor %}
-        </div>
-        <!-- end of file upload content -->
+            <!-- Start of file upload content -->
+            <br />
 
-        <!-- Start of image upload content -->
-        <!-- TODO: Must shorten input file source name when a huge filename gets uploaded here (pushing the box to be really wide) -->
-        <br />
-        <label>Image files to upload</label>
-        <div class="img-parent-1">
-            {% for image in form.images %}
-                <div class="child-box-1" id="child-img-box-{{ loop.index-1 }}">
-                    <div class="inner-child-box-1">
-                        {{ loop.index }}:
-                        {{ image.form.file }}
+            <!-- TODO: create button for "delete file" when editing -->
+            <!-- TODO: create div for file which has already been uploaded which is not a form box but instead a filename or a link to a file -->
+            <label>Project files to upload</label>
+            <div class="file-flex">
+                {% for file in form.files %}
+                    <div class="file-child" id="file-child-div-{{ loop.index-1 }}">
+                        <button class="file-delete-button" id="file-delete-button-{{ loop.index-1 }}">☒</button>
+                        <label>{{ file.description.label }}</label>
+                        {{ file.form.description }}
+                        {{ file.file }}
                     </div>
-                    <div class="inner-child-box-1">
-                        <img id="preview-{{ loop.index-1 }}"
-                             alt="placeholder"
-                             src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
-                             class="preview-f-img" />
-                        <span style="line-height: 50px; vertical-align:top">
-                            <button id="empty-image_id_{{ loop.index-1 }}" class="emptyForm">☒</button>
-                        </span>
+                {% endfor %}
+            </div>
+            <!-- end of file upload content -->
+
+            <!-- Start of image upload content -->
+            <!-- TODO: Must shorten input file source name when a huge filename gets uploaded here (pushing the box to be really wide) -->
+            <br />
+            <label>Image files to upload</label>
+            <div class="img-parent-1">
+                {% for image in form.images %}
+                    <div class="child-box-1" id="child-img-box-{{ loop.index-1 }}">
+                        <div class="inner-child-box-1">
+                            {{ loop.index }}:
+                            {{ image.form.file }}
+                        </div>
+                        <div class="inner-child-box-1">
+                            <img id="preview-{{ loop.index-1 }}"
+                                 alt="placeholder"
+                                 src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                                 class="preview-f-img" />
+                            <span style="line-height: 50px; vertical-align:top">
+                                <button id="empty-image_id_{{ loop.index-1 }}" class="emptyForm">☒</button>
+                            </span>
+                        </div>
+                        {{ image.form.description }}
                     </div>
-                    {{ image.form.description }}
-                </div>
-            {% endfor %}
-        </div>
-        <!-- end of image upload content -->
+                {% endfor %}
+            </div>
+            <!-- end of image upload content -->
 
-        <!-- Miscellaneous rest-of-the-stuff -->
-        <div class="form-element">
-            <label>{{ form.programming_language.label }}</label>
-            {{ form.programming_language }}
-        </div>
+            <!-- Miscellaneous rest-of-the-stuff -->
+            <div class="form-element">
+                <label>{{ form.programming_language.label }}</label>
+                {{ form.programming_language }}
+            </div>
 
-        <div class="form-element">
-            <label>{{ form.description.label }}</label>
-            <div class="tab">{{form.description}}</div>
-        </div>
-        <!-- end of miscellaneous rest-of-the-stuff -->
+            <div class="form-element">
+                <label>{{ form.description.label }}</label>
+                <div class="tab">{{form.description}}</div>
+            </div>
+            <!-- end of miscellaneous rest-of-the-stuff -->
 
-        <div class="form-element" id="submit-div">
-            {{form.submit}}
-        </div>
+            <div class="form-element" id="submit-div">
+                {{form.submit() }}
+            </div>
 
+        </form>
     </div>
     <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>
 {% endblock %}
