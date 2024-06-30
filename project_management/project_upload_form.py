@@ -14,6 +14,9 @@ from flask_wtf.file import FileField
 from flask_wtf import FlaskForm
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
+# For parsing dates
+from datetime import datetime
+
 # TAken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
 photos = UploadSet('photos', IMAGES)
 # configure_uploads(current_app, photos)
@@ -49,4 +52,10 @@ class ProjectForm(FlaskForm):
     submit = SubmitField("Submit")
 
     def set_default_values(self, project_info):
-        pass
+        self.title.data = project_info['title']
+
+        # Parse date from string format to date format
+        date_str = project_info['date']
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+        self.date.data = date_obj
+

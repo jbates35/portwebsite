@@ -13,12 +13,12 @@ edit_project_bp = Blueprint(
 # TODO: Make sure to encapsulate these in admin privileges
 
 
-@upload_project_bp.route("/upload")
+@upload_project_bp.route("/upload", methods=["GET", "POST"])
 def upload_project():
     form = ProjectForm()
 
     if form.validate_on_submit():
-        pass
+        print(f"\n {form.date.data} \n {type(form.date.data)} \n")
 
     return render_template(
         "proj_management.html",
@@ -27,13 +27,13 @@ def upload_project():
     )
 
 
-@edit_project_bp.route("/edit/<int:project_id>")
+@edit_project_bp.route("/edit/<int:project_id>", methods=["GET", "POST"])
 def edit_project(project_id):
     form = ProjectForm()
 
     project_info = get_single_project(project_id)
 
-    form.set_default_values()
+    form.set_default_values(project_info=project_info)
 
     if form.validate_on_submit():
         pass
