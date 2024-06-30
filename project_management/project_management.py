@@ -10,8 +10,10 @@ edit_project_bp = Blueprint(
     "edit_project", __name__, template_folder="templates", static_folder="static"
 )
 
+# TODO: Make sure to encapsulate these in admin privileges
 
-@upload_project_bp.route("/")
+
+@upload_project_bp.route("/upload")
 def upload_project():
     form = ProjectForm()
 
@@ -25,9 +27,11 @@ def upload_project():
     )
 
 
-@edit_project_bp.route("/")
+@edit_project_bp.route("/edit/<int:project_id>")
 def edit_project(project_id):
     form = ProjectForm()
+
+    project_info = get_single_project(project_id)
 
     form.set_default_values()
 
