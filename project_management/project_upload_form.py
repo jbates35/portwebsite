@@ -52,10 +52,14 @@ class ProjectForm(FlaskForm):
     submit = SubmitField("Submit")
 
     def set_default_values(self, project_info):
+        # Easy stuff
         self.title.data = project_info['title']
+        self.description.data = project_info['description']
+        self.creator.data = project_info['creator']
+        self.programming_language.data = project_info['programming_language']
+        self.youtube_link.data = project_info['youtube_link']
 
         # Parse date from string format to date format
         date_str = project_info['date']
         date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
         self.date.data = date_obj
-
