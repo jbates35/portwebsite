@@ -1,3 +1,4 @@
+from typing import List
 from wtforms import (
     DateField,
     FieldList,
@@ -63,3 +64,8 @@ class ProjectForm(FlaskForm):
         date_str = project_info['date']
         date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
         self.date.data = date_obj
+
+        # Update any image description
+        descriptions: List[str] = project_info['imgdesc']
+        for sql_img_desc, form_img in zip(descriptions, self.images):
+            form_img.form.description.data = sql_img_desc

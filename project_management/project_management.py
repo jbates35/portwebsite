@@ -14,26 +14,28 @@ edit_project_bp = Blueprint(
 
 
 @upload_project_bp.route("/upload", methods=["GET", "POST"])
-def upload_project():
-    form = ProjectForm()
-
-    if form.validate_on_submit():
-        print(f"\n {form.date.data} \n {type(form.date.data)} \n")
-
-    return render_template(
-        "proj_management.html",
-        form=form,
-        edit=False
-    )
-
-
 @edit_project_bp.route("/edit/<int:project_id>", methods=["GET", "POST"])
-def edit_project(project_id):
+def manage_project(project_id=None):
     form = ProjectForm()
 
-    project_info = get_single_project(project_id)
+    # If project_is it not None, that means we are editing a project
+    if project_id is not None:
+        project_info = get_single_project(project_id)
 
-    form.set_default_values(project_info=project_info)
+        # Editing project fields now
+        # First set default values in the form
+        form.set_default_values(project_info=project_info)
+
+        # Now pass any images being passed through
+        # Project pictures
+
+        # Now deal with any current file uploads
+
+    else:
+        # When uploading a new project . . .
+        # We will check project_info against None in jinja to see if we need to alter fields in jinja
+
+        project_info = None
 
     if form.validate_on_submit():
         pass
@@ -41,6 +43,5 @@ def edit_project(project_id):
     return render_template(
         "proj_management.html",
         form=form,
-        edit=True,
-        project_id=project_id
+        project=project_info,
     )

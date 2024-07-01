@@ -34,11 +34,21 @@
 }
 
 .empty-form {
-  border: solid 1px black;
+  border: solid 1px #662;
   width: 40px;
   font-size: 14px;
   border-radius: 5px;
   margin: 0;
+  background-color: #dd5;
+}
+
+.delete-img {
+  border: solid 1px #040;
+  width: 40px;
+  font-size: 14px;
+  border-radius: 5px;
+  margin: 0;
+  background-color: #090;
 }
 
 .file-delete-button {

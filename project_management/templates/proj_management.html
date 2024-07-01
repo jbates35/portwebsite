@@ -8,6 +8,9 @@
                 <form method="POST" action="" enctype="multipart/form-data">
                         {{ form.csrf_token }}
                         <!-- Titles and other header data -->
+                        <!-- NOTE: Example of if not none test
+                        {% if project is not none %}aweoifjaweoifweaa{% endif %} 
+                        -->
                         <div class="form-element">
                                 <label>{{ form.title.label }}</label>
                                 {{ form.title }}
@@ -33,13 +36,38 @@
                         <label>{{ form.display_image.label }}</label>
                         <span class="tab" id="profile-img-span">
                                 {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
-                                <button id="empty-disp-img" class="emptyform">☒</button>
+                                <!-- NOTE: This button refreshes the URL (like, submits) ... needs to not.
+                                        but also needs to remove the image and also load the old image if it's editing mode -->
+                                <button id="empty-disp-img" class="empty-form">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             height="20px"
+                                             viewBox="0 -960 960 960"
+                                             width="20px"
+                                             fill="#000">
+                                                <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
+                                        </svg>
+                                </button>
+                                {% if project is not none %}
+                                        <button id="delete-disp-img" class="delete-img">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     height="20px"
+                                                     viewBox="0 -960 960 960"
+                                                     width="20px"
+                                                     fill="#FFF">
+                                                        <path d="M360-200q-20 0-37.5-9T294-234L120-480l174-246q11-16 28.5-25t37.5-9h400q33 0 56.5 23.5T840-680v400q0 33-23.5 56.5T760-200H360Zm400-80v-400 400Zm-400 0h400v-400H360L218-480l142 200Zm96-40 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Z" />
+                                                </svg>
+                                        </button>
+                                {% endif %}
                         </span>
                         <div id="disp-preview-img">
                                 <span class="disp-preview-img tab">
-                                        <img id="preview-img"
-                                             alt="placeholder"
-                                             src="{{ url_for('upload_project.static', filename='img/transspec.png') }}" />
+                                        {% if project is not none %}
+                                                <img id="preview-img"
+                                                     src="../../uploads/project/{{ project.id }}/displaypic.jpg" />
+                                        {% else %}
+                                                <img id="preview-img"
+                                                     src="{{ url_for('upload_project.static', filename='img/transspec.png') }}" />
+                                        {% endif %}
                                 </span>
                         </div>
                         <!-- end of display image content" -->
@@ -50,8 +78,8 @@
                         <label>Project files to upload</label>
                         <div class="file-flex">
                                 {% for file in form.files %}
-                                        <div class="file-child" id="file-child-div-{{ loop.index-1 }}">
-                                                <button class="file-delete-button" id="file-delete-button-{{ loop.index-1 }}">☒</button>
+                                        <div class="file-child" id="file-child-div-{{ loop.index0 }}">
+                                                <button class="file-delete-button" id="file-delete-button-{{ loop.index0 }}">☒</button>
                                                 <label>{{ file.description.label }}</label>
                                                 {{ file.form.description }}
                                                 {{ file.file }}
@@ -65,18 +93,46 @@
                         <label>Image files to upload</label>
                         <div class="img-parent-1">
                                 {% for image in form.images %}
-                                        <div class="child-box-1" id="child-img-box-{{ loop.index-1 }}">
+                                        <div class="child-box-1" id="child-img-box-{{ loop.index0 }}">
                                                 <div class="inner-child-box-1">
                                                         {{ loop.index }}:
                                                         {{ image.form.file }}
                                                 </div>
                                                 <div class="inner-child-box-1">
-                                                        <img id="preview-{{ loop.index-1 }}"
-                                                             alt="placeholder"
-                                                             src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
-                                                             class="preview-f-img" />
+                                                        {% if project is not none and loop.index0 < project.imgfilesuploaded %}
+                                                                <img id="preview-{{ loop.index0 }}"
+                                                                     alt="placeholder"
+                                                                     src="../../uploads/project/{{ project.id }}/img/small/{{ loop.index }}.jpg"
+                                                                     class="preview-f-img" />
+                                                        {% else %}
+                                                                <img id="preview-{{ loop.index0 }}"
+                                                                     alt="placeholder"
+                                                                     src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                                                                     class="preview-f-img" />
+                                                        {% endif %}
                                                         <span style="line-height: 50px; vertical-align:top">
-                                                                <button id="empty-image_id_{{ loop.index-1 }}" class="emptyForm">☒</button>
+                                                                <!-- NOTE: This button refreshes the URL (like, submits) ... needs to not.
+                                                                        but also needs to remove the image and also load the old image if it's editing mode -->
+                                                                <button id="empty-image_id_{{ loop.index0 }}" class="empty-form">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             height="20px"
+                                                                             viewBox="0 -960 960 960"
+                                                                             width="20px"
+                                                                             fill="#000">
+                                                                                <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
+                                                                        </svg>
+                                                                </button>
+                                                                {% if project is not none and loop.index0 < project.imgfilesuploaded %}
+                                                                        <button id="delete-image_id_{{ loop.index0 }}" class="delete-img">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                     height="20px"
+                                                                                     viewBox="0 -960 960 960"
+                                                                                     width="20px"
+                                                                                     fill="#FFF">
+                                                                                        <path d="M360-200q-20 0-37.5-9T294-234L120-480l174-246q11-16 28.5-25t37.5-9h400q33 0 56.5 23.5T840-680v400q0 33-23.5 56.5T760-200H360Zm400-80v-400 400Zm-400 0h400v-400H360L218-480l142 200Zm96-40 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Z" />
+                                                                                </svg>
+                                                                        </button>
+                                                                {% endif %}
                                                         </span>
                                                 </div>
                                                 {{ image.form.description }}
