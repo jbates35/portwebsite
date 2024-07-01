@@ -14,7 +14,7 @@ from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, get_user
 from .sql.sql_post import update_project_param_bp
 
 
-# from .func_test.func_test import test_func_bp
+from .func_test.func_test import test_func_bp
 
 
 def get_sql_config(file):
@@ -58,7 +58,7 @@ def create_app():
         return get_user(user_id)
 
     # TEST DELETE LATER
-    # app.register_blueprint(test_func_bp)
+    app.register_blueprint(test_func_bp, url_prefix="/sql_merge")
 
     # Register pages - blueprints
     app.register_blueprint(projects_bp, url_prefix="/projects")

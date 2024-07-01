@@ -8,8 +8,35 @@ test_func_bp = Blueprint("test_func", __name__)
 # TODO DELETE THIS LATER
 
 
-@test_func_bp.route("/func_test")
+@test_func_bp.route("/")
 def test_func():
+    return jsonify(merge_img_desc())
+
+
+def merge_img_desc():
+    ret_list = []
+
+    for project in get_projects():
+        project_data = get_single_project(project["id"])
+        image_count = project_data["imgfilesuploaded"]
+
+        project_images = []
+
+        for image_name, image_desc in zip(range(1, image_count+1), project_data["imgdesc"]):
+            project_images.append({
+                "file": f"{image_name}.jpg",
+                "description": image_desc
+            })
+
+        update_project_param(
+            project_data["id"], "project_images", project_images)
+        ret_list.append(project_images)
+        print(
+            f"Updating project {project_data['id']} with project images: {project_images}")
+    return ret_list
+
+
+def merge_files_sql():
     files = None
 
     projects = get_projects()
