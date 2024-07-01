@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flask import Blueprint, jsonify
 from flask_login import current_user
 
@@ -71,7 +73,12 @@ def get_project_list_bp():
     return jsonify(projects)
 
 
-def get_user(id: int = None, username: str = None, email: str = None) -> User | None:  # type: ignore
+# type: ignore
+def get_user(
+    id: Optional[int] = None,
+    username: Optional[str] = None,
+    email: Optional[str] = None
+) -> Optional[User]:
     """Get user from the sql database by any set parameter
     Args:
         id (int): User id
