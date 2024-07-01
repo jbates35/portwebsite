@@ -56,8 +56,8 @@ class ProjectForm(FlaskForm):
         self.title.data = project_info['title']
         self.description.data = project_info['description']
         self.creator.data = project_info['creator']
-        self.programming_language.data = project_info['programming_language']
-        self.youtube_link.data = project_info['youtube_link']
+        self.programming_language.data = project_info['planguage']
+        self.youtube_link.data = project_info['ylink']
 
         # Parse date from string format to date format
         date_str = project_info['date']
