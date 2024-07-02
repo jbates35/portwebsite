@@ -14,6 +14,9 @@ def test_func():
 
 
 def merge_img_desc():
+    """
+    DEPRECATED - imgfilesuploaded and imgdesc are no longer a thing
+    """
     ret_list = []
 
     for project in get_projects():

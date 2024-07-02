@@ -11,7 +11,7 @@ import {
 } from "./section_transitions.js";
 import { check_user } from "/static/js/session.js";
 
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
   // Load the project popup template
   const popup_container = document.getElementById(`project-container-body`);
   const popup_template = popup_container.innerHTML.trim();
@@ -135,12 +135,10 @@ async function open_project_popup(id, template, project_list) {
     if (project.ylink == "") {
       // Show the preview image and set its source to a holding image
       popup.querySelector("#project-container-ytimg").classList.add("show");
+      // TODO: This line is obviously wrong. What the heck??? (headerpic)
       popup
         .querySelector("#youtube-image")
-        .setAttribute(
-          "src",
-          `uploads / project / ${project.id} / ${headerpic.jpg}`,
-        );
+        .setAttribute("src", `uploads/project/${project.id}/displaypic.jpg`);
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       popup.querySelector("#project-container-ytframe").classList.add("show");
@@ -186,8 +184,9 @@ async function open_project_popup(id, template, project_list) {
     const image_bar = popup.querySelector("#image-preview-bar");
     const image_holder = popup.querySelector("#image-holder");
     const image_desc = popup.querySelector("#image-desc");
+    const total_images = project.project_images.length;
 
-    if (project.imgfilesuploaded === 0) {
+    if (!project.project_images || total_images === 0) {
       // Get rid of contents as there are no images found
       icontainer.innerHTML = "";
 
@@ -198,13 +197,13 @@ async function open_project_popup(id, template, project_list) {
       icontainer.appendChild(image_error);
     } else {
       // Note for self for later, the following is a range based loop
-      [...Array(project.imgfilesuploaded).keys()].forEach((i) => {
+      project.project_images.forEach((image, i) => {
         // Create the image preview bar where people can select images
         const image_preview = document.createElement("img");
         image_preview.classList.add("image-preview-img");
         image_preview.setAttribute(
           "src",
-          `../uploads/project/${project.id}/img/small/${i + 1}.jpg`,
+          `../uploads/project/${project.id}/img/small/${image.file}`,
         );
 
         const image_preview_div = document.createElement("div");
@@ -221,7 +220,7 @@ async function open_project_popup(id, template, project_list) {
         `../uploads/project/${project.id}/img/large/1.jpg`,
       );
       image_holder.classList.add("image-1");
-      image_desc.innerText = project.imgdesc[0];
+      image_desc.innerText = project.project_images[0].description;
     }
 
     //Replace the rest of the template with the project data
@@ -250,7 +249,7 @@ async function open_project_popup(id, template, project_list) {
       section_toggle("image", true);
     });
 
-    if (project.imgfilesuploaded > 0) {
+    if (total_images > 0) {
       const image_holder = document.querySelector("#image-holder");
 
       //Assign callbacks to the image bar divs so it can change the main image
@@ -259,7 +258,11 @@ async function open_project_popup(id, template, project_list) {
       image_preview_divs.forEach((preview) => {
         const preview_id = Number(preview.id.split("-")[3]);
         preview.addEventListener("click", () => {
-          change_image(preview_id, project.id, project.imgdesc[preview_id - 1]);
+          change_image(
+            preview_id,
+            project.id,
+            project.project_images[preview_id - 1],
+          );
         });
       });
 
@@ -271,15 +274,23 @@ async function open_project_popup(id, template, project_list) {
       image_left.addEventListener("click", () => {
         const current_image = Number(image_holder.className.split("-")[1]);
         const new_image =
-          current_image === 1 ? project.imgfilesuploaded : current_image - 1;
-        change_image(new_image, project.id, project.imgdesc[new_image - 1]);
+          current_image === 1 ? total_images : current_image - 1;
+        change_image(
+          new_image,
+          project.id,
+          project.project_images[new_image - 1],
+        );
       });
 
       image_right.addEventListener("click", () => {
         const current_image = Number(image_holder.className.split("-")[1]);
         const new_image =
-          current_image === project.imgfilesuploaded ? 1 : current_image + 1;
-        change_image(new_image, project.id, project.imgdesc[new_image - 1]);
+          current_image === total_images ? 1 : current_image + 1;
+        change_image(
+          new_image,
+          project.id,
+          project.project_images[new_image - 1],
+        );
       });
     }
 
