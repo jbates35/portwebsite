@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block head %}
-    <link rel="stylesheet"
-          href="{{ url_for('logout.static', filename='css/session.css') }}" />
+        <link rel="stylesheet"
+              href="{{ url_for('logout.static', filename='css/session.css') }}" />
 {% endblock %}
 {% block content %}
-    <div id="content">
-        <i>Successfully logged out </i>
-    </div>
-    <script type="module"
-            src="{{ url_for('logout.static', filename='js/logout.js') }}"></script>
+        <div id="content">
+                <i>Successfully logged out </i>
+        </div>
+        <script type="module"
+                src="{{ url_for('logout.static', filename='js/logout.js') }}"></script>
 {% endblock %}
