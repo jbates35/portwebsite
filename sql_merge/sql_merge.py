@@ -2,13 +2,13 @@ from flask import Blueprint, render_template, jsonify
 from ..sql.sql_get import get_projects, get_single_project
 from ..sql.sql_post import update_project_param
 
-test_func_bp = Blueprint("test_func", __name__)
+sql_merge_bp = Blueprint("test_func", __name__)
 
 # NOTE PLEASE DELETE THIS LATER
 # TODO DELETE THIS LATER
 
 
-@test_func_bp.route("/")
+@sql_merge_bp.route("/")
 def test_func():
     return jsonify(merge_img_desc())
 
