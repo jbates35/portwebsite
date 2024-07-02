@@ -15,8 +15,6 @@ class Project(db.Model):
     author = db.Column(db.Integer)
     uploaddate = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    imgfilesuploaded = db.Column(db.Integer)
-    imgdesc = db.Column(db.ARRAY(db.String(200)))
     files = db.Column(JSONB)
     show = db.Column(db.Boolean, nullable=False, default=True)
     project_images = db.Column(JSONB)

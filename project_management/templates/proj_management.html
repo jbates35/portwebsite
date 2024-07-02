@@ -99,10 +99,10 @@
                                                         {{ image.form.file }}
                                                 </div>
                                                 <div class="inner-child-box-1">
-                                                        {% if project is not none and loop.index0 < project.imgfilesuploaded %}
+                                                        {% if project is not none and loop.index0 < project.project_images|length %}
                                                                 <img id="preview-{{ loop.index0 }}"
                                                                      alt="placeholder"
-                                                                     src="../../uploads/project/{{ project.id }}/img/small/{{ loop.index }}.jpg"
+                                                                     src="../../uploads/project/{{ project.id }}/img/small/{{ project.project_images[loop.index0].file }}"
                                                                      class="preview-f-img" />
                                                         {% else %}
                                                                 <img id="preview-{{ loop.index0 }}"
@@ -122,7 +122,7 @@
                                                                                 <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
                                                                         </svg>
                                                                 </button>
-                                                                {% if project is not none and loop.index0 < project.imgfilesuploaded %}
+                                                                {% if project is not none and loop.index0 < project.project_images|length %}
                                                                         <button id="delete-image_id_{{ loop.index0 }}" class="delete-img">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                                      height="20px"
