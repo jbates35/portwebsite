@@ -57,7 +57,7 @@ def create_app():
         return get_user(user_id)
 
     # TEST DELETE LATER
-    # app.register_blueprint(test_func_bp, url_prefix="/sql_merge")
+    # app.register_blueprint(sql_merge_bp, url_prefix="/sql_merge")
 
     # Register pages - blueprints
     app.register_blueprint(projects_bp, url_prefix="/projects")
