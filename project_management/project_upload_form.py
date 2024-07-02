@@ -1,46 +1,71 @@
-from flask_wtf import FlaskForm
+from typing import List
+from wtforms import (
+    DateField,
+    FieldList,
+    Form,
+    FormField,
+    StringField,
+    TextAreaField,
+    BooleanField,
+    validators,
+    SubmitField
+)
+from flask import current_app
 from flask_wtf.file import FileField
-from flask_uploads import UploadSet, IMAGES
+from flask_wtf import FlaskForm
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
-from wtforms import DateField, StringField, SubmitField, TextAreaField, SelectField, validators, FieldList, FormField
-from werkzeug.utils import secure_filename
+# For parsing dates
+from datetime import datetime
+
+# TAken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
+photos = UploadSet('photos', IMAGES)
+# configure_uploads(current_app, photos)
 
 
-class FileField(FlaskForm):
-    file_name = StringField()
-    file_field = FileField()
+class FileUpload(Form):
+    description = StringField()
+    file = FileField()
+
+
+class ImageForm(Form):
+    description = TextAreaField(render_kw={'class': 'img-file-desc'})
+    file = FileField(render_kw={'class': 'iup file-c'})
 
 
 class ProjectForm(FlaskForm):
-    # file_fields = [(
-    #     StringField(f"File {i} Name", [validators.Length(max=25)]),
-    #     FileField(f"File {i} Upload")
-    # ) for i in range(3)]
+    id = ""
+    files = FieldList(FormField(FileUpload),
+                      min_entries=3, max_entries=3)
+    images = FieldList(FormField(ImageForm),
+                       min_entries=6, max_entries=6)
 
-    file_fields = FieldList(FormField(FileField), min_entries=3, max_entries=3)
+    title = StringField("Project Title", [validators.Length(max=25)])
+    date = DateField("Project Date")
+    display_image = FileField("Display Image", render_kw={
+                              'class': 'filec', 'id': 'img-file-id'})
+    description = TextAreaField("Project Description", render_kw={
+                                'id': 'proj-description'})
+    youtube_link = StringField("Youtube Link")
+    siphon_youtube_link = BooleanField("Siphon Youtube Link")
+    creator = StringField("Creator(s)")
+    programming_language = StringField("Programming Language(s)")
+    submit = SubmitField("Submit")
 
-    title_field = StringField("Project Title", [validators.Length(max=25)])
-    date_field = DateField("Project Date")
+    def set_default_values(self, project_info):
+        # Easy stuff
+        self.title.data = project_info['title']
+        self.description.data = project_info['description']
+        self.creator.data = project_info['creator']
+        self.programming_language.data = project_info['planguage']
+        self.youtube_link.data = project_info['ylink']
 
-    image_fields = []
+        # Parse date from string format to date format
+        date_str = project_info['date']
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+        self.date.data = date_obj
 
-    # def __init__(self, project_id=None):
-    #     if project_id is not None:
-    #         raise NotImplementedError
-    #
-    #     super().__init__()
-
-    # date = db.Column(db.Date)
-    # description = db.Column(db.Text)
-    # title = db.Column(db.String(120), nullable=False)
-    # ylink = db.Column(db.String(80))
-    # creator = db.Column(db.String(120))
-    # planguage = db.Column(db.String(120))
-    # author = db.Column(db.Integer)
-    # uploaddate = db.Column(db.DateTime)
-    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # imgfilesuploaded = db.Column(db.Integer)
-    # imgdesc = db.Column(db.ARRAY(db.String(200)))
-    # files = db.Column(JSONB)
-    # show = db.Column(db.Boolean, nullable=False, default=True)
-    #
+        # Update any image description
+        descriptions: List[str] = project_info['imgdesc']
+        for sql_img_desc, form_img in zip(descriptions, self.images):
+            form_img.form.description.data = sql_img_desc

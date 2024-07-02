@@ -19,6 +19,7 @@ class Project(db.Model):
     imgdesc = db.Column(db.ARRAY(db.String(200)))
     files = db.Column(JSONB)
     show = db.Column(db.Boolean, nullable=False, default=True)
+    project_images = db.Column(JSONB)
 
     def serialize(self):
         serialized_data = {}
@@ -28,7 +29,8 @@ class Project(db.Model):
             val = getattr(self, name)
 
             if name == "date":
-                serialized_data[name] = val.strftime("%Y-%m-%d") if val else None
+                serialized_data[name] = val.strftime(
+                    "%Y-%m-%d") if val else None
             else:
                 serialized_data[name] = val
 
