@@ -21,6 +21,15 @@
   margin: 10px;
 }
 
+.currently-uploaded-text {
+  font-size: 10px;
+  color: #555;
+}
+
+.currently-deleted {
+  color: #f00;
+}
+
 .preview-f-img {
   border: solid 2px black;
   background-color: white;
@@ -33,7 +42,7 @@
   margin-bottom: 8px;
 }
 
-.empty-btn {
+.undo-btn {
   border: solid 1px #662;
   width: 30px;
   font-size: 14px;
@@ -125,9 +134,8 @@
 }
 
 .child-box-1 {
-  height: 240px;
   margin: 10px;
-  padding: 5px;
+  padding: 10px 5px;
   background-color: #eef8ff;
   border: 1px solid #aaa;
   position: relative;

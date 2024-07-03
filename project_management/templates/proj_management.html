@@ -38,7 +38,7 @@
         {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
         <!-- NOTE: This button refreshes the URL (like, submits) ... needs to not.
                                         but also needs to remove the image and also load the old image if it's editing mode -->
-        <button id="empty-disp-img" class="empty-btn">
+        <button id="undo-disp-img" class="undo-btn">
           <svg xmlns="http://www.w3.org/2000/svg"
                height="20px"
                viewBox="0 -960 960 960"
@@ -47,17 +47,6 @@
             <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
           </svg>
         </button>
-        {% if project is not none %}
-          <button id="delete-disp-img" class="delete-btn">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 height="20px"
-                 viewBox="0 -960 960 960"
-                 width="20px"
-                 fill="#FFF">
-              <path d="M360-200q-20 0-37.5-9T294-234L120-480l174-246q11-16 28.5-25t37.5-9h400q33 0 56.5 23.5T840-680v400q0 33-23.5 56.5T760-200H360Zm400-80v-400 400Zm-400 0h400v-400H360L218-480l142 200Zm96-40 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Z" />
-            </svg>
-          </button>
-        {% endif %}
       </span>
       <div id="disp-preview-img">
         <span class="disp-preview-img tab">
@@ -79,7 +68,7 @@
       <div class="file-flex">
         {% for file in form.files %}
           <div class="file-child" id="file-child-div-{{ loop.index0 }}">
-            <button class="empty-btn empty-file" id="file-empty-{{ loop.index0 }}">
+            <button class="undo-btn undo-file" id="file-undo-{{ loop.index0 }}">
               <svg xmlns="http://www.w3.org/2000/svg"
                    height="20px"
                    viewBox="0 -960 960 960"
@@ -102,6 +91,13 @@
             <label>{{ file.description.label }}</label>
             {{ file.form.description }}
             {{ file.file }}
+            {% if project is not none and loop.index0 < project.files|length %}
+              <br>
+              <span id="currently-uploaded-file-{{ loop.index }}"
+                    class="currently-uploaded-text">
+                <pre>             Currently uploaded: {{ project.files[loop.index0].file }}</pre>
+              </span>
+            {% endif %}
           </div>
         {% endfor %}
       </div>
@@ -119,6 +115,14 @@
             </div>
             <div class="inner-child-box-1">
               {% if project is not none and loop.index0 < project.project_images|length %}
+                <span id="currently-uploaded-img-{{ loop.index }}"
+                      class="currently-uploaded-text">
+                  Currently uploaded: {{ project.project_images[loop.index0].file }}
+                </span>
+              {% endif %}
+            </div>
+            <div class="inner-child-box-1">
+              {% if project is not none and loop.index0 < project.project_images|length %}
                 <img id="preview-{{ loop.index0 }}"
                      alt="placeholder"
                      src="../../uploads/project/{{ project.id }}/img/small/{{ project.project_images[loop.index0].file }}"
@@ -131,8 +135,8 @@
               {% endif %}
               <span style="line-height: 50px; vertical-align:top">
                 <!-- NOTE: This button refreshes the URL (like, submits) ... needs to not.
-                                                                        but also needs to remove the image and also load the old image (and description for image) if it's editing mode -->
-                <button id="empty-image_id_{{ loop.index0 }}" class="empty-btn empty-img">
+                      but also needs to remove the image and also load the old image (and description for image) if it's editing mode -->
+                <button id="undo-image_id_{{ loop.index0 }}" class="undo-btn undo-img">
                   <svg xmlns="http://www.w3.org/2000/svg"
                        height="20px"
                        viewBox="0 -960 960 960"
