@@ -1,27 +1,27 @@
 {% extends "layout.html" %}
 {% block head %}
-        <link rel="stylesheet"
-              href="{{ url_for('resume.static', filename='css/resume.css') }}" />
+  <link rel="stylesheet"
+        href="{{ url_for('resume.static', filename='css/resume.css') }}" />
 {% endblock %}
 {% block content %}
-        <div id="content">
-                <div id="resume-content-wrapper">
-                        <div id="pdf-date-created-div">
-                                Resume last uploaded on <b>{{ pdf_date_created }}</b>
-                                <p>
-                                        (Note: This is actually a year-old resume. <i>Update coming soon...</i>)
-                                </div>
-                                <div id="pdf-link-div">
-                                        <a id="pdf-link"
-                                           href=" {{ url_for('resume.static', filename='pdf/' + pdf_file) }} "
-                                           download>Download Resume</a>
-                                </div>
-                                <div id="pdf-iframe-div">
-                                        <!-- IFrame will contain pdf resume file  -->
-                                        <iframe src="{{ url_for('resume.static', filename='pdf/' + pdf_file) }}"
-                                                id="pdf-iframe"></iframe>
-                                </div>
-                        </div>
-                </div>
+  <div id="content">
+    <div id="resume-content-wrapper">
+      <div id="pdf-date-created-div">
+        Resume last uploaded on <b>{{ pdf_date_created }}</b>
+        <p>
+          (Note: This is actually a year-old resume. <i>Update coming soon...</i>)
         </div>
+        <div id="pdf-link-div">
+          <a id="pdf-link"
+             href=" {{ url_for('resume.static', filename='pdf/' + pdf_file) }} "
+             download>Download Resume</a>
+        </div>
+        <div id="pdf-iframe-div">
+          <!-- IFrame will contain pdf resume file  -->
+          <iframe src="{{ url_for('resume.static', filename='pdf/' + pdf_file) }}"
+                  id="pdf-iframe"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
