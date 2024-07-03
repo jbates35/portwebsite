@@ -33,36 +33,22 @@
   margin-bottom: 8px;
 }
 
-.empty-form {
+.empty-btn {
   border: solid 1px #662;
-  width: 40px;
+  width: 30px;
   font-size: 14px;
   border-radius: 5px;
   margin: 0;
   background-color: #dd5;
 }
 
-.delete-img {
+.delete-btn {
   border: solid 1px #040;
-  width: 40px;
+  width: 30px;
   font-size: 14px;
   border-radius: 5px;
   margin: 0;
   background-color: #090;
-}
-
-.file-delete-button {
-  border: solid 1px #220000;
-  border-radius: 5px;
-  color: white;
-  font-size: 14px;
-  background-color: #552200;
-  white-space: nowrap;
-}
-
-.file-delete-button:hover {
-  cursor: pointer;
-  background-color: #220000;
 }
 
 .file-undo-button {

@@ -74,3 +74,8 @@ class ProjectForm(FlaskForm):
 
         # TODO:
         # Update any file descriptions
+        descriptions = [
+            str(file['description']) for file in project_info['files']
+        ]
+        for sql_file_desc, form_file in zip(descriptions, self.files):
+            form_file.form.description.data = sql_file_desc
