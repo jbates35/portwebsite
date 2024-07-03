@@ -46,6 +46,7 @@ class ProjectForm(FlaskForm):
                               'class': 'filec', 'id': 'img-file-id'})
     description = TextAreaField("Project Description", render_kw={
                                 'id': 'proj-description'})
+    github_repo = StringField("Github Repo", [validators.Length(255)])
     youtube_link = StringField("Youtube Link")
     siphon_youtube_link = BooleanField("Siphon Youtube Link")
     creator = StringField("Creator(s)")
@@ -59,6 +60,7 @@ class ProjectForm(FlaskForm):
         self.creator.data = project_info['creator']
         self.programming_language.data = project_info['planguage']
         self.youtube_link.data = project_info['ylink']
+        self.github_repo.data = project_info['github_repo']
 
         # Parse date from string format to date format
         date_str = project_info['date']
@@ -72,8 +74,7 @@ class ProjectForm(FlaskForm):
         for sql_img_desc, form_img in zip(descriptions, self.images):
             form_img.form.description.data = sql_img_desc
 
-        # TODO:
-        # Update any file descriptions
+        # Update any file description
         descriptions = [
             str(file['description']) for file in project_info['files']
         ]

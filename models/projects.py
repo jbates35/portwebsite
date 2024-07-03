@@ -12,6 +12,7 @@ class Project(db.Model):
     ylink = db.Column(db.String(80))
     creator = db.Column(db.String(120))
     planguage = db.Column(db.String(120))
+    github_repo = db.Column(db.String(255))
     author = db.Column(db.Integer)
     uploaddate = db.Column(db.DateTime)
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
