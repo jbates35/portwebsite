@@ -13,6 +13,10 @@ def test_func():
     return jsonify(merge_img_desc())
 
 
+def replace_html_chars_with_markdown():
+    raise NotImplementedError
+
+
 def merge_img_desc():
     """
     DEPRECATED - imgfilesuploaded and imgdesc are no longer a thing
