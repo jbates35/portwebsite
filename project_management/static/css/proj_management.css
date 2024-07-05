@@ -60,21 +60,6 @@
   background-color: #090;
 }
 
-.file-undo-button {
-  border: solid 1px #000022;
-  border-radius: 5px;
-  color: white;
-  font-size: 14px;
-  width: 90px;
-  background-color: #002255;
-  white-space: nowrap;
-}
-
-.fileUndoButton:hover {
-  cursor: pointer;
-  background-color: #000022;
-}
-
 .prev-img-parent {
   display: flex;
   flex-wrap: no-wrap;

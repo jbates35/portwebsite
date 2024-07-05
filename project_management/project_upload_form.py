@@ -24,13 +24,15 @@ photos = UploadSet('photos', IMAGES)
 
 
 class FileUpload(Form):
-    description = StringField()
-    file = FileField()
+    description = StringField(render_kw={'class': 'file-desc'})
+    file = FileField(render_kw={'class': 'file-upload'})
+    delete = BooleanField(render_kw={'class': 'no-show file-delete-box'})
 
 
 class ImageForm(Form):
-    description = TextAreaField(render_kw={'class': 'img-file-desc'})
+    description = TextAreaField(render_kw={'class': 'img-desc'})
     file = FileField(render_kw={'class': 'iup file-c'})
+    delete = BooleanField(render_kw={'class': 'no-show image-delete-box'})
 
 
 class ProjectForm(FlaskForm):

@@ -5,12 +5,9 @@
 {% endblock %}
 {% block content %}
   <div id="content">
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" acton="" enctype="multipart/form-data">
       {{ form.csrf_token }}
       <!-- Titles and other header data -->
-      <!-- NOTE: Example of if not none test
-                        {% if project is not none %}aweoifjaweoifweaa{% endif %} 
-                        -->
       <div class="form-element">
         <label>{{ form.title.label }}</label>
         {{ form.title }}
@@ -82,7 +79,8 @@
               </svg>
             </button>
             {% if project is not none and loop.index0 < project.files|length %}
-              <button id="delete-image_id_{{ loop.index0 }}" class="delete-btn delete-file">
+              <button id="delete-image_id_{{ loop.index0 }}"
+                      class="delete-btn delete-file-btn">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      height="20px"
                      viewBox="0 -960 960 960"
@@ -95,6 +93,7 @@
             <label>{{ file.description.label }}</label>
             {{ file.form.description }}
             {{ file.file }}
+            {{ file.delete }}
             {% if project is not none and loop.index0 < project.files|length %}
               <br>
               <span id="currently-uploaded-file-{{ loop.index }}"
@@ -163,6 +162,7 @@
                 {% endif %}
               </span>
             </div>
+            {{ image.form.delete }}
             {{ image.form.description }}
           </div>
         {% endfor %}
