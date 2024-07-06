@@ -23,22 +23,31 @@ def manage_project(project_id=None):
         project_info = get_single_project(project_id)
 
         # Editing project fields now
-        # First set default values in the form
         form.set_default_values(project_info=project_info)
-
-        # Now pass any images being passed through
-        # Project pictures
-
-        # Now deal with any current file uploads
-
     else:
         # When uploading a new project . . .
         # We will check project_info against None in jinja to see if we need to alter fields in jinja
-
         project_info = None
 
     if form.validate_on_submit():
-        pass
+        # First upload PSQL Information
+
+        # Get OS information for project upload information
+        file = "web_config.json"
+        with open(file) as f:
+            config = json.load(f)["os"]
+
+        # Now create folder
+
+        # Upload files
+
+        # Process images, make small and large files
+
+        # Upload files
+
+        # Process display image
+
+        # Upload display picture
 
     return render_template(
         "proj_management.html",
