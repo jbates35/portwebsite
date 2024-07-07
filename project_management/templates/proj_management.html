@@ -5,7 +5,21 @@
 {% endblock %}
 {% block content %}
   <div id="content">
+    {% if errors %}
+      <div id="errors">
+        <ul id="form-errors">
+          {% for field, msgs in errors.items() %}
+            {% for msg in msgs %}
+              <li>
+                <b>{{ field }}</b>: {{ msg }}
+              </li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
     <form method="POST" action="" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
       {{ form.csrf_token }}
       <!-- Titles and other header data -->
       <div class="form-element">
@@ -178,7 +192,7 @@
         <div class="tab">{{ form.description }}</div>
       </div>
       <!-- end of miscellaneous rest-of-the-stuff -->
-      <div class="form-element" id="submit-div">{{ form.submit() }}</div>
+      <div class="form-element" id="submit-div">{{ form.submit }}</div>
     </form>
   </div>
   <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>

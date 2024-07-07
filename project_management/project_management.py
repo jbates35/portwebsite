@@ -1,7 +1,13 @@
+import datetime
+import json
+from flask import Blueprint, render_template, abort
+from flask_login import current_user, login_required
 
-from flask import Blueprint, render_template
-from ..sql.sql_get import get_single_project
 from .project_upload_form import ProjectForm
+from ..sql.sql_get import get_single_project
+from ..extensions import db
+from ..models.projects import Project
+
 upload_project_bp = Blueprint(
     "upload_project", __name__, template_folder="templates", static_folder="static"
 )
@@ -13,23 +19,77 @@ edit_project_bp = Blueprint(
 # TODO: Make sure to encapsulate these in admin privileges
 
 
+@login_required
 @upload_project_bp.route("/upload", methods=["GET", "POST"])
 @edit_project_bp.route("/edit/<int:project_id>", methods=["GET", "POST"])
 def manage_project(project_id=None):
+    if not current_user.__dict__ or current_user.id != 1:
+        abort(403)
+
     form = ProjectForm()
 
     # If project_is it not None, that means we are editing a project
     if project_id is not None:
         project_info = get_single_project(project_id)
 
-        # Editing project fields now
+        # If we are editing the project, we want to change the wtforms to add default values from the sql entry
         form.set_default_values(project_info=project_info)
     else:
         # When uploading a new project . . .
         # We will check project_info against None in jinja to see if we need to alter fields in jinja
         project_info = None
 
+    print("\n\n\nHELLO\n\n\n")
+
     if form.validate_on_submit():
+        print("\n\n\n2HELLO\n\n\n")
+        print(form.data)
+
+        # First parse any file data
+        if project_info:
+            files = project_info["files"]
+            images = project_info["images"]
+
+        for field in form.files:
+            pass
+
+        # if form.validate_on_submit():
+        #     # Access the file
+        #     uploaded_file = form.file.data
+        #
+        #     # Access the file name
+        #     filename = uploaded_file.filename
+
+        # Next parse any image data
+
+        # Pack information from WTForms into a Model Object
+        project = Project()
+
+        if project_id is None:
+            project.id = project_id
+
+        project.date = form.date.data
+        project.description = form.description.data
+        project.title = form.title.data
+        project.ylink = form.youtube_link.data
+        project.creator = form.creator.data
+        project.planguage = form.programming_language.data
+        project.github_repo = form.github_repo.data
+        project.author = current_user.id
+        project.uploaddate = datetime.datetime.now()
+
+        if not form.siphon_youtube_link.data and form.display_image.data:
+            # Grab the image from the file field
+            pass
+        else:
+            # Grab the image from the youtube preview
+            pass
+
+        db.session.add(project)
+        db.session.commit()
+
+        # for file_field in form.images:
+        #     file = file_field.form.file.data
         # First upload PSQL Information
 
         # Get OS information for project upload information
@@ -53,4 +113,5 @@ def manage_project(project_id=None):
         "proj_management.html",
         form=form,
         project=project_info,
+        errors=form.errors
     )

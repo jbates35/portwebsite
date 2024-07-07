@@ -21,6 +21,23 @@
   margin: 10px;
 }
 
+#errors {
+  color: #400;
+}
+
+#form-errors {
+  list-style-type: none; /* Remove default bullet points */
+  padding: 0; /* Remove default padding */
+  margin: 10px 0; /* Add some margin on the top and bottom */
+  background-color: #f8d7da; /* Light red background */
+  border-color: #f5c6cb; /* Red border */
+  border-radius: 0.25rem; /* Rounded corners */
+}
+
+#form-errors li {
+  padding: 10px; /* Add some padding to each list item */
+}
+
 .currently-uploaded-text {
   font-size: 10px;
   color: #555;

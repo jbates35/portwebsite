@@ -11,7 +11,7 @@ from .about.about import about_bp
 from .project_management.project_management import upload_project_bp, edit_project_bp
 from .session.session import login_bp, logout_bp, check_user_bp  # , register_bp
 from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, get_user
-from .sql.sql_post import update_project_param_bp
+from .sql.sql_post import sql_update_project_param_bp
 
 # from .sql_merge.sql_merge import sql_merge_bp
 
@@ -77,7 +77,7 @@ def create_app():
 
     # Helper blueprints
     app.register_blueprint(check_user_bp, url_prefix="/session")
-    app.register_blueprint(update_project_param_bp)
+    app.register_blueprint(sql_update_project_param_bp)
 
     @app.route("/")
     def index():

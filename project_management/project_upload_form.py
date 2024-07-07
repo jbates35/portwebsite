@@ -48,7 +48,7 @@ class ProjectForm(FlaskForm):
                               'class': 'filec', 'id': 'img-file-id'})
     description = TextAreaField("Project Description", render_kw={
                                 'id': 'proj-description'})
-    github_repo = StringField("Github Repo", [validators.Length(255)])
+    github_repo = StringField("Github Repo", [validators.Length(max=255)])
     youtube_link = StringField("Youtube Link")
     siphon_youtube_link = BooleanField("Siphon Youtube Link")
     creator = StringField("Creator(s)")
