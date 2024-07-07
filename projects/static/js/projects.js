@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         button.addEventListener("click", () => {
           const id_array = button.id.split("-");
           const id = id_array[id_array.length - 1];
-          window.location.href = `/edit_project/${id}`;
+          globalThis.location.href = `/project/edit/${id}`;
         });
       });
 

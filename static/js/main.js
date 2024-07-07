@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const home_direct = document.querySelectorAll(".home-direct");
   home_direct.forEach((home_link) => {
     home_link.addEventListener("click", function () {
-      window.location.href = "./";
+      globalThis.location.href = "/";
     });
   });
 });
