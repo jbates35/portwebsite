@@ -9,28 +9,34 @@ from ..extensions import db
 from ..models.projects import Project
 
 upload_project_bp = Blueprint(
-    "upload_project", __name__, template_folder="templates", static_folder="static"
+    "upload_project", __name__, template_folder="templates", static_folder="static", static_url_path="/upload",
 )
 
 edit_project_bp = Blueprint(
-    "edit_project", __name__, template_folder="templates", static_folder="static"
+    "edit_project", __name__, template_folder="templates", static_folder="static", static_url_path="/upload",
 )
 
-# TODO: Make sure to encapsulate these in admin privileges
+delete_project_bp = Blueprint(
+    "delete_project", __name__, template_folder="templates", static_folder="static", static_url_path="/delete"
+)
 
 
-@login_required
+# @login_required
 @upload_project_bp.route("/upload", methods=["GET", "POST"])
 @edit_project_bp.route("/edit/<int:project_id>", methods=["GET", "POST"])
-def manage_project(project_id=None):
-    if not current_user.__dict__ or current_user.id != 1:
-        abort(403)
+def post_project(project_id=None):
+    # if not current_user.__dict__ or current_user.id != 1:
+    #     abort(403)
 
     form = ProjectForm()
 
     # If project_is it not None, that means we are editing a project
     if project_id is not None:
         project_info = get_single_project(project_id)
+
+        # Create empty lists in place of null values to prevent errors in HTML
+        project_info['files'] = project_info['files'] or []
+        project_info['project_images'] = project_info['project_images'] or []
 
         # If we are editing the project, we want to change the wtforms to add default values from the sql entry
         form.set_default_values(project_info=project_info)
@@ -39,12 +45,7 @@ def manage_project(project_id=None):
         # We will check project_info against None in jinja to see if we need to alter fields in jinja
         project_info = None
 
-    print("\n\n\nHELLO\n\n\n")
-
     if form.validate_on_submit():
-        print("\n\n\n2HELLO\n\n\n")
-        print(form.data)
-
         # First parse any file data
         if project_info:
             files = project_info["files"]
@@ -96,6 +97,7 @@ def manage_project(project_id=None):
         file = "web_config.json"
         with open(file) as f:
             config = json.load(f)["os"]
+            upload_folder = config["upload_folder"]
 
         # Now create folder
 
@@ -110,8 +112,31 @@ def manage_project(project_id=None):
         # Upload display picture
 
     return render_template(
-        "proj_management.html",
+        "post_project.html",
         form=form,
         project=project_info,
         errors=form.errors
+    )
+
+
+@login_required
+@delete_project_bp.route("/delete/<int:project_id>", methods=["GET", "POST"])
+def delete_project(project_id: int):
+    error = None
+    project = Project.query.get(project_id)
+
+    try:
+        # Delete folder and files associated witht he project_id
+
+        # Delete the entry from the SQL table
+        db.session.delete(project)
+        db.session.commit()
+
+    except Exception as e:
+        error = e
+
+    return render_template(
+        "delete_project.html",
+        project_id=project_id,
+        error=error
     )

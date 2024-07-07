@@ -8,7 +8,7 @@ from .extensions import db, bcrypt, login_manager
 from .projects.projects import projects_bp
 from .resume.resume import resume_bp
 from .about.about import about_bp
-from .project_management.project_management import upload_project_bp, edit_project_bp
+from .project_management.project_management import upload_project_bp, edit_project_bp, delete_project_bp
 from .session.session import login_bp, logout_bp, check_user_bp  # , register_bp
 from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, get_user
 from .sql.sql_post import sql_update_project_param_bp
@@ -67,6 +67,7 @@ def create_app():
     app.register_blueprint(logout_bp, url_prefix="/session")
     app.register_blueprint(edit_project_bp, url_prefix="/project")
     app.register_blueprint(upload_project_bp, url_prefix="/project")
+    app.register_blueprint(delete_project_bp, url_prefix="/project")
 
     # Don't use - most likely
     # app.register_blueprint(register_bp, url_prefix="/register")

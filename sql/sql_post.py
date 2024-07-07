@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from typing import Optional
 
 from ..extensions import db
 from ..models.projects import Project
@@ -43,7 +42,3 @@ def update_project_param_bp():
 
     except Exception as e:
         return jsonify({"success": False, "error": e}, 500)
-
-
-def upload_project(id: Optional[int] = None, project_data: Optional[dict] = None) -> dict:
-    pass

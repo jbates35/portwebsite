@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block head %}
   <link rel="stylesheet"
-        href="{{ url_for('upload_project.static', filename='css/proj_management.css') }}" />
+        href="{{ url_for('upload_project.static', filename='css/post_project.css') }}" />
 {% endblock %}
 {% block content %}
   <div id="content">
@@ -195,5 +195,5 @@
       <div class="form-element" id="submit-div">{{ form.submit }}</div>
     </form>
   </div>
-  <script src="{{ url_for('upload_project.static', filename='js/proj_management.js') }}"></script>
+  <script src="{{ url_for('upload_project.static', filename='js/post_project.js') }}"></script>
 {% endblock %}

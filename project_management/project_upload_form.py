@@ -71,14 +71,14 @@ class ProjectForm(FlaskForm):
 
         # Update any image description
         descriptions = [
-            str(img['description']) for img in project_info['project_images']
+            str(img.get('description', '')) for img in project_info['project_images']
         ]
         for sql_img_desc, form_img in zip(descriptions, self.images):
             form_img.form.description.data = sql_img_desc
 
         # Update any file description
         descriptions = [
-            str(file['description']) for file in project_info['files']
+            str(file.get('description', '')) for file in project_info['files']
         ]
         for sql_file_desc, form_file in zip(descriptions, self.files):
             form_file.form.description.data = sql_file_desc

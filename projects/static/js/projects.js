@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             "#delete-confirm-button",
           );
           delete_button.addEventListener("click", () => {
-            delete_project(deleted_project_id);
+            globalThis.location.href = `/project/delete/${deleted_project_id}`;
           });
 
           change_delete_popup_visibility(true);
