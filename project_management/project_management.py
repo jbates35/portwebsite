@@ -47,23 +47,28 @@ def post_project(project_id=None):
 
     if form.validate_on_submit():
         # First parse any file data
-        if project_info:
-            files = project_info["files"]
-            images = project_info["images"]
 
-        for field in form.files:
-            pass
+        files = []
+        for file_form in form.files:
+            _form = file_form.form
+            if _form.file.data:
+                # TODO: Check if any old file is uploaded and delete
+                # TODO: Upload the new file
 
-        # if form.validate_on_submit():
-        #     # Access the file
-        #     uploaded_file = form.file.data
-        #
-        #     # Access the file name
-        #     filename = uploaded_file.filename
+                file_dict = {
+                    "file": _form.file.data.filename,
+                    "description": _form.description.data or ""
+                }
+                files.append(file_dict)
+            elif _form.old_file.data and not _form.delete.data:
+                file_dict = {
+                    "file": _form.old_file.data,
+                    "description": _form.description.data or ""
+                }
+                files.append(file_dict)
+            elif _form.old_file.data:
+                # TODO: Delete the file that's currently uploaded
 
-        # Next parse any image data
-
-        # Pack information from WTForms into a Model Object
         project = Project()
 
         if project_id is None:
@@ -78,6 +83,7 @@ def post_project(project_id=None):
         project.github_repo = form.github_repo.data
         project.author = current_user.id
         project.uploaddate = datetime.datetime.now()
+        project.files = files
 
         if not form.siphon_youtube_link.data and form.display_image.data:
             # Grab the image from the file field
@@ -94,10 +100,10 @@ def post_project(project_id=None):
         # First upload PSQL Information
 
         # Get OS information for project upload information
-        file = "web_config.json"
-        with open(file) as f:
-            config = json.load(f)["os"]
-            upload_folder = config["uploads_folder"]
+        cfg_file = "web_config.json"
+        with open(cfg_file) as f:
+            cfg = json.load(f)["os"]
+            upload_folder = cfg["uploads_folder"]
 
         # Now create folder
 

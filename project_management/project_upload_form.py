@@ -26,12 +26,14 @@ photos = UploadSet('photos', IMAGES)
 class FileUpload(Form):
     description = StringField(render_kw={'class': 'file-desc'})
     file = FileField(render_kw={'class': 'file-upload'})
+    old_file = StringField(render_kw={'class': 'no-show'})
     delete = BooleanField(render_kw={'class': 'no-show file-delete-box'})
 
 
 class ImageForm(Form):
     description = TextAreaField(render_kw={'class': 'img-desc'})
     file = FileField(render_kw={'class': 'iup file-c'})
+    old_image = StringField(render_kw={'class': 'no-show'})
     delete = BooleanField(render_kw={'class': 'no-show image-delete-box'})
 
 
@@ -42,7 +44,7 @@ class ProjectForm(FlaskForm):
     images = FieldList(FormField(ImageForm),
                        min_entries=6, max_entries=6)
 
-    title = StringField("Project Title", [validators.Length(max=25)])
+    title = StringField("Project Title", [validators.Length(max=120)])
     date = DateField("Project Date")
     display_image = FileField("Display Image", render_kw={
                               'class': 'filec', 'id': 'img-file-id'})
@@ -70,15 +72,12 @@ class ProjectForm(FlaskForm):
         self.date.data = date_obj
 
         # Update any image description
-        descriptions = [
-            str(img.get('description', '')) for img in project_info['project_images']
-        ]
-        for sql_img_desc, form_img in zip(descriptions, self.images):
-            form_img.form.description.data = sql_img_desc
+        for current_img, form_img in zip(project_info['project_images'], self.images):
+            form_img.form.description.data = current_img.get('description', "")
+            form_img.form.old_image.data = current_img.get('file', "")
 
         # Update any file description
-        descriptions = [
-            str(file.get('description', '')) for file in project_info['files']
-        ]
-        for sql_file_desc, form_file in zip(descriptions, self.files):
-            form_file.form.description.data = sql_file_desc
+        for current_file, form_file in zip(project_info['files'], self.files):
+            form_file.form.description.data = current_file.get(
+                'description', "")
+            form_file.form.old_file.data = current_file.get('file', "")
