@@ -97,7 +97,7 @@ def post_project(project_id=None):
         file = "web_config.json"
         with open(file) as f:
             config = json.load(f)["os"]
-            upload_folder = config["upload_folder"]
+            upload_folder = config["uploads_folder"]
 
         # Now create folder
 
