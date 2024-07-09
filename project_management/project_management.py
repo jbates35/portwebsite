@@ -46,8 +46,25 @@ def post_project(project_id=None):
         project_info = None
 
     if form.validate_on_submit():
-        # First parse any file data
 
+        # Need an SQL object to start off with
+        if project_id is None:
+            project = Project()
+            db.session.add(project)
+            # Flush will tell sqlalchemy to generate an ID without writing to database yet
+            db.session.flush()
+        else:
+            project = Project.query.get(project_id)
+
+        # Get OS information for project upload information
+        cfg_file = "web_config.json"
+        with open(cfg_file) as f:
+            cfg = json.load(f)["os"]
+            upload_folder = cfg["uploads_folder"]
+
+        # Make the folder that will be related to this project, if it's a new project
+
+        # First parse any file data
         files = []
         for file_form in form.files:
             _form = file_form.form
@@ -67,23 +84,31 @@ def post_project(project_id=None):
                 }
                 files.append(file_dict)
             elif _form.old_file.data:
+                pass
                 # TODO: Delete the file that's currently uploaded
 
-        project = Project()
+            project_images = []
+            for image_form in form.images:
+                _form = image_form.form
+                if _form.file.data:
+                    # TODO: Need to process the image here too
+                    # TODO: Resize and create two versions of the file
+                    # TODO: Check if any old file is uploaded and delete
 
-        if project_id is None:
-            project.id = project_id
-
-        project.date = form.date.data
-        project.description = form.description.data
-        project.title = form.title.data
-        project.ylink = form.youtube_link.data
-        project.creator = form.creator.data
-        project.planguage = form.programming_language.data
-        project.github_repo = form.github_repo.data
-        project.author = current_user.id
-        project.uploaddate = datetime.datetime.now()
-        project.files = files
+                    image_dict = {
+                        "file": _form.file.data.filename,
+                        "description": _form.description.data or ""
+                    }
+                    files.append(image_dict)
+                elif _form.old_image.data and not _form.delete.data:
+                    image_dict = {
+                        "file": _form.old_image.data,
+                        "description": _form.description.data or ""
+                    }
+                    files.append(image_dict)
+                elif _form.old_image.data:
+                    pass
+                    # TODO: Delete the file that's currently uploaded
 
         if not form.siphon_youtube_link.data and form.display_image.data:
             # Grab the image from the file field
@@ -92,18 +117,22 @@ def post_project(project_id=None):
             # Grab the image from the youtube preview
             pass
 
-        db.session.add(project)
+        # Easy data to fill in tifrst
+        project.date = form.date.data
+        project.description = form.description.data
+        project.title = form.title.data
+        project.ylink = form.youtube_link.data
+        project.creator = form.creator.data
+        project.planguage = form.programming_language.data
+        project.github_repo = form.github_repo.data
+        project.author = current_user.id
+        project.files = files
+
         db.session.commit()
 
         # for file_field in form.images:
         #     file = file_field.form.file.data
         # First upload PSQL Information
-
-        # Get OS information for project upload information
-        cfg_file = "web_config.json"
-        with open(cfg_file) as f:
-            cfg = json.load(f)["os"]
-            upload_folder = cfg["uploads_folder"]
 
         # Now create folder
 
