@@ -1,5 +1,6 @@
 import datetime
 import json
+from typing import Optional
 from flask import Blueprint, render_template, abort
 from flask_login import current_user, login_required
 
@@ -54,7 +55,12 @@ def post_project(project_id=None):
             # Flush will tell sqlalchemy to generate an ID without writing to database yet
             db.session.flush()
         else:
-            project = Project.query.get(project_id)
+            project: Optional[Project] = Project.query.get(project_id)
+
+            # This should never happen, but in case project_id fails.
+            if project is None:
+                project = Project()
+                project.id = project_id
 
         # Get OS information for project upload information
         cfg_file = "web_config.json"
@@ -99,13 +105,13 @@ def post_project(project_id=None):
                         "file": _form.file.data.filename,
                         "description": _form.description.data or ""
                     }
-                    files.append(image_dict)
+                    project_images.append(image_dict)
                 elif _form.old_image.data and not _form.delete.data:
                     image_dict = {
                         "file": _form.old_image.data,
                         "description": _form.description.data or ""
                     }
-                    files.append(image_dict)
+                    project_images.append(image_dict)
                 elif _form.old_image.data:
                     pass
                     # TODO: Delete the file that's currently uploaded
