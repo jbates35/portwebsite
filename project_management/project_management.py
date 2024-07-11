@@ -1,8 +1,8 @@
-import datetime
 import json
 from typing import Optional
 from flask import Blueprint, render_template, abort
 from flask_login import current_user, login_required
+from pathlib import Path
 
 from .project_upload_form import ProjectForm
 from ..sql.sql_get import get_single_project
@@ -66,9 +66,18 @@ def post_project(project_id=None):
         cfg_file = "web_config.json"
         with open(cfg_file) as f:
             cfg = json.load(f)["os"]
-            upload_folder = cfg["uploads_folder"]
+        upload_folder = Path(cfg["uploads_folder"])
 
         # Make the folder that will be related to this project, if it's a new project
+        base_id_folder = upload_folder / str(project.id)
+        large_img_folder = base_id_folder / "img" / "large"
+        small_img_folder = base_id_folder / "img" / "small"
+
+        base_id_folder.mkdir(parents=True, exist_ok=True)
+        large_img_folder.mkdir(parents=True, exist_ok=True)
+        small_img_folder.mkdir(parents=True, exist_ok=True)
+
+        print(f"\n\n{str(small_img_folder)}\n\n")
 
         # First parse any file data
         files = []
