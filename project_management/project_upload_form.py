@@ -25,14 +25,12 @@ class FileUpload(Form):
     description = StringField(render_kw={'class': 'file-desc'})
     file = FileField(render_kw={'class': 'file-upload'})
     delete = BooleanField(render_kw={'class': 'no-show file-delete-box'})
-    old_file = ""
 
 
 class ImageForm(Form):
     description = TextAreaField(render_kw={'class': 'img-desc'})
     file = FileField(render_kw={'class': 'iup file-c'})
     delete = BooleanField(render_kw={'class': 'no-show image-delete-box'})
-    old_image = ""
 
 
 class ProjectForm(FlaskForm):
@@ -72,10 +70,8 @@ class ProjectForm(FlaskForm):
         # Update any image description
         for current_img, form_img in zip(project_info['project_images'], self.images):
             form_img.form.description.data = current_img.get('description', "")
-            form_img.form.old_image = current_img.get('file', "")
 
         # Update any file description
         for current_file, form_file in zip(project_info['files'], self.files):
             form_file.form.description.data = current_file.get(
                 'description', "")
-            form_file.form.old_file = current_file.get('file', "")

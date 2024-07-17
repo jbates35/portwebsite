@@ -31,34 +31,23 @@ def post_project(project_id=None):
     #     abort(403)
 
     form = ProjectForm()
-    success = False
 
-    # BUG: The following overwrites any data being input from the form.
-
-    # If project_is it not None, that means we are editing a project
     if project_id is not None:
         project_info = get_single_project(project_id)
-
-        # Create empty lists in place of null values to prevent errors in HTML
-        project_info['files'] = project_info['files'] or []
-        project_info['project_images'] = project_info['project_images'] or []
-
-        # If we are editing the project, we want to change the wtforms to add default values from the sql entry
-        form.set_default_values(project_info=project_info)
     else:
-        # When uploading a new project . . .
-        # We will check project_info against None in jinja to see if we need to alter fields in jinja
         project_info = None
 
     if form.validate_on_submit():
 
         # Need an SQL object to start off with
         if project_id is None:
+            new_project = True
             project = Project()
             db.session.add(project)
             # Flush will tell sqlalchemy to generate an ID without writing to database yet
             db.session.flush()
         else:
+            new_project = False
             project: Optional[Project] = Project.query.get(project_id)
 
             # This should never happen, but in case project_id fails.
@@ -83,13 +72,18 @@ def post_project(project_id=None):
 
         # First parse any file data
         files = []
-        for file_form in form.files:
+        for i, file_form in enumerate(form.files):
             _form = file_form.form
+
+            if project_info and i < len(project_info["files"]):
+                _current_file = project_info["files"][i]["file"]
+            else:
+                _current_file = None
 
             # Delete old file logic (if new file or delete checkbox)
             delete_file = _form.file.data or _form.delete.data
-            if _form.old_file and delete_file:
-                (base_id_folder / _form.old_file).unlink(missing_ok=True)
+            if _current_file and delete_file:
+                (base_id_folder / _current_file).unlink(missing_ok=True)
 
             # Take care of SQL and upload
             file_name = None
@@ -98,8 +92,8 @@ def post_project(project_id=None):
                 _form.file.data.save(
                     base_id_folder / file_name
                 )
-            elif _form.old_file and not _form.delete.data:
-                file_name = _form.old_file
+            elif _current_file and not _form.delete.data:
+                file_name = _current_file
 
             # Prepare SQL entry
             if file_name:
@@ -109,28 +103,28 @@ def post_project(project_id=None):
                 }
                 files.append(file_dict)
 
-            project_images = []
-            for image_form in form.images:
-                _form = image_form.form
-                if _form.file.data:
-                    # TODO: Need to process the image here too
-                    # TODO: Resize and create two versions of the file
-                    # TODO: Check if any old file is uploaded and delete
-
-                    image_dict = {
-                        "file": _form.file.data.filename,
-                        "description": _form.description.data or ""
-                    }
-                    project_images.append(image_dict)
-                elif _form.old_image and not _form.delete.data:
-                    image_dict = {
-                        "file": _form.old_image,
-                        "description": _form.description.data or ""
-                    }
-                    project_images.append(image_dict)
-                elif _form.old_image:
-                    pass
-                    # TODO: Delete the file that's currently uploaded
+            # images = []
+            # for image_form in form.images:
+            #     _form = image_form.form
+            #     if _form.file.data:
+            #         # TODO: Need to process the image here too
+            #         # TODO: Resize and create two versions of the file
+            #         # TODO: Check if any old file is uploaded and delete
+            #
+            #         image_dict = {
+            #             "file": _form.file.data.filename,
+            #             "description": _form.description.data or ""
+            #         }
+            #         images.append(image_dict)
+            #     elif _form.old_image and not _form.delete.data:
+            #         image_dict = {
+            #             "file": _form.old_image,
+            #             "description": _form.description.data or ""
+            #         }
+            #         images.append(image_dict)
+            #     elif _form.old_image:
+            #         pass
+            #         # TODO: Delete the file that's currently uploaded
 
         if not form.siphon_youtube_link.data and form.display_image.data:
             # Grab the image from the file field
@@ -168,16 +162,26 @@ def post_project(project_id=None):
 
         # Upload display picture
 
-        # TODO: Show some type of information if successj
-        success = True
+        return render_template(
+            "post_project.html",
+            new_project=new_project,
+            project=project
+        )
+    else:
 
-    return render_template(
-        "post_project.html",
-        form=form,
-        project=project_info,
-        success=success,
-        errors=form.errors
-    )
+        # If project_is it not None, that means we are editing a project
+        if project_info is not None:
+            project_info["files"] = project_info["files"] or []
+            project_info["project_images"] = project_info["project_images"] or []
+            # If we are editing the project, we want to change the wtforms to add default values from the sql entry
+            form.set_default_values(project_info=project_info)
+
+        return render_template(
+            "project.html",
+            form=form,
+            project=project_info,
+            errors=form.errors
+        )
 
 
 @login_required
