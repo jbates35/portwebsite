@@ -10,7 +10,6 @@ from wtforms import (
     validators,
     SubmitField
 )
-from flask import current_app
 from flask_wtf.file import FileField
 from flask_wtf import FlaskForm
 from flask_uploads import UploadSet, configure_uploads, IMAGES
@@ -20,21 +19,20 @@ from datetime import datetime
 
 # TAken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
 photos = UploadSet('photos', IMAGES)
-# configure_uploads(current_app, photos)
 
 
 class FileUpload(Form):
     description = StringField(render_kw={'class': 'file-desc'})
     file = FileField(render_kw={'class': 'file-upload'})
-    old_file = StringField(render_kw={'class': 'no-show'})
     delete = BooleanField(render_kw={'class': 'no-show file-delete-box'})
+    old_file = ""
 
 
 class ImageForm(Form):
     description = TextAreaField(render_kw={'class': 'img-desc'})
     file = FileField(render_kw={'class': 'iup file-c'})
-    old_image = StringField(render_kw={'class': 'no-show'})
     delete = BooleanField(render_kw={'class': 'no-show image-delete-box'})
+    old_image = ""
 
 
 class ProjectForm(FlaskForm):
@@ -74,10 +72,10 @@ class ProjectForm(FlaskForm):
         # Update any image description
         for current_img, form_img in zip(project_info['project_images'], self.images):
             form_img.form.description.data = current_img.get('description', "")
-            form_img.form.old_image.data = current_img.get('file', "")
+            form_img.form.old_image = current_img.get('file', "")
 
         # Update any file description
         for current_file, form_file in zip(project_info['files'], self.files):
             form_file.form.description.data = current_file.get(
                 'description', "")
-            form_file.form.old_file.data = current_file.get('file', "")
+            form_file.form.old_file = current_file.get('file', "")

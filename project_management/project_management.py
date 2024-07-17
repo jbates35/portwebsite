@@ -1,7 +1,8 @@
 import json
 from typing import Optional
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
 from pathlib import Path
 
 from .project_upload_form import ProjectForm
@@ -30,6 +31,9 @@ def post_project(project_id=None):
     #     abort(403)
 
     form = ProjectForm()
+    success = False
+
+    # BUG: The following overwrites any data being input from the form.
 
     # If project_is it not None, that means we are editing a project
     if project_id is not None:
@@ -77,30 +81,33 @@ def post_project(project_id=None):
         large_img_folder.mkdir(parents=True, exist_ok=True)
         small_img_folder.mkdir(parents=True, exist_ok=True)
 
-        print(f"\n\n{str(small_img_folder)}\n\n")
-
         # First parse any file data
         files = []
         for file_form in form.files:
             _form = file_form.form
-            if _form.file.data:
-                # TODO: Check if any old file is uploaded and delete
-                # TODO: Upload the new file
 
+            # Delete old file logic (if new file or delete checkbox)
+            delete_file = _form.file.data or _form.delete.data
+            if _form.old_file and delete_file:
+                (base_id_folder / _form.old_file).unlink(missing_ok=True)
+
+            # Take care of SQL and upload
+            file_name = None
+            if _form.file.data:
+                file_name = secure_filename(_form.file.data.filename)
+                _form.file.data.save(
+                    base_id_folder / file_name
+                )
+            elif _form.old_file and not _form.delete.data:
+                file_name = _form.old_file
+
+            # Prepare SQL entry
+            if file_name:
                 file_dict = {
-                    "file": _form.file.data.filename,
+                    "file": file_name,
                     "description": _form.description.data or ""
                 }
                 files.append(file_dict)
-            elif _form.old_file.data and not _form.delete.data:
-                file_dict = {
-                    "file": _form.old_file.data,
-                    "description": _form.description.data or ""
-                }
-                files.append(file_dict)
-            elif _form.old_file.data:
-                pass
-                # TODO: Delete the file that's currently uploaded
 
             project_images = []
             for image_form in form.images:
@@ -115,13 +122,13 @@ def post_project(project_id=None):
                         "description": _form.description.data or ""
                     }
                     project_images.append(image_dict)
-                elif _form.old_image.data and not _form.delete.data:
+                elif _form.old_image and not _form.delete.data:
                     image_dict = {
-                        "file": _form.old_image.data,
+                        "file": _form.old_image,
                         "description": _form.description.data or ""
                     }
                     project_images.append(image_dict)
-                elif _form.old_image.data:
+                elif _form.old_image:
                     pass
                     # TODO: Delete the file that's currently uploaded
 
@@ -161,10 +168,14 @@ def post_project(project_id=None):
 
         # Upload display picture
 
+        # TODO: Show some type of information if successj
+        success = True
+
     return render_template(
         "post_project.html",
         form=form,
         project=project_info,
+        success=success,
         errors=form.errors
     )
 
@@ -176,7 +187,7 @@ def delete_project(project_id: int):
     project = Project.query.get(project_id)
 
     try:
-        # Delete folder and files associated witht he project_id
+        # TODO: Delete folder and files associated witht he project_id
 
         # Delete the entry from the SQL table
         db.session.delete(project)

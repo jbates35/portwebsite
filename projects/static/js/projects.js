@@ -138,7 +138,7 @@ async function open_project_popup(id, template, project_list) {
       // TODO: This line is obviously wrong. What the heck??? (headerpic)
       popup
         .querySelector("#youtube-image")
-        .setAttribute("src", `uploads/project/${project.id}/displaypic.jpg`);
+        .setAttribute("src", `/uploads/project/${project.id}/displaypic.jpg`);
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       popup.querySelector("#project-container-ytframe").classList.add("show");
@@ -167,7 +167,7 @@ async function open_project_popup(id, template, project_list) {
         const file_link = document.createElement("a");
         file_link.setAttribute(
           "href",
-          `../uploads/project/${project.id}/${file.file}`,
+          `/uploads/project/${project.id}/${file.file}`,
         );
         file_link.innerText = file_desc;
 
@@ -203,7 +203,7 @@ async function open_project_popup(id, template, project_list) {
         image_preview.classList.add("image-preview-img");
         image_preview.setAttribute(
           "src",
-          `../uploads/project/${project.id}/img/small/${image.file}`,
+          `/uploads/project/${project.id}/img/small/${image.file}`,
         );
 
         const image_preview_div = document.createElement("div");
@@ -217,7 +217,7 @@ async function open_project_popup(id, template, project_list) {
       // Last thing is to set the default image and description
       image_holder.setAttribute(
         "src",
-        `../uploads/project/${project.id}/img/large/1.jpg`,
+        `/uploads/project/${project.id}/img/large/1.jpg`,
       );
       image_holder.classList.add("image-1");
       image_desc.innerText = project.project_images[0].description;

@@ -67,7 +67,7 @@
         <span class="disp-preview-img tab">
           {% if project is not none %}
             <img id="preview-img"
-                 src="../../uploads/project/{{ project.id }}/displaypic.jpg" />
+                 src="/uploads/project/{{ project.id }}/displaypic.jpg" />
           {% else %}
             <img id="preview-img"
                  src="{{ url_for('upload_project.static', filename='img/transspec.png') }}" />
@@ -142,7 +142,7 @@
               {% if project is not none and loop.index0 < project.project_images|length %}
                 <img id="preview-{{ loop.index0 }}"
                      alt="placeholder"
-                     src="../../uploads/project/{{ project.id }}/img/small/{{ project.project_images[loop.index0].file }}"
+                     src="/uploads/project/{{ project.id }}/img/small/{{ project.project_images[loop.index0].file }}"
                      class="preview-f-img" />
               {% else %}
                 <img id="preview-{{ loop.index0 }}"
