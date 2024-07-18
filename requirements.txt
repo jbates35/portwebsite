@@ -9,3 +9,4 @@ SQLAlchemy
 WTForms
 Flask-Reuploaded
 Werkzeug
+Pillow

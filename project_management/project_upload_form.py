@@ -17,8 +17,15 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES
 # For parsing dates
 from datetime import datetime
 
-# TAken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
+# Taken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
 photos = UploadSet('photos', IMAGES)
+
+# TODO: Use Pillow to verify images
+# TODO: Add validators for all the fields
+
+
+def verify_image(form, field):
+    pass
 
 
 class FileUpload(Form):
