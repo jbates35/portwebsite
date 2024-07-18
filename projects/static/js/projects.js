@@ -217,7 +217,7 @@ async function open_project_popup(id, template, project_list) {
       // Last thing is to set the default image and description
       image_holder.setAttribute(
         "src",
-        `/uploads/project/${project.id}/img/large/1.jpg`,
+        `/uploads/project/${project.id}/img/large/${project.project_images[0].file}`,
       );
       image_holder.classList.add("image-1");
       image_desc.innerText = project.project_images[0].description;
