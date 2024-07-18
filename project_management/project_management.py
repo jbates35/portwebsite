@@ -152,7 +152,7 @@ def post_project(project_id=None):
                 small_img.save(small_img_folder / image_name)
 
             elif current_image and not current_form.delete.data:
-                file_name = current_image
+                image_name = current_image
 
             # Prepare SQL entry
             if image_name:
@@ -198,7 +198,7 @@ def post_project(project_id=None):
             display_img = display_img.resize(display_size)
             display_img.save(base_id_folder / "displaypic.jpg")
 
-        # Check if displaypic exists - easier way of accommodating both editing and uploading
+        # Check if displaypic exists - easier way of accommodatiylinkng both editing and uploading
         if not (base_id_folder / "displaypic.jpg").exists():
             project.show = False
 
