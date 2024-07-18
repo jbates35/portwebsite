@@ -138,7 +138,7 @@ async function open_project_popup(id, template, project_list) {
       // TODO: This line is obviously wrong. What the heck??? (headerpic)
       popup
         .querySelector("#youtube-image")
-        .setAttribute("src", `/uploads/project/${project.id}/displaypic.jpg`);
+        .setAttribute("src", `/uploads/project/${project.id}/headerpic.jpg`);
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       popup.querySelector("#project-container-ytframe").classList.add("show");

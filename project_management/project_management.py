@@ -1,10 +1,13 @@
 import json
 from typing import Optional
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 from pathlib import Path
 from PIL import Image
+import requests
+from io import BytesIO
+import shutil
 
 from .project_upload_form import ProjectForm
 from ..sql.sql_get import get_single_project
@@ -24,15 +27,14 @@ delete_project_bp = Blueprint(
 )
 
 
-# @login_required
+@login_required
 @upload_project_bp.route("/upload", methods=["GET", "POST"])
 @edit_project_bp.route("/edit/<int:project_id>", methods=["GET", "POST"])
 def post_project(project_id=None):
-    # if not current_user.__dict__ or current_user.id != 1:
-    #     abort(403)
+    if not current_user.__dict__ or current_user.id != 1:
+        abort(403)
 
     form = ProjectForm()
-    errors = form.errors or {}
 
     if project_id is not None:
         project_info = get_single_project(project_id)
@@ -40,7 +42,6 @@ def post_project(project_id=None):
         project_info = None
 
     if form.validate_on_submit():
-        # try:
         # Need an SQL object to start off with
         if project_id is None:
             new_project = True
@@ -132,12 +133,12 @@ def post_project(project_id=None):
                 w, h = im.size
 
                 # Create large image
+                ratio = 1
                 if w > 1200:
                     ratio = 1200/w
-                    large_size = (int(w*ratio), int(h*ratio))
-                else:
-                    large_size = (w, h)
+                large_size = (int(w*ratio), int(h*ratio))
                 large_img = im.resize(large_size)
+                large_img.save(large_img_folder / image_name)
 
                 # Create small image (square)
                 # First make square, then resize
@@ -148,9 +149,6 @@ def post_project(project_id=None):
                 small_size = (135, 135)
                 small_img = im.crop(small_crop)
                 small_img = small_img.resize(small_size)
-
-                # Save images
-                large_img.save(large_img_folder / image_name)
                 small_img.save(small_img_folder / image_name)
 
             elif current_image and not current_form.delete.data:
@@ -164,12 +162,45 @@ def post_project(project_id=None):
                 }
                 images.append(image_dict)
 
+        # Display and header pic logic for profile pic
+        im = None
         if not form.siphon_youtube_link.data and form.display_image.data:
             # Grab the image from the file field
-            pass
-        else:
+            im = Image.open(form.display_image.data)
+        elif form.siphon_youtube_link.data and form.youtube_link.data:
             # Grab the image from the youtube preview
-            pass
+            youtube_link = f"http://img.youtube.com/vi/{form.youtube_link.data}/maxresdefault.jpg"
+            youtube_request = requests.get(youtube_link)
+            im = Image.open(BytesIO(youtube_request.content))
+
+        if im:
+            # Delete the current file
+            (base_id_folder / "headerpic.jpg").unlink(missing_ok=True)
+            (base_id_folder / "displaypic.jpg").unlink(missing_ok=True)
+
+            w, h = im.size
+
+            # Header pic is a pic in lieue of having a youtube video
+            ratio = 1
+            if w > 1200:
+                ratio = 1200/w
+            header_size = (int(ratio*w), int(ratio*h))
+            header_img = im.resize(header_size)
+            header_img.save(base_id_folder / "headerpic.jpg")
+
+            # Display pic is a square 300x300 pic shown in the projects page
+            if w > h:
+                display_crop = (int((w-h)/2), 0, int((w+h)/2), h)
+            else:
+                display_crop = (0, int((h-w)/2), w, int((h+w)/2))
+            display_size = (300, 300)
+            display_img = im.crop(display_crop)
+            display_img = display_img.resize(display_size)
+            display_img.save(base_id_folder / "displaypic.jpg")
+
+        # Check if displaypic exists - easier way of accommodating both editing and uploading
+        if not (base_id_folder / "displaypic.jpg").exists():
+            project.show = False
 
         # Easy data to fill in tifrst
         project.date = form.date.data
@@ -185,30 +216,13 @@ def post_project(project_id=None):
 
         db.session.commit()
 
-        # for file_field in form.images:
-        #     file = file_field.form.file.data
-        # First upload PSQL Information
-
-        # Now create folder
-
-        # Upload files
-
-        # Process images, make small and large files
-
-        # Upload files
-
-        # Process display image
-
-        # Upload display picture
-
         return render_template(
             "post_project.html",
             new_project=new_project,
             project=project
         )
-        # except Exception as e:
-        #     errors["Custom"] = [e]
 
+    # If we are here, the form has not been submitted or there is an error
     # If project_is it not None, that means we are editing a project
     if project_info is not None:
         project_info["files"] = project_info["files"] or []
@@ -220,7 +234,7 @@ def post_project(project_id=None):
         "project.html",
         form=form,
         project=project_info,
-        errors=errors
+        errors=form.errors
     )
 
 
@@ -230,8 +244,16 @@ def delete_project(project_id: int):
     error = None
     project = Project.query.get(project_id)
 
+    # Get OS information for project upload information
+    cfg_file = "web_config.json"
+    with open(cfg_file) as f:
+        cfg = json.load(f)["os"]
+    upload_folder = Path(cfg["uploads_folder"])
+    base_id_folder = upload_folder / str(project_id)
+
     try:
-        # TODO: Delete folder and files associated witht he project_id
+        # Delete the folder and its contents
+        shutil.rmtree(base_id_folder)
 
         # Delete the entry from the SQL table
         db.session.delete(project)

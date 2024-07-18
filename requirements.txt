@@ -10,3 +10,4 @@ WTForms
 Flask-Reuploaded
 Werkzeug
 Pillow
+requests
