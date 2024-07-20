@@ -1,19 +1,18 @@
 from flask import Flask, url_for, redirect
 from flask_session import Session
-
 import json
 
-from .extensions import db, bcrypt, login_manager
+from .extensions import db, bcrypt, login_manager, pagedown
 
 from .projects.projects import projects_bp
 from .resume.resume import resume_bp
 from .about.about import about_bp
-from .project_management.project_management import upload_project_bp, edit_project_bp
+from .project_management.project_management import upload_project_bp, edit_project_bp, delete_project_bp
 from .session.session import login_bp, logout_bp, check_user_bp  # , register_bp
 from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, get_user
-from .sql.sql_post import update_project_param_bp
+from .sql.sql_post import sql_update_project_param_bp
 
-# from .sql_merge.sql_merge import sql_merge_bp
+from .data_prep.data_prep import html_decode_bp
 
 
 def get_sql_config(file):
@@ -51,13 +50,14 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    pagedown.init_app(app)
 
     @login_manager.user_loader
     def load_user(user_id):
         return get_user(user_id)
 
     # TEST DELETE LATER
-    # app.register_blueprint(sql_merge_bp, url_prefix="/sql_merge")
+    app.register_blueprint(html_decode_bp, url_prefix="/data_prep")
 
     # Register pages - blueprints
     app.register_blueprint(projects_bp, url_prefix="/projects")
@@ -65,11 +65,10 @@ def create_app():
     app.register_blueprint(about_bp, url_prefix="/about")
     app.register_blueprint(login_bp, url_prefix="/session")
     app.register_blueprint(logout_bp, url_prefix="/session")
+    # app.register_blueprint(register_bp, url_prefix="/session")
     app.register_blueprint(edit_project_bp, url_prefix="/project")
     app.register_blueprint(upload_project_bp, url_prefix="/project")
-
-    # Don't use - most likely
-    # app.register_blueprint(register_bp, url_prefix="/register")
+    app.register_blueprint(delete_project_bp, url_prefix="/project")
 
     # Register SQL blueprint
     app.register_blueprint(sql_single_project_bp, url_prefix="/data")
@@ -77,7 +76,7 @@ def create_app():
 
     # Helper blueprints
     app.register_blueprint(check_user_bp, url_prefix="/session")
-    app.register_blueprint(update_project_param_bp)
+    app.register_blueprint(sql_update_project_param_bp)
 
     @app.route("/")
     def index():

@@ -1,7 +1,5 @@
 from flask import Blueprint, render_template
-from flask_login import current_user
 from ..sql.sql_get import get_projects
-from ..sql.sql_post import update_project
 
 projects_bp = Blueprint(
     "projects", __name__, template_folder="templates", static_folder="static"

@@ -1,0 +1,200 @@
+{% extends "layout.html" %}
+{% block head %}
+  {{ pagedown.include_pagedown() }}
+  <link rel="stylesheet"
+        href="{{ url_for('upload_project.static', filename='css/project.css') }}" />
+{% endblock %}
+{% block content %}
+  <div id="content">
+    {% if errors %}
+      <div id="errors">
+        <ul id="form-errors">
+          {% for field, msgs in errors.items() %}
+            {% for msg in msgs %}
+              <li>
+                <b>{{ field }}</b>: {{ msg }}
+              </li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form method="POST" action="" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      {{ form.csrf_token }}
+      <!-- Titles and other header data -->
+      <div class="form-element">
+        <label>{{ form.title.label }}</label>
+        {{ form.title }}
+      </div>
+      <div class="form-element">
+        <label>{{ form.date.label }}</label>
+        {{ form.date }}
+      </div>
+      <div class="form-element">
+        <label>{{ form.creator.label }}</label>
+        {{ form.creator }}
+      </div>
+      <div class="form-element">
+        <label>{{ form.github_repo.label }}</label>
+        {{ form.github_repo }}
+      </div>
+      <div class="form-element">
+        <label>{{ form.youtube_link.label }}</label>
+        {{ form.youtube_link }}
+        <br>
+        <span class="tab"><i>{{ form.siphon_youtube_link.label }}</i></span>
+        {{ form.siphon_youtube_link }}
+      </div>
+      <!-- end of titles and other header data -->
+      <!-- Start of display image content -->
+      <br />
+      <label>{{ form.display_image.label }}</label>
+      <span class="tab" id="profile-img-span">
+        {{ form.display_image }} <!-- NOTE: : The ID for display image got changed here -->
+        <!-- NOTE: This button refreshes the URL (like, submits) ... needs to not.
+                                        but also needs to remove the image and also load the old image if it's editing mode -->
+        <button id="undo-disp-img" class="undo-btn">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               height="20px"
+               viewBox="0 -960 960 960"
+               width="20px"
+               fill="#000">
+            <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
+          </svg>
+        </button>
+      </span>
+      <div id="disp-preview-img">
+        <span class="disp-preview-img tab">
+          {% if project is not none %}
+            <img id="preview-img"
+                 src="/uploads/project/{{ project.id }}/displaypic.jpg" />
+          {% else %}
+            <img id="preview-img"
+                 src="{{ url_for('upload_project.static', filename='img/transspec.png') }}" />
+          {% endif %}
+        </span>
+      </div>
+      <!-- end of display image content" -->
+      <!-- Start of file upload content -->
+      <br />
+      <!-- TODO: create button for "delete file" when editing -->
+      <!-- TODO: create div for file which has already been uploaded which is not a form box but instead a filename or a link to a file -->
+      <label>Project files to upload</label>
+      <div class="file-flex">
+        {% for file in form.files %}
+          <div class="file-child" id="file-child-div-{{ loop.index0 }}">
+            <button class="undo-btn undo-file" id="file-undo-{{ loop.index0 }}">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   height="20px"
+                   viewBox="0 -960 960 960"
+                   width="20px"
+                   fill="#000">
+                <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
+              </svg>
+            </button>
+            {% if project is not none and loop.index0 < project.files|length %}
+              <button id="delete-image_id_{{ loop.index0 }}"
+                      class="delete-btn delete-file-btn">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     height="20px"
+                     viewBox="0 -960 960 960"
+                     width="20px"
+                     fill="#FFF">
+                  <path d="M360-200q-20 0-37.5-9T294-234L120-480l174-246q11-16 28.5-25t37.5-9h400q33 0 56.5 23.5T840-680v400q0 33-23.5 56.5T760-200H360Zm400-80v-400 400Zm-400 0h400v-400H360L218-480l142 200Zm96-40 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Z" />
+                </svg>
+              </button>
+            {% endif %}
+            <label>{{ file.description.label }}</label>
+            {{ file.form.description }}
+            {{ file.file }}
+            {{ file.delete }}
+            {% if project is not none and loop.index0 < project.files|length %}
+              <br>
+              <span id="currently-uploaded-file-{{ loop.index }}"
+                    class="currently-uploaded-text">
+                <pre>             Currently uploaded: {{ project.files[loop.index0].file }}</pre>
+              </span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <!-- end of file upload content -->
+      <!-- Start of image upload content -->
+      <!-- TODO: Must shorten input file source name when a huge filename gets uploaded here (pushing the box to be really wide) -->
+      <br />
+      <label>Image files to upload</label>
+      <div class="img-parent-1">
+        {% for image in form.images %}
+          <div class="child-box-1" id="child-img-box-{{ loop.index0 }}">
+            <div class="inner-child-box-1">
+              {{ loop.index }}:
+              {{ image.form.file }}
+            </div>
+            <div class="inner-child-box-1">
+              {% if project is not none and loop.index0 < project.project_images|length %}
+                <span id="currently-uploaded-img-{{ loop.index }}"
+                      class="currently-uploaded-text">
+                  Currently uploaded: {{ project.project_images[loop.index0].file }}
+                </span>
+              {% endif %}
+            </div>
+            <div class="inner-child-box-1">
+              {% if project is not none and loop.index0 < project.project_images|length %}
+                <img id="preview-{{ loop.index0 }}"
+                     alt="placeholder"
+                     src="/uploads/project/{{ project.id }}/img/small/{{ project.project_images[loop.index0].file }}"
+                     class="preview-f-img" />
+              {% else %}
+                <img id="preview-{{ loop.index0 }}"
+                     alt="placeholder"
+                     src="{{ url_for('upload_project.static', filename='img/transspec.png') }}"
+                     class="preview-f-img" />
+              {% endif %}
+              <span style="line-height: 50px; vertical-align:top">
+                <!-- NOTE: This button refreshes the URL (like, submits) ... needs to not.
+                      but also needs to remove the image and also load the old image (and description for image) if it's editing mode -->
+                <button id="undo-image_id_{{ loop.index0 }}" class="undo-btn undo-img">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       height="20px"
+                       viewBox="0 -960 960 960"
+                       width="20px"
+                       fill="#000">
+                    <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z" />
+                  </svg>
+                </button>
+                {% if project is not none and loop.index0 < project.project_images|length %}
+                  <br>
+                  <button id="delete-image_id_{{ loop.index0 }}" class="delete-btn delete-img">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         height="20px"
+                         viewBox="0 -960 960 960"
+                         width="20px"
+                         fill="#FFF">
+                      <path d="M360-200q-20 0-37.5-9T294-234L120-480l174-246q11-16 28.5-25t37.5-9h400q33 0 56.5 23.5T840-680v400q0 33-23.5 56.5T760-200H360Zm400-80v-400 400Zm-400 0h400v-400H360L218-480l142 200Zm96-40 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Z" />
+                    </svg>
+                  </button>
+                {% endif %}
+              </span>
+            </div>
+            {{ image.form.delete }}
+            {{ image.form.description }}
+          </div>
+        {% endfor %}
+      </div>
+      <!-- end of image upload content -->
+      <!-- Miscellaneous rest-of-the-stuff -->
+      <div class="form-element">
+        <label>{{ form.programming_language.label }}</label>
+        {{ form.programming_language }}
+      </div>
+      <div class="form-element">
+        <label>{{ form.description.label }}</label>
+        <div class="tab">{{ form.description(rows=10) }}</div>
+      </div>
+      <!-- end of miscellaneous rest-of-the-stuff -->
+      <div class="form-element" id="submit-div">{{ form.submit }}</div>
+    </form>
+  </div>
+  <script src="{{ url_for('upload_project.static', filename='js/project.js') }}"></script>
+{% endblock %}

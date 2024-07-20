@@ -4,18 +4,7 @@ from flask_login import current_user, login_required
 from ..extensions import db
 from ..models.projects import Project
 
-sql_update_project = Blueprint("sql_update_project", __name__)
-
-update_project_param_bp = Blueprint("update_project_param", __name__)
-
-# NOTE - likely we need these endpoints to be protected by user login
-
-
-@sql_update_project.route("data/update_project/", methods=("POST"))
-def update_project():
-    data = request.get_json()
-    # TO BE COMPLETED
-    return jsonify(data)
+sql_update_project_param_bp = Blueprint("update_project_param", __name__)
 
 
 def update_project_param(project_id, param, value):
@@ -29,8 +18,8 @@ def update_project_param(project_id, param, value):
 
 
 @login_required
-@update_project_param_bp.route("/data/update_project_param", methods=["GET", "POST"])
-def _update_project_param_bp():
+@sql_update_project_param_bp.route("/data/update_project_param/", methods=["GET", "POST"])
+def update_project_param_bp():
     if not current_user.__dict__ or current_user.id != 1:
         return jsonify({"success": False, "error": "User not logged in"}, 500)
 

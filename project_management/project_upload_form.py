@@ -1,4 +1,6 @@
 from typing import List
+from PIL import Image
+from io import BytesIO
 from wtforms import (
     DateField,
     FieldList,
@@ -8,29 +10,36 @@ from wtforms import (
     TextAreaField,
     BooleanField,
     validators,
+    ValidationError,
     SubmitField
 )
-from flask import current_app
-from flask_wtf.file import FileField
+from flask_pagedown.fields import PageDownField
+from flask_wtf.file import FileField, FileAllowed
 from flask_wtf import FlaskForm
-from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 # For parsing dates
 from datetime import datetime
 
-# TAken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
-photos = UploadSet('photos', IMAGES)
-# configure_uploads(current_app, photos)
-
 
 class FileUpload(Form):
-    description = StringField()
-    file = FileField()
+    description = StringField(render_kw={'class': 'file-desc'})
+    file = FileField(render_kw={'class': 'file-upload'})
+    delete = BooleanField(render_kw={'class': 'no-show file-delete-box'})
 
 
 class ImageForm(Form):
-    description = TextAreaField(render_kw={'class': 'img-file-desc'})
     file = FileField(render_kw={'class': 'iup file-c'})
+    description = TextAreaField(render_kw={'class': 'img-desc'})
+    delete = BooleanField(render_kw={'class': 'no-show image-delete-box'})
+
+    def validate_file(form, field):
+        """ Use Pillow to verify images """
+        if field.data is not None:
+            try:
+                Image.open(BytesIO(field.data.read()))
+                field.data.seek(0)
+            except Exception as e:
+                raise ValidationError(f"Invalid image: {e}")
 
 
 class ProjectForm(FlaskForm):
@@ -40,12 +49,12 @@ class ProjectForm(FlaskForm):
     images = FieldList(FormField(ImageForm),
                        min_entries=6, max_entries=6)
 
-    title = StringField("Project Title", [validators.Length(max=25)])
+    title = StringField("Project Title", [validators.Length(max=120)])
     date = DateField("Project Date")
     display_image = FileField("Display Image", render_kw={
                               'class': 'filec', 'id': 'img-file-id'})
-    description = TextAreaField("Project Description", render_kw={
-                                'id': 'proj-description'})
+    description = PageDownField("Project Description")
+    github_repo = StringField("Github Repo", [validators.Length(max=255)])
     youtube_link = StringField("Youtube Link")
     siphon_youtube_link = BooleanField("Siphon Youtube Link")
     creator = StringField("Creator(s)")
@@ -59,6 +68,7 @@ class ProjectForm(FlaskForm):
         self.creator.data = project_info['creator']
         self.programming_language.data = project_info['planguage']
         self.youtube_link.data = project_info['ylink']
+        self.github_repo.data = project_info['github_repo']
 
         # Parse date from string format to date format
         date_str = project_info['date']
@@ -66,11 +76,10 @@ class ProjectForm(FlaskForm):
         self.date.data = date_obj
 
         # Update any image description
-        descriptions = [
-            str(img['description']) for img in project_info['project_images']
-        ]
-        for sql_img_desc, form_img in zip(descriptions, self.images):
-            form_img.form.description.data = sql_img_desc
+        for current_img, form_img in zip(project_info['project_images'], self.images):
+            form_img.form.description.data = current_img.get('description', "")
 
-        # TODO:
-        # Update any file descriptions
+        # Update any file description
+        for current_file, form_file in zip(project_info['files'], self.files):
+            form_file.form.description.data = current_file.get(
+                'description', "")

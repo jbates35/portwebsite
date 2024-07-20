@@ -1,0 +1,21 @@
+#content {
+  width: 95%;
+}
+
+#success {
+  color: #040;
+}
+
+#success-ul {
+  list-style-type: none; /* Remove default bullet points */
+  padding: 0; /* Remove default padding */
+  margin: 10px 0; /* Add some margin on the top and bottom */
+  background-color: #d7f8da; /* Light red background */
+  border-color: #c6f5cb; /* Red border */
+  border-radius: 0.25rem; /* Rounded corners */
+}
+
+#success li {
+  list-style-type: none;
+  padding: 10px; /* Add some padding to each list item */
+}

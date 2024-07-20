@@ -21,17 +21,19 @@ register_bp = Blueprint(
 check_user_bp = Blueprint("check_user", __name__)
 
 
-@login_bp.route("/login", methods=["GET", "POST"])
+@login_bp.route("/login/", methods=["GET", "POST"])
 def login():
     form = LoginForm()
     msg = ""
 
     if form.validate_on_submit():
         try:
-            user = get_user(username=str(form.username.data)) or {}
-            password = user_dict(user).get("password", None)
-            result = bcrypt.check_password_hash(
-                password, str(form.password.data))
+            result = None
+            user = get_user(username=str(form.username.data))
+            if user:
+                password = user_dict(user).get("password", None)
+                result = bcrypt.check_password_hash(
+                    password, str(form.password.data))
             if result:
                 login_user(user, remember=False)
                 return redirect(url_for("projects.projects"))
@@ -43,14 +45,14 @@ def login():
     return render_template("login.html", form=form, msg=msg)
 
 
-@ logout_bp.route("/logout")
-@ login_required
+@logout_bp.route("/logout/")
+@login_required
 def logout():
     logout_user()
     return render_template("logout.html")
 
 
-@ register_bp.route("/register")
+@register_bp.route("/register/")
 def register():
     form = RegisterForm()
     return render_template("register.html", form=form)
@@ -63,7 +65,7 @@ def check_user():
         return False
 
 
-@ check_user_bp.route("/check_user")
+@check_user_bp.route("/check_user/")
 def check_user_bp_func():
     try:
         logged_in = check_user()

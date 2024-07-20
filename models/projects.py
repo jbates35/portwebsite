@@ -1,6 +1,7 @@
 from ..extensions import db
 
 from sqlalchemy.dialects.postgresql import JSONB
+import datetime
 
 
 class Project(db.Model):
@@ -8,12 +9,13 @@ class Project(db.Model):
 
     date = db.Column(db.Date)
     description = db.Column(db.Text)
-    title = db.Column(db.String(120), nullable=False)
+    title = db.Column(db.String(120), nullable=False, default=True)
     ylink = db.Column(db.String(80))
     creator = db.Column(db.String(120))
     planguage = db.Column(db.String(120))
+    github_repo = db.Column(db.String(255))
     author = db.Column(db.Integer)
-    uploaddate = db.Column(db.DateTime)
+    uploaddate = db.Column(db.DateTime, default=datetime.datetime.now())
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     files = db.Column(JSONB)
     show = db.Column(db.Boolean, nullable=False, default=True)

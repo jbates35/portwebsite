@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         button.addEventListener("click", () => {
           const id_array = button.id.split("-");
           const id = id_array[id_array.length - 1];
-          window.location.href = `/edit_project/${id}`;
+          globalThis.location.href = `/project/edit/${id}`;
         });
       });
 
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             "#delete-confirm-button",
           );
           delete_button.addEventListener("click", () => {
-            delete_project(deleted_project_id);
+            globalThis.location.href = `/project/delete/${deleted_project_id}`;
           });
 
           change_delete_popup_visibility(true);
@@ -114,11 +114,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 });
 
-async function open_project_popup(id, template, project_list) {
-  //Check to see if admin privileges are present
-  const user = await check_user();
-  const admin = user.logged_in;
-
+function open_project_popup(id, template, project_list) {
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
     const parser = new DOMParser();
@@ -128,17 +124,16 @@ async function open_project_popup(id, template, project_list) {
     const year = project.date.substring(0, 4);
     const prog_languages =
       project.planguage == "" ? "None specified" : project.planguage;
-    const description = html_decode(project.description);
+    const description = project.description;
 
     //Youtube link should either be the preview image or the youtube link
     popup.querySelector(".yt-div").classList.remove("show");
     if (project.ylink == "") {
       // Show the preview image and set its source to a holding image
       popup.querySelector("#project-container-ytimg").classList.add("show");
-      // TODO: This line is obviously wrong. What the heck??? (headerpic)
       popup
         .querySelector("#youtube-image")
-        .setAttribute("src", `uploads/project/${project.id}/displaypic.jpg`);
+        .setAttribute("src", `/uploads/project/${project.id}/headerpic.jpg`);
     } else {
       // Show the youtube video iframe and set its source to the youtube link
       popup.querySelector("#project-container-ytframe").classList.add("show");
@@ -167,7 +162,7 @@ async function open_project_popup(id, template, project_list) {
         const file_link = document.createElement("a");
         file_link.setAttribute(
           "href",
-          `../uploads/project/${project.id}/${file.file}`,
+          `/uploads/project/${project.id}/${file.file}`,
         );
         file_link.innerText = file_desc;
 
@@ -203,7 +198,7 @@ async function open_project_popup(id, template, project_list) {
         image_preview.classList.add("image-preview-img");
         image_preview.setAttribute(
           "src",
-          `../uploads/project/${project.id}/img/small/${image.file}`,
+          `/uploads/project/${project.id}/img/small/${image.file}`,
         );
 
         const image_preview_div = document.createElement("div");
@@ -217,7 +212,7 @@ async function open_project_popup(id, template, project_list) {
       // Last thing is to set the default image and description
       image_holder.setAttribute(
         "src",
-        `../uploads/project/${project.id}/img/large/1.jpg`,
+        `/uploads/project/${project.id}/img/large/${project.project_images[0].file}`,
       );
       image_holder.classList.add("image-1");
       image_desc.innerText = project.project_images[0].description;
@@ -308,6 +303,16 @@ async function open_project_popup(id, template, project_list) {
     const prev_project_btn = document.querySelector("#project-container-prev");
     prev_project_btn.addEventListener("click", () => {
       open_project_popup(prev, template, project_list);
+    });
+
+    //Check to see if admin privileges are present and assign meaning to the edit button
+    check_user().then((admin) => {
+      if (admin.logged_in) {
+        const popup_edit_btn = document.querySelector(`#edit-popup-button`);
+        popup_edit_btn.addEventListener("click", () => {
+          globalThis.location.href = `/project/edit/${project.id}`;
+        });
+      }
     });
 
     // Open the popup, i.e. set the display to block

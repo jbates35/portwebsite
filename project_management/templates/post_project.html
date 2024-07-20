@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block head %}
+  <link rel="stylesheet"
+        href="{{ url_for('upload_project.static', filename='css/post_project.css') }}" />
+{% endblock %}
+{% block content %}
+  <div id="content">
+    <div id="success">
+      <ul id="success-ul">
+        <li>
+          Project <b>{{ project.id }}</b>: <u>{{ project.title }}</u>
+          {% if new_project %}
+            created.
+          {% else %}
+            edited.
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

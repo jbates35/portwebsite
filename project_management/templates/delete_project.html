@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block head %}
+  <link rel="stylesheet"
+        href="{{ url_for('delete_project.static', filename='css/delete_project.css') }}" />
+{% endblock %}
+{% block content %}
+  <div id="content">
+    {% if error %}
+      <div id="error">
+        Could not delete project {{ project_id }} because:
+        <p>{{ error }}</p>
+      </div>
+    {% else %}
+      <div id="success">Successfully deleted project {{ project_id }}</div>
+    {% endif %}
+  </div>
+  <script src="{{ url_for('delete_project.static', filename='js/delete_project.js') }}"></script>
+{% endblock %}

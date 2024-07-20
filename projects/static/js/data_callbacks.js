@@ -3,8 +3,8 @@
 // Get a single project from the SQL table
 export async function fetch_project(id) {
   try {
-    let response = await fetch("../data/project/" + String(id)).then(
-      (response) => response.json(),
+    let response = await fetch(`../data/project/${id}/`).then((response) =>
+      response.json(),
     );
     return response;
   } catch (error) {
@@ -15,7 +15,7 @@ export async function fetch_project(id) {
 // Get a list of all projects
 export async function fetch_project_list() {
   try {
-    let response = await fetch("../data/project_list").then((response) =>
+    let response = await fetch("../data/project_list/date/").then((response) =>
       response.json(),
     );
     return response;
@@ -32,7 +32,7 @@ export async function update_project_param(id, param, value) {
   });
 
   try {
-    let response = await fetch("../data/update_project_param", {
+    let response = await fetch("../data/update_project_param/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
