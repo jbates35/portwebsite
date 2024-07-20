@@ -9,7 +9,7 @@ html_decode_bp = Blueprint("html_decode", __name__)
 # TODO: DELETE THIS LATER
 
 
-@html_decode_bp.route("/html_decode")
+@html_decode_bp.route("/html_decode/")
 def html_decode():
     return jsonify(replace_html_chars_with_markdown())
 

@@ -18,7 +18,7 @@ def update_project_param(project_id, param, value):
 
 
 @login_required
-@sql_update_project_param_bp.route("/data/update_project_param", methods=["GET", "POST"])
+@sql_update_project_param_bp.route("/data/update_project_param/", methods=["GET", "POST"])
 def update_project_param_bp():
     if not current_user.__dict__ or current_user.id != 1:
         return jsonify({"success": False, "error": "User not logged in"}, 500)

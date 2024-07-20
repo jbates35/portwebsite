@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const edit_buttons = document.querySelectorAll(`.edit-button`);
       edit_buttons.forEach((button) => {
         button.addEventListener("click", () => {
+          console.log("Testing123");
           const id_array = button.id.split("-");
           const id = id_array[id_array.length - 1];
           globalThis.location.href = `/project/edit/${id}`;

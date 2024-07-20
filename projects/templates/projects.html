@@ -21,7 +21,6 @@
               {% if current_user.id == 1 %}
                 <div class="edit-box">
                   <button id="edit-button-{{ project.id }}" class="e-button edit-button">Edit</button>
-                  <!-- TODO: add edit function -->
                   |
                   <button id="delete-button-{{ project.id }}" class="e-button delete-button">
                     {% if project.show %}
@@ -70,11 +69,11 @@
       <!-- Title and year -->
       <div id="project-container-title">
         <b>%title%</b> (%year%)
-        <button class="e-button-proj">Edit</button>
-        |
-        <!-- TODO: add edit function -->
-        <!-- TODO: add delete function -->
-        <button class="e-button-proj">Delete</button>
+        {% if current_user.id == 1 %}
+          <button class="e-button-proj edit-button">Edit</button>
+          |
+          <button class="e-button-proj delete-button">Delete</button>
+        {% endif %}
       </div>
       <div id="project-container-yt">
         <div class="yt-div show" id="project-container-ytframe">

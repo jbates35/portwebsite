@@ -38,7 +38,7 @@ def get_single_project(project_id: int) -> dict:
         return {"error": str(e)}
 
 
-@sql_single_project_bp.route("/project/<int:project_id>")
+@sql_single_project_bp.route("/project/<int:project_id>/")
 def get_single_project_bp(project_id):
     """Get single project from database""" ""
     project = get_single_project(project_id)
