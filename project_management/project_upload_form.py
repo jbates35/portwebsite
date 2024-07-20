@@ -20,8 +20,6 @@ from flask_wtf import FlaskForm
 # For parsing dates
 from datetime import datetime
 
-# TODO: Add validators for all the fields
-
 
 class FileUpload(Form):
     description = StringField(render_kw={'class': 'file-desc'})

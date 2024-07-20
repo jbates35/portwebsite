@@ -131,7 +131,6 @@ function open_project_popup(id, template, project_list) {
     if (project.ylink == "") {
       // Show the preview image and set its source to a holding image
       popup.querySelector("#project-container-ytimg").classList.add("show");
-      // TODO: This line is obviously wrong. What the heck??? (headerpic)
       popup
         .querySelector("#youtube-image")
         .setAttribute("src", `/uploads/project/${project.id}/headerpic.jpg`);

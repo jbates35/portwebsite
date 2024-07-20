@@ -29,8 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const current_image_text = box.querySelector(".currently-uploaded-text");
 
     image_upload.addEventListener("change", () => {
-      // TODO: Remove grayed out image when image is uploaded
-      // if (delete_flag.checked) preview_image.classList.remove("delete-image-opc");
       preview_image.style.opacity = 1;
       set_image(image_upload.files[0], preview_image);
     });
