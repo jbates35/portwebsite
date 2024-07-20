@@ -13,7 +13,7 @@ sql_project_list_bp = Blueprint("sql_project_list", __name__)
 
 def get_projects():
     """Get all projects from database. Only return id, title, date"""
-    query = Project.query.order_by(Project.id.desc())
+    query = Project.query.order_by(Project.date.desc())
     if not admin_user():
         query = query.filter(Project.show)
     project_data = query.all()
@@ -45,15 +45,25 @@ def get_single_project_bp(project_id):
     return jsonify(project)
 
 
-def get_project_list():
+def get_project_list(key: Optional[str] = None):
     """Just get a simple array of project titles and ids"""
 
     # Return list
     project_list = []
 
+    if key is None:
+        key = "id"
+
+    project_keys = {
+        "id": Project.id,
+        "date": Project.date,
+        "show": Project.show,
+        "programming_lang": Project.planguage
+    }
+
     # Get all projects, show all if admin, otherwise hide some
     try:
-        query = Project.query.order_by(Project.id.desc())
+        query = Project.query.order_by(project_keys[key].desc())
         if not admin_user():
             query = query.filter(Project.show)
         project_data = query.all()
@@ -67,9 +77,10 @@ def get_project_list():
         return {"error": str(e)}
 
 
+@sql_project_list_bp.route("/project_list/<string:key>/")
 @sql_project_list_bp.route("/project_list/")
-def get_project_list_bp():
-    projects = get_project_list()
+def get_project_list_bp(key: Optional[str] = None):
+    projects = get_project_list(key)
     return jsonify(projects)
 
 
