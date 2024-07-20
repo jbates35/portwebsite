@@ -65,12 +65,10 @@ def create_app():
     app.register_blueprint(about_bp, url_prefix="/about")
     app.register_blueprint(login_bp, url_prefix="/session")
     app.register_blueprint(logout_bp, url_prefix="/session")
+    # app.register_blueprint(register_bp, url_prefix="/session")
     app.register_blueprint(edit_project_bp, url_prefix="/project")
     app.register_blueprint(upload_project_bp, url_prefix="/project")
     app.register_blueprint(delete_project_bp, url_prefix="/project")
-
-    # Don't use - most likely
-    # app.register_blueprint(register_bp, url_prefix="/register")
 
     # Register SQL blueprint
     app.register_blueprint(sql_single_project_bp, url_prefix="/data")
