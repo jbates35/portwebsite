@@ -43,14 +43,14 @@ def login():
     return render_template("login.html", form=form, msg=msg)
 
 
-@ logout_bp.route("/logout")
-@ login_required
+@logout_bp.route("/logout")
+@login_required
 def logout():
     logout_user()
     return render_template("logout.html")
 
 
-@ register_bp.route("/register")
+@register_bp.route("/register")
 def register():
     form = RegisterForm()
     return render_template("register.html", form=form)
@@ -63,7 +63,7 @@ def check_user():
         return False
 
 
-@ check_user_bp.route("/check_user")
+@check_user_bp.route("/check_user")
 def check_user_bp_func():
     try:
         logged_in = check_user()
