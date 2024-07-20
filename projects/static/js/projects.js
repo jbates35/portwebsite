@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const edit_buttons = document.querySelectorAll(`.edit-button`);
       edit_buttons.forEach((button) => {
         button.addEventListener("click", () => {
-          console.log("Testing123");
           const id_array = button.id.split("-");
           const id = id_array[id_array.length - 1];
           globalThis.location.href = `/project/edit/${id}`;
@@ -115,11 +114,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 });
 
-async function open_project_popup(id, template, project_list) {
-  //Check to see if admin privileges are present
-  const user = await check_user();
-  const admin = user.logged_in;
-
+function open_project_popup(id, template, project_list) {
   fetch_project(id).then((project) => {
     // Create a DOM parser of the templated code
     const parser = new DOMParser();
@@ -309,6 +304,16 @@ async function open_project_popup(id, template, project_list) {
     const prev_project_btn = document.querySelector("#project-container-prev");
     prev_project_btn.addEventListener("click", () => {
       open_project_popup(prev, template, project_list);
+    });
+
+    //Check to see if admin privileges are present and assign meaning to the edit button
+    check_user().then((admin) => {
+      if (admin.logged_in) {
+        const popup_edit_btn = document.querySelector(`#edit-popup-button`);
+        popup_edit_btn.addEventListener("click", () => {
+          globalThis.location.href = `/project/edit/${project.id}`;
+        });
+      }
     });
 
     // Open the popup, i.e. set the display to block
