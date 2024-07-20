@@ -28,10 +28,12 @@ def login():
 
     if form.validate_on_submit():
         try:
-            user = get_user(username=str(form.username.data)) or {}
-            password = user_dict(user).get("password", None)
-            result = bcrypt.check_password_hash(
-                password, str(form.password.data))
+            result = None
+            user = get_user(username=str(form.username.data))
+            if user:
+                password = user_dict(user).get("password", None)
+                result = bcrypt.check_password_hash(
+                    password, str(form.password.data))
             if result:
                 login_user(user, remember=False)
                 return redirect(url_for("projects.projects"))
