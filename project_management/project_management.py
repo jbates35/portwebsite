@@ -8,6 +8,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 import shutil
+from markdown import markdown
 
 from .project_upload_form import ProjectForm
 from ..sql.sql_get import get_single_project
@@ -27,12 +28,12 @@ delete_project_bp = Blueprint(
 )
 
 
-@login_required
+# @login_required
 @upload_project_bp.route("/upload", methods=["GET", "POST"])
 @edit_project_bp.route("/edit/<int:project_id>", methods=["GET", "POST"])
 def post_project(project_id=None):
-    if not current_user.__dict__ or current_user.id != 1:
-        abort(403)
+    # if not current_user.__dict__ or current_user.id != 1:
+    #     abort(403)
 
     form = ProjectForm()
 
@@ -202,9 +203,12 @@ def post_project(project_id=None):
         if not (base_id_folder / "displaypic.jpg").exists():
             project.show = False
 
+        # TODO: TEST REMOVE THIS
+        print(f"\n\n{markdown(form.description.data)}\n\n")
+
         # Easy data to fill in tifrst
         project.date = form.date.data
-        project.description = form.description.data
+        project.description = markdown(form.description.data)
         project.title = form.title.data
         project.ylink = form.youtube_link.data
         project.creator = form.creator.data

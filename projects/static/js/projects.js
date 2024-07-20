@@ -128,7 +128,7 @@ async function open_project_popup(id, template, project_list) {
     const year = project.date.substring(0, 4);
     const prog_languages =
       project.planguage == "" ? "None specified" : project.planguage;
-    const description = html_decode(project.description);
+    const description = project.description;
 
     //Youtube link should either be the preview image or the youtube link
     popup.querySelector(".yt-div").classList.remove("show");

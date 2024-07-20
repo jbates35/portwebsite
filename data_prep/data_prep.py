@@ -2,19 +2,33 @@ from flask import Blueprint, render_template, jsonify
 from ..sql.sql_get import get_projects, get_single_project
 from ..sql.sql_post import update_project_param
 
-sql_merge_bp = Blueprint("test_func", __name__)
+from html import unescape
 
-# NOTE PLEASE DELETE THIS LATER
-# TODO DELETE THIS LATER
+html_decode_bp = Blueprint("html_decode", __name__)
+
+# TODO: DELETE THIS LATER
 
 
-@sql_merge_bp.route("/")
-def test_func():
-    return jsonify(merge_img_desc())
+@html_decode_bp.route("/html_decode")
+def html_decode():
+    return jsonify(replace_html_chars_with_markdown())
 
 
 def replace_html_chars_with_markdown():
-    raise NotImplementedError
+    for project in get_projects():
+        project_data = get_single_project(project["id"])
+
+        update_project_param(
+            project_data["id"],
+            "description",
+            unescape(project_data["description"])
+        )
+        update_project_param(
+            project_data["id"],
+            "title",
+            unescape(project_data["title"])
+        )
+    return {}
 
 
 def merge_img_desc():

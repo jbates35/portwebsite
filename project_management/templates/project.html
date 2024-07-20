@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block head %}
+  {{ pagedown.include_pagedown() }}
   <link rel="stylesheet"
         href="{{ url_for('upload_project.static', filename='css/project.css') }}" />
 {% endblock %}
@@ -189,7 +190,7 @@
       </div>
       <div class="form-element">
         <label>{{ form.description.label }}</label>
-        <div class="tab">{{ form.description }}</div>
+        <div class="tab">{{ form.description(rows=10) }}</div>
       </div>
       <!-- end of miscellaneous rest-of-the-stuff -->
       <div class="form-element" id="submit-div">{{ form.submit }}</div>

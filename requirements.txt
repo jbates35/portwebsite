@@ -11,3 +11,4 @@ Flask-Reuploaded
 Werkzeug
 Pillow
 requests
+flask-pagedown
