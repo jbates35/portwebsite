@@ -242,6 +242,9 @@ def post_project(project_id=None):
 @login_required
 @delete_project_bp.route("/delete/<int:project_id>", methods=["GET", "POST"])
 def delete_project(project_id: int):
+    if not current_user.__dict__ or current_user.id != 1:
+        abort(403)
+
     error = None
     project = Project.query.get(project_id)
 
