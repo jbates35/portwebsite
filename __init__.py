@@ -12,8 +12,6 @@ from .session.session import login_bp, logout_bp, check_user_bp  # , register_bp
 from .sql.sql_get import sql_single_project_bp, sql_project_list_bp, get_user
 from .sql.sql_post import sql_update_project_param_bp
 
-from .data_prep.data_prep import html_decode_bp
-
 
 def get_sql_config(file):
     """
@@ -55,9 +53,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return get_user(user_id)
-
-    # TEST DELETE LATER
-    app.register_blueprint(html_decode_bp, url_prefix="/data_prep")
 
     # Register pages - blueprints
     app.register_blueprint(projects_bp, url_prefix="/projects")
