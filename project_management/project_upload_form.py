@@ -1,4 +1,6 @@
 from typing import List
+from PIL import Image
+from io import BytesIO
 from wtforms import (
     DateField,
     FieldList,
@@ -8,25 +10,17 @@ from wtforms import (
     TextAreaField,
     BooleanField,
     validators,
+    ValidationError,
     SubmitField
 )
 from flask_pagedown.fields import PageDownField
-from flask_wtf.file import FileField
+from flask_wtf.file import FileField, FileAllowed
 from flask_wtf import FlaskForm
-from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 # For parsing dates
 from datetime import datetime
 
-# Taken from: https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
-photos = UploadSet('photos', IMAGES)
-
-# TODO: Use Pillow to verify images
 # TODO: Add validators for all the fields
-
-
-def verify_image(form, field):
-    pass
 
 
 class FileUpload(Form):
@@ -36,9 +30,18 @@ class FileUpload(Form):
 
 
 class ImageForm(Form):
-    description = TextAreaField(render_kw={'class': 'img-desc'})
     file = FileField(render_kw={'class': 'iup file-c'})
+    description = TextAreaField(render_kw={'class': 'img-desc'})
     delete = BooleanField(render_kw={'class': 'no-show image-delete-box'})
+
+    def validate_file(form, field):
+        """ Use Pillow to verify images """
+        if field.data is not None:
+            try:
+                Image.open(BytesIO(field.data.read()))
+                field.data.seek(0)
+            except Exception as e:
+                raise ValidationError(f"Invalid image: {e}")
 
 
 class ProjectForm(FlaskForm):
