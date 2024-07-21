@@ -126,6 +126,17 @@ function open_project_popup(id, template, project_list) {
       project.planguage == "" ? "None specified" : project.planguage;
     const description = project.description;
 
+    const github_span = document.createElement("span");
+    if (!project.github_repo) {
+      github_span.innerText = "None specified";
+    } else {
+      const github_link = document.createElement("a");
+      github_link.href = `http://github.com/${project.github_repo}`;
+      github_link.innerText = project.github_repo;
+      github_link.target = "_blank";
+      github_span.appendChild(github_link);
+    }
+
     //Youtube link should either be the preview image or the youtube link
     popup.querySelector(".yt-div").classList.remove("show");
     if (project.ylink == "") {
@@ -225,6 +236,7 @@ function open_project_popup(id, template, project_list) {
       .replace("%date%", project.date)
       .replace("%creator%", project.creator)
       .replace("%planguage%", prog_languages)
+      .replace("%githubrepo%", github_span.outerHTML)
       .replace("%description%", description);
 
     //Place code into the popup div now
