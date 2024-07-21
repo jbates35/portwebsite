@@ -245,6 +245,10 @@ def delete_project(project_id: int):
     if not current_user.__dict__ or current_user.id != 1:
         abort(403)
 
+    # Prevent the god forsaken possibility of the whole projects folder being deleted
+    if isinstance(project_id, int) is False:
+        raise TypeError("Invalid number. Only integers allowed for project_id") 
+
     error = None
     project = Project.query.get(project_id)
 
