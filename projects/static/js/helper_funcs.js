@@ -1,9 +1,3 @@
-//decode html special chars
-export function html_decode(input) {
-  const doc = new DOMParser().parseFromString(input, "text/html");
-  return doc.documentElement.textContent;
-}
-
 export function change_image(n, id, project_image) {
   const image_holder = document.querySelector("#image-holder");
   const image_desc = document.querySelector("#image-desc");

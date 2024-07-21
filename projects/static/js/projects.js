@@ -3,7 +3,7 @@ import {
   fetch_project_list,
   update_project_param,
 } from "./data_callbacks.js";
-import { html_decode, change_image } from "./helper_funcs.js";
+import { change_image } from "./helper_funcs.js";
 import {
   section_open,
   section_close,
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
           fetch_project(deleted_project_id).then((project) => {
             document.querySelector("#confirmation-project-label").innerText =
-              html_decode(project.title);
+              project.title;
 
             const change_visi_button = document.querySelector(
               "#change-visi-confirm-button",
@@ -350,18 +350,6 @@ function change_delete_popup_visibility(can_show) {
   popup_containers.forEach((container) => {
     container.style.display = can_show ? "flex" : "none";
   });
-}
-
-function delete_project(id) {
-  let success = false; // Placeholder for success which will be in arrow function later
-
-  // Use flask endpoint to delete the project from filesystem
-  console.log("NOT IMPLEMENTED: Deleting project");
-
-  // Use flask endpoint to delete the project from SQL database
-
-  // Refresh page
-  if (success) location.reload();
 }
 
 function change_project_visibility(id, show) {
