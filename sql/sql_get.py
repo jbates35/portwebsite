@@ -1,4 +1,5 @@
 from typing import Optional
+from markdown import markdown
 
 from flask import Blueprint, jsonify
 from flask_login import current_user
@@ -27,12 +28,17 @@ def get_projects():
     return projects
 
 
-def get_single_project(project_id: int) -> dict:
+def get_single_project(project_id: int, markdown_enabled: bool = True) -> dict:
     """Get single project from database""" ""
     try:
         project_data = db.session.query(Project).filter(
             Project.id == project_id).all()
         project = project_data[0].serialize()
+
+        # Markdown would be enabled for display, but not for putting in an editing window
+        if markdown_enabled:
+            project["description"] = markdown(project["description"])
+
         return project
     except Exception as e:
         return {"error": str(e)}

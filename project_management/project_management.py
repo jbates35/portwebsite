@@ -8,7 +8,6 @@ from PIL import Image
 import requests
 from io import BytesIO
 import shutil
-from markdown import markdown
 
 from .project_upload_form import ProjectForm
 from ..sql.sql_get import get_single_project
@@ -38,7 +37,7 @@ def post_project(project_id=None):
     form = ProjectForm()
 
     if project_id is not None:
-        project_info = get_single_project(project_id)
+        project_info = get_single_project(project_id, markdown_enabled=False)
     else:
         project_info = None
 
@@ -205,7 +204,7 @@ def post_project(project_id=None):
 
         # Easy data to fill in tifrst
         project.date = form.date.data
-        project.description = markdown(form.description.data)
+        project.description = form.description.data
         project.title = form.title.data
         project.ylink = form.youtube_link.data
         project.creator = form.creator.data
@@ -247,7 +246,7 @@ def delete_project(project_id: int):
 
     # Prevent the god forsaken possibility of the whole projects folder being deleted
     if isinstance(project_id, int) is False:
-        raise TypeError("Invalid number. Only integers allowed for project_id") 
+        raise TypeError("Invalid number. Only integers allowed for project_id")
 
     error = None
     project = Project.query.get(project_id)
