@@ -150,7 +150,10 @@ function open_project_popup(id, template, project_list) {
       popup.querySelector("#project-container-ytframe").classList.add("show");
       popup
         .querySelector("#youtube-iframe")
-        .setAttribute("src", `https://www.youtube.com/embed/${project.ylink}`);
+        .setAttribute(
+          "src",
+          `https://www.youtube.com/embed/${project.ylink}?enablejsapi=1&version=3&playerapiid=ytplayer`,
+        );
     }
 
     //Populate the file div with a list and its entries if they exist
@@ -337,6 +340,13 @@ function open_project_popup(id, template, project_list) {
 }
 
 function close_project_popup() {
+  // First stop the youtube video
+  const youtube_vid = document.querySelector(`#youtube-iframe`);
+  youtube_vid.contentWindow.postMessage(
+    '{"event":"command", "func":"stopVideo", "args":""}',
+    "*",
+  );
+
   // Close the popup, i.e. remove show class from the overlay
   const project_containers = document.querySelectorAll(".popup_show_handle");
   project_containers.forEach((container) => {
